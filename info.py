@@ -68,19 +68,19 @@ def get_reply(event, userid, status) :
             )
         elif event.message.text == "No" :
         	db.execute("UPDATE user_list SET status='finish' WHERE userid='{}'".format(userid))
-        	db.commit()
+        	con.commit()
         	return TextSendMessage(
         		text="用戶資料更改完成"
         		)
         elif event.message.text == "姓名" :
         	db.execute("UPDATE user_list SET status='modify_name' WHERE userid='{}'".format(userid))
-        	db.commit()
+        	con.commit()
         	return TextSendMessage(
         		text="請先輸入姓名:"
         		)
         elif event.message.text == "手機" :
         	db.execute("UPDATE user_list SET status='modify_phone' WHERE userid='{}'".format(userid))
-        	db.commit()
+        	con.commit()
         	return TextSendMessage(
         		text="請輸入手機號碼 : "
         		)
