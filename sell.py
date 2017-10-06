@@ -36,7 +36,6 @@ def get_reply(event, status, userid) :
         data = db.fetchall()
         db.execute("UPDATE sell_list SET intro='{}',status='{}' WHERE status='enter_intro' and userid='{}'".format(event.message.text, s, userid))
         con.commit()
-        profile = line_bot_api.get_profile(userid)
         line_bot_api.push_message(
             userid,
             TextSendMessage(
@@ -188,6 +187,7 @@ def get_reply(event, status, userid) :
             price = data[0][4]
             db.execute("UPDATE sell_list SET status='{}' WHERE status='modify' and userid='{}'".format(s, userid))
             con.commit()
+            profile = line_bot_api.get_profile(userid)
             for i in ids :
                 line_bot_api.push_message(
                 i[0],
