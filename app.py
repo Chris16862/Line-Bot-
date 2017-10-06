@@ -64,7 +64,16 @@ def callback():
         userid = event.source.user_id
         db.execute("SELECT status FROM sell_list WHERE status!='finish' and userid='{}'".format(userid))
         sell_status = db.fetchall()
-        if event.message.text=="/Sell" or sell_status :
+        if event.message.text=="/Cancel" and sell_status :
+            line_bot_api.reply_message(
+                event.reply_token,
+                    c.get_reply(
+                        event,
+                        sell_status,
+                        userid
+                        )
+                )
+        elif event.message.text=="/Sell" or sell_status :
             line_bot_api.reply_message(
                 event.reply_token,
                 s.get_reply(
@@ -93,15 +102,6 @@ def callback():
                 TextMessage(
                     text="不好意思,此功能尚未開放,敬請期待"
                     )
-                )
-        elif event.message.text=="/Cancel" and sell_status :
-            line_bot_api.reply_message(
-                event.reply_token,
-                    c.get_reply(
-                        event,
-                        sell_status,
-                        userid
-                        )
                 )
     return 'OK'
    
