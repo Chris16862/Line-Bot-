@@ -66,6 +66,10 @@ def callback():
                     )
                 )
         userid = event.source.user_id
+        db.execute("SELECT userid FROM user_list WHERE userid='{}'".format(userid))
+        if not db.fetchall() :
+            db.execute("INSERT INTO user_list(userid,status) VALUES (%s,%s)", (event.source.user_id,"new",))
+            con.commit()
         db.execute("SELECT * FROM user_list WHERE userid='{}' and phone!=NULL and name!=NULL".format(userid))
         if not db.fetchall() and event.message.text!="/Info" :
             line_bot_api.reply_message(
@@ -120,7 +124,11 @@ def callback():
         elif event.message.text=="/Info" or user_status :
             line_bot_api.reply_message(
                 event.reply_token,
-                i.get_reply(event,user_status,userid)
+                i.get_reply(
+                    event,
+                    user_status,
+                    userid
+                    )
                 )
     return 'OK'
    
