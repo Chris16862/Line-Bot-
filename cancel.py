@@ -9,7 +9,7 @@ line_bot_api = LineBotApi(channel_access_token)
 db = con.cursor()
 
 def get_reply(event,status,userid) :
-    db.execute("DELETE FROM sell_list WHERE userid='{}' and status='{}'".format(userid, status))
+    db.execute("DELETE FROM sell_list WHERE userid='{}' and status='{}'".format(userid, status[0][0]))
     res = db.fetchall()
     print (res)
     con.commit()
