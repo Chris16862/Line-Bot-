@@ -11,13 +11,13 @@ db = con.cursor()
 
 def get_reply(event, userid, status) :
     if status[0][0] == "new" :
+        db.execute("UPDATE user_list SET status='enter_name' WHERE userid='{}'".format(userid))
+        con.commit()
         return TextSendMessage(
     	text="您是第一次輸入資料\n請先輸入姓名:"
     	)
-        db.execute("UPDATE user_list SET status='{}' WHERE userid='{}'".format("enter_name", userid))
-        con.commit()
     elif status[0][0] == "enter_name" :
-        db.execute("UPDATE user_list SET status='{}', name='{}' WHERE userid='{}'".format("enter_phone", event.message.text, userid))
+        db.execute("UPDATE user_list SET status='enter_phone', name='{}' WHERE userid='{}'".format(event.message.text, userid))
         con.commit()
         return TextSendMessage(
     	text="請輸入手機號碼 : "
@@ -27,7 +27,7 @@ def get_reply(event, userid, status) :
             return TextSendMessage(
     	    text="格式輸入錯誤 請重新輸入"
     	)
-        db.execute("UPDATE user_list SET status='{}', phone='{}' WHERE userid='{}'".format("modify",event.message.text, userid))
+        db.execute("UPDATE user_list SET status='modify', phone='{}' WHERE userid='{}'".format(event.message.text, userid))
         con.commit()
         db.execute("SELECT name FROM user_list WHERE userid='{}'".format(userid))
         data = db.fetchall()
