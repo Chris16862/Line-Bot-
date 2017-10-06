@@ -13,6 +13,7 @@ from linebot.exceptions import (
 from linebot.models import *
 import sell as s
 import pic as p 
+import cancel as c
 
 app = Flask(__name__)
 channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
@@ -92,6 +93,15 @@ def callback():
                 TextMessage(
                     text="不好意思,此功能尚未開放,敬請期待"
                     )
+                )
+        elif event.message.text=="/Cancel" and sell_status :
+            line_bot_api.reply_message(
+                event.reply_token,
+                    c.get_reply(
+                        event,
+                        sell_status,
+                        userid
+                        )
                 )
     return 'OK'
    
