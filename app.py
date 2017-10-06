@@ -49,6 +49,7 @@ def callback():
         if not isinstance(event.message, TextMessage):
             continue
         if not isinstance(event.source, SourceUser) :
+            print (event.source)
             continue
         if isinstance(event.message, ImageMessage) :
             line_bot_api.reply_message(
