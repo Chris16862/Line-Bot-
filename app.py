@@ -45,6 +45,9 @@ def callback():
         if isinstance(event, LeaveEvent):
             db.execute("DELETE FROM group_list WHERE grid='{}'".format(event.source.group_id))
             con.commit()
+        if isinstance(event, FollowEvent) :
+            db.execute("INSERT INTO user_list(userid) VALUES (%s)", (event.source.user_id,))
+            con.commit()
         if not isinstance(event, MessageEvent):
             continue
         if not isinstance(event.message, TextMessage):
@@ -62,6 +65,14 @@ def callback():
                     )
                 )
         userid = event.source.user_id
+        db.execute("SELECT * FROM user_list WHERE userid='{}' and phone!=NULL and name!=NULL".format(userid))
+            if not db.fetchall() and event.message.text!="/Info" :
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextMessage(
+                        text="需填寫用戶資料，才能使用功能"
+                        )
+                    )
         db.execute("SELECT status FROM sell_list WHERE status!='finish' and userid='{}'".format(userid))
         sell_status = db.fetchall()
         if event.message.text=="/Cancel" and sell_status :
@@ -101,6 +112,10 @@ def callback():
                 TextMessage(
                     text="不好意思,此功能尚未開放,敬請期待"
                     )
+                )
+        elif event.message.text=="/Info" :
+            line_bot_api.reply_message(
+                event.reply_token,
                 )
     return 'OK'
    
