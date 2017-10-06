@@ -126,8 +126,8 @@ def callback():
                 event.reply_token,
                 i.get_reply(
                     event,
-                    user_status,
-                    userid
+                    userid,
+                    user_status
                     )
                 )
     return 'OK'
