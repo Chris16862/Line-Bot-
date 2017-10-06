@@ -8,7 +8,7 @@ channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
 line_bot_api = LineBotApi(channel_access_token)
 db = con.cursor()
 
-def get_reply(status,userid) :
+def get_reply(event,status,userid) :
     db.execute("DELETE FROM sell_list WHERE userid='{}' and status='{}'".format(userid, status))
     res = db.fetchall()
     print (res)
