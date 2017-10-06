@@ -11,7 +11,7 @@ db = con.cursor()
 
 def get_reply(event, userid, status) :
     if status[0][0] == "new" :
-        return TextMessage(
+        return TextSendMessage(
     	text="您是第一次輸入資料\n請先輸入姓名:"
     	)
         db.execute("UPDATE user_list SET status='{}' WHERE userid='{}'".format("enter_name", userid))
@@ -19,12 +19,12 @@ def get_reply(event, userid, status) :
     elif status[0][0] == "enter_name" :
         db.execute("UPDATE user_list SET status='{}', name='{}' WHERE userid='{}'".format("enter_phone", event.message.text, userid))
         con.commit()
-        return TextMessage(
+        return TextSendMessage(
     	text="請輸入手機號碼 : "
     	)
     elif status[0][0] == "enter_phone" :
         if len(event.message.text)!=10 or not re.match(r'09(.+)',event.message.text) :
-            return TextMessage(
+            return TextSendMessage(
     	    text="格式輸入錯誤 請重新輸入"
     	)
         db.execute("UPDATE user_list SET status='{}', phone='{}' WHERE userid='{}'".format("modify",event.message.text, userid))
@@ -69,19 +69,19 @@ def get_reply(event, userid, status) :
         elif event.message.text == "No" :
         	db.execute("UPDATE user_list SET status='finish' WHERE userid='{}'".format(userid))
         	db.commit()
-        	return TextMessage(
+        	return TextSendMessage(
         		text="用戶資料更改完成"
         		)
         elif event.message.text == "姓名" :
         	db.execute("UPDATE user_list SET status='modify_name' WHERE userid='{}'".format(userid))
         	db.commit()
-        	return TextMessage(
+        	return TextSendMessage(
         		text="請先輸入姓名:"
         		)
         elif event.message.text == "手機" :
         	db.execute("UPDATE user_list SET status='modify_phone' WHERE userid='{}'".format(userid))
         	db.commit()
-        	return TextMessage(
+        	return TextSendMessage(
         		text="請輸入手機號碼 : "
         		)
     elif status[0][0] == "modify_name" :
