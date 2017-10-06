@@ -70,7 +70,7 @@ def callback():
         if not db.fetchall() :
             db.execute("INSERT INTO user_list(userid,status) VALUES (%s,%s)", (event.source.user_id,"new",))
             con.commit()
-        db.execute("SELECT * FROM user_list WHERE userid='{}' and phone!=NULL and name!=NULL".format(userid))
+        db.execute("SELECT * FROM user_list WHERE userid='{}' and status='new'".format(userid))
         if not db.fetchall() and event.message.text!="/Info" :
             line_bot_api.reply_message(
                 event.reply_token,
