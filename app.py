@@ -14,6 +14,7 @@ from linebot.models import *
 import sell as s
 import pic as p 
 import cancel as c
+import info as i
 
 app = Flask(__name__)
 channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
@@ -119,6 +120,7 @@ def callback():
         elif event.message.text=="/Info" or user_status :
             line_bot_api.reply_message(
                 event.reply_token,
+                i.get_reply(event,user_status,userid)
                 )
     return 'OK'
    
