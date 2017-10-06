@@ -40,7 +40,7 @@ def get_reply(event, status, userid) :
         line_bot_api.push_message(
             userid,
             TextSendMessage(
-                text="賣家: @"+profile.display_name+"\n商品名:"+data[0][0]+"\n單價:"+str(data[0][1])+"\n數量:"+str(data[0][2])+"\n介紹及優惠:"+event.message.text
+                text="商品名:"+data[0][0]+"\n單價:"+str(data[0][1])+"\n數量:"+str(data[0][2])+"\n介紹及優惠:"+event.message.text
                 )
             )
         return TemplateSendMessage(
@@ -191,7 +191,7 @@ def get_reply(event, status, userid) :
             for i in ids :
                 line_bot_api.push_message(
                 i[0],
-                TextSendMessage(text="商品編號#"+str(number)+"\n商品名:"+name+"\n單價:"+str(price)+"\n數量:"+str(amount)+"\n\n"+intro+"\n如需購買請私訊我喔～")
+                TextSendMessage(text="商品編號#"+str(number)+"\n賣家: @"+profile.display_name+"\n商品名:"+name+"\n單價:"+str(price)+"\n數量:"+str(amount)+"\n\n"+intro+"\n如需購買請私訊我喔～")
                 )
             return TextSendMessage(text="產品新增成功")
         elif event.message.text=="商品名" :
