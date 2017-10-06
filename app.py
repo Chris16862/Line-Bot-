@@ -68,7 +68,6 @@ def callback():
             line_bot_api.reply_message(
                 event.reply_token,
                     c.get_reply(
-                        event,
                         sell_status,
                         userid
                         )
