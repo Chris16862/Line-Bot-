@@ -36,10 +36,11 @@ def get_reply(event, status, userid) :
         data = db.fetchall()
         db.execute("UPDATE sell_list SET intro='{}',status='{}' WHERE status='enter_intro' and userid='{}'".format(event.message.text, s, userid))
         con.commit()
+        profile = line_bot_api.get_profile(userid)
         line_bot_api.push_message(
             userid,
             TextSendMessage(
-                text="商品名:"+data[0][0]+"\n單價:"+str(data[0][1])+"\n數量:"+str(data[0][2])+"\n介紹及優惠:"+event.message.text
+                text="賣家: @"+profile.display_name+"\n商品名:"+data[0][0]+"\n單價:"+str(data[0][1])+"\n數量:"+str(data[0][2])+"\n介紹及優惠:"+event.message.text
                 )
             )
         return TemplateSendMessage(
