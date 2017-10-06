@@ -71,7 +71,7 @@ def callback():
             db.execute("INSERT INTO user_list(userid,status) VALUES (%s,%s)", (event.source.user_id,"new",))
             con.commit()
         db.execute("SELECT * FROM user_list WHERE userid='{}' and status='new'".format(userid))
-        if not db.fetchall() and event.message.text!="/Info" :
+        if db.fetchall() and event.message.text!="/Info" :
             line_bot_api.reply_message(
                 event.reply_token,
                 TextMessage(
@@ -81,7 +81,7 @@ def callback():
             return "OK"
         db.execute("SELECT status FROM sell_list WHERE status!='finish' and userid='{}'".format(userid))
         sell_status = db.fetchall()
-        db.execute("SELECT status FROM user_list WHERE userid='{}'".format(userid))
+        db.execute("SELECT status FROM user_list WHERE status!='finish' and userid='{}'".format(userid))
         user_status = db.fetchall()
         if event.message.text=="/Cancel" and sell_status :
             line_bot_api.reply_message(
