@@ -10,8 +10,6 @@ db = con.cursor()
 
 def get_reply(event,status,userid) :
     db.execute("DELETE FROM sell_list WHERE userid='{}' and status='{}'".format(userid, status[0][0]))
-    res = db.fetchall()
-    print (res)
     con.commit()
     return TextSendMessage(
     	event.reply_token,
