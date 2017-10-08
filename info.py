@@ -77,7 +77,7 @@ def get_reply(event, userid, status) :
         	db.execute("UPDATE user_list SET status='modify_name' WHERE userid='{}'".format(userid))
         	con.commit()
         	return TextSendMessage(
-        		text="請先輸入姓名:"
+        		text="請輸入姓名:"
         		)
         elif event.message.text == "手機" :
         	db.execute("UPDATE user_list SET status='modify_phone' WHERE userid='{}'".format(userid))
@@ -107,7 +107,7 @@ def get_reply(event, userid, status) :
 	        )
          )
     elif status[0][0] == "modify_phone" :
-        db.execute("UPDATE user_list SET status='modify' WHERE userid='{}'".format(userid))
+        db.execute("UPDATE user_list SET status='modify',phone='{}' WHERE userid='{}'".format(event.message.text,userid))
         con.commit()
         db.execute("SELECT name FROM user_list WHERE userid='{}'".format(userid))
         data = db.fetchall()
