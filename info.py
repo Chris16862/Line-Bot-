@@ -10,6 +10,7 @@ line_bot_api = LineBotApi(channel_access_token)
 db = con.cursor()
 
 def get_reply(event, userid, status) :
+    print (status)
     if status[0][0] == "new" :
         db.execute("UPDATE user_list SET status='enter_name' WHERE userid='{}'".format(userid))
         con.commit()
