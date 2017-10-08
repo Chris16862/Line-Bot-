@@ -69,7 +69,6 @@ def get_reply(event, userid, status) :
 	        )
          )
     elif status[0][0] == "modify" :
-        print ("test")
         if event.message.text == "Yes" :
             return TemplateSendMessage(
                 alt_text='Buttons template',
