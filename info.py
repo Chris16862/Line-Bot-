@@ -10,6 +10,27 @@ line_bot_api = LineBotApi(channel_access_token)
 db = con.cursor()
 
 def get_reply(event, userid, status) :
+    if not status :
+        db.execute("SELECT name,phone FROM user_list WHERE userid='{}'".format(userid))
+        data = db.fetchall()
+        db.execute("UPDATE user_list SET status='modify' WHERE userid='{}'".format(userid))
+        con.commit()
+        return TemplateSendMessage(
+	        alt_text='Confirm template',
+	        template=ConfirmTemplate(
+	            text="輸入完畢，請確認內容是否需要更改\n姓名:"+data[0][0]+"\n手機:"+data[1][0],
+	            actions=[
+	            MessageTemplateAction(
+	                label='Yes',
+	                text='Yes',
+	                    ),
+	            MessageTemplateAction(
+	                label='No',
+	                text='No'
+	                )
+	             ]
+	        )
+         )
     if status[0][0] == "new" :
         db.execute("UPDATE user_list SET status='enter_name' WHERE userid='{}'".format(userid))
         con.commit()
