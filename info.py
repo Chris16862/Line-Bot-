@@ -18,7 +18,7 @@ def get_reply(event, userid, status) :
         return TemplateSendMessage(
 	        alt_text='Confirm template',
 	        template=ConfirmTemplate(
-	            text="輸入完畢，請確認內容是否需要更改\n姓名:"+data[0][0]+"\n手機:"+data[1][0],
+	            text="輸入完畢，請確認內容是否需要更改\n姓名:"+data[0][0]+"\n手機:"+data[0][1],
 	            actions=[
 	            MessageTemplateAction(
 	                label='Yes',
