@@ -18,7 +18,7 @@ def get_reply(event, userid, status) :
         return TemplateSendMessage(
 	        alt_text='Confirm template',
 	        template=ConfirmTemplate(
-	            text="輸入完畢，請確認內容是否需要更改\n姓名:"+data[0][0]+"\n手機:"+data[0][1],
+	            text="需要更改資料嗎？\n姓名:"+data[0][0]+"\n手機:"+data[0][1],
 	            actions=[
 	            MessageTemplateAction(
 	                label='Yes',
@@ -127,6 +127,10 @@ def get_reply(event, userid, status) :
 	        )
          )
     elif status[0][0] == "modify_phone" :
+        if len(event.message.text)!=10 or not re.match(r'09(.+)',event.message.text) :
+            return TextSendMessage(
+    	    text="格式輸入錯誤 請重新輸入"
+    	)
         db.execute("UPDATE user_list SET status='modify',phone='{}' WHERE userid='{}'".format(event.message.text,userid))
         con.commit()
         db.execute("SELECT name FROM user_list WHERE userid='{}'".format(userid))
