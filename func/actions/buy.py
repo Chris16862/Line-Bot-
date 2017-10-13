@@ -1,6 +1,5 @@
 from linebot.models import *
 import os
-from connection import con
 from linebot import (
     LineBotApi
 )
