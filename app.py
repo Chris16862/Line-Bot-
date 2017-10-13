@@ -47,6 +47,7 @@ def callback():
             db.execute("INSERT INTO user_list(userid,status) VALUES (%s,%s)", (event.source.user_id,"new",))
             con.commit()
         if not isinstance(event, MessageEvent):
+            print (event.postback.postback.data)
             continue
         if not isinstance(event.message, TextMessage):
             continue
@@ -114,8 +115,13 @@ def callback():
                     alt_text='Buttons template',
                     template=ButtonsTemplate(
                         title='功能選單',
-                        text='  ',
+                        text='請選擇想使用的功能',
                         actions=[
+                            PostbackTemplateAction(
+                                label='postback1',
+                                text='postback text1',
+                                data='action=buy&itemid=1'
+                            ),
                             MessageTemplateAction(
                                 label='商品清單',
                                 text='/Shop',
@@ -138,6 +144,14 @@ def callback():
                     event,
                     userid,
                     user_status,
+                    con
+                    )
+                )
+        elif event.message.text=="/Shop" :
+            line_bot_api.reply_message(
+                event.reply_token.
+                Shop(
+                    userid,
                     con
                     )
                 )
