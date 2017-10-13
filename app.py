@@ -114,6 +114,7 @@ def callback():
                     alt_text='Buttons template',
                     template=ButtonsTemplate(
                         title='功能選單',
+                        text='',
                         actions=[
                             MessageTemplateAction(
                                 label='商品清單',
