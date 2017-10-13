@@ -7,5 +7,5 @@ from linebot import (
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
 line_bot_api = LineBotApi(channel_access_token)
 
-def get_reply(event, status, userid):
+def Buy(event, status, userid):
     db = con.cursor()

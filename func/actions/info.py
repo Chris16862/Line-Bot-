@@ -9,12 +9,13 @@ channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
 line_bot_api = LineBotApi(channel_access_token)
 db = con.cursor()
 
-def get_reply(event, userid, status) :
+def Info(event, userid, status) :
     if not status :
         db.execute("SELECT name,phone FROM user_list WHERE userid='{}'".format(userid))
         data = db.fetchall()
         db.execute("UPDATE user_list SET status='modify' WHERE userid='{}'".format(userid))
         con.commit()
+        db.close()
         return TemplateSendMessage(
 	        alt_text='Confirm template',
 	        template=ConfirmTemplate(
@@ -34,12 +35,14 @@ def get_reply(event, userid, status) :
     if status[0][0] == "new" :
         db.execute("UPDATE user_list SET status='enter_name' WHERE userid='{}'".format(userid))
         con.commit()
+        db.close()
         return TextSendMessage(
     	text="您是第一次輸入資料\n請先輸入姓名:"
     	)
     elif status[0][0] == "enter_name" :
         db.execute("UPDATE user_list SET status='enter_phone', name='{}' WHERE userid='{}'".format(event.message.text, userid))
         con.commit()
+        db.close()
         return TextSendMessage(
     	text="請輸入手機號碼 : "
     	)
@@ -52,6 +55,7 @@ def get_reply(event, userid, status) :
         con.commit()
         db.execute("SELECT name FROM user_list WHERE userid='{}'".format(userid))
         data = db.fetchall()
+        db.close()
         return TemplateSendMessage(
 	        alt_text='Confirm template',
 	        template=ConfirmTemplate(
@@ -90,18 +94,21 @@ def get_reply(event, userid, status) :
         elif event.message.text == "No" :
         	db.execute("UPDATE user_list SET status='finish' WHERE userid='{}'".format(userid))
         	con.commit()
+              db.close()
         	return TextSendMessage(
         		text="用戶資料更改完成"
         		)
         elif event.message.text == "姓名" :
         	db.execute("UPDATE user_list SET status='modify_name' WHERE userid='{}'".format(userid))
         	con.commit()
+              db.close()
         	return TextSendMessage(
         		text="請輸入姓名:"
         		)
         elif event.message.text == "手機" :
         	db.execute("UPDATE user_list SET status='modify_phone' WHERE userid='{}'".format(userid))
         	con.commit()
+              db.close()
         	return TextSendMessage(
         		text="請輸入手機號碼 : "
         		)
@@ -110,6 +117,7 @@ def get_reply(event, userid, status) :
         con.commit()
         db.execute("SELECT phone FROM user_list WHERE userid='{}'".format(userid))
         data = db.fetchall()
+        db.close()
         return TemplateSendMessage(
 	        alt_text='Confirm template',
 	        template=ConfirmTemplate(
@@ -135,6 +143,7 @@ def get_reply(event, userid, status) :
         con.commit()
         db.execute("SELECT name FROM user_list WHERE userid='{}'".format(userid))
         data = db.fetchall()
+        db.close()
         return TemplateSendMessage(
 	        alt_text='Confirm template',
 	        template=ConfirmTemplate(

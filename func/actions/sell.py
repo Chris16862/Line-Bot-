@@ -1,34 +1,37 @@
 from linebot.models import *
 import os
-from connection import con
 from linebot import (
     LineBotApi
 )
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
 line_bot_api = LineBotApi(channel_access_token)
 
-def get_reply(event, status, userid) :
+def Sell(event, status, userid,con) :
     db = con.cursor()
     if not status :
         s = "enter_name"
         db.execute("INSERT INTO sell_list (userid, status) VALUES (%s, %s)",(userid, s))
         con.commit()
+        db.close()
         return TextSendMessage(text="請輸入商品名:")
     elif status[0][0]=="enter_name":
         s = "enter_price"
         SQL = "UPDATE sell_list SET name='{}',status='{}' WHERE status='enter_name' and userid='{}';".format(event.message.text, s, userid)
         db.execute(SQL)
         con.commit()
+        db.close()
         return TextSendMessage(text="請輸入單價:")
     elif status[0][0]=="enter_price":
         s = "enter_amount"
         db.execute("UPDATE sell_list SET price={},status='{}' WHERE status='enter_price' and userid='{}'".format(int(event.message.text), s, userid))
         con.commit()
+        db.close()
         return TextSendMessage(text="請輸入提供數量:")
     elif status[0][0]=="enter_amount":
         s = "enter_intro"
         db.execute("UPDATE sell_list SET amount={},status='{}' WHERE status='enter_amount' and userid='{}'".format(int(event.message.text), s, userid))
         con.commit()
+        db.close()
         return TextSendMessage(text="請輸入介紹或優惠:")
     elif status[0][0]=="enter_intro":
         s = "modify"
@@ -36,6 +39,7 @@ def get_reply(event, status, userid) :
         data = db.fetchall()
         db.execute("UPDATE sell_list SET intro='{}',status='{}' WHERE status='enter_intro' and userid='{}'".format(event.message.text, s, userid))
         con.commit()
+        db.close()
         line_bot_api.push_message(
             userid,
             TextSendMessage(
@@ -65,6 +69,7 @@ def get_reply(event, status, userid) :
         SQL = "UPDATE sell_list SET name='{}',status='{}' WHERE status='modify_name' and userid='{}';".format(event.message.text, s, userid)
         db.execute(SQL)
         con.commit()
+        db.close()
         return TemplateSendMessage(
             alt_text='Confirm template',
             template=ConfirmTemplate(
@@ -87,6 +92,7 @@ def get_reply(event, status, userid) :
         s = "modify"
         db.execute("UPDATE sell_list SET price={},status='{}' WHERE status='modify_price' and userid='{}'".format(int(event.message.text), s, userid))
         con.commit()
+        db.close()
         return TemplateSendMessage(
             alt_text='Confirm template',
             template=ConfirmTemplate(
@@ -109,6 +115,7 @@ def get_reply(event, status, userid) :
         s = "modify"
         db.execute("UPDATE sell_list SET amount={},status='{}' WHERE status='modify_amount' and userid='{}'".format(int(event.message.text), s, userid))
         con.commit()
+        db.close()
         return TemplateSendMessage(
             alt_text='Confirm template',
             template=ConfirmTemplate(
@@ -131,6 +138,7 @@ def get_reply(event, status, userid) :
         s = "modify"
         db.execute("UPDATE sell_list SET intro='{}',status='{}' WHERE status='modify_intro' and userid='{}'".format(event.message.text, s, userid))
         con.commit()
+        db.close()
         return TemplateSendMessage(
             alt_text='Confirm template',
             template=ConfirmTemplate(
@@ -187,6 +195,7 @@ def get_reply(event, status, userid) :
             price = data[0][4]
             db.execute("UPDATE sell_list SET status='{}' WHERE status='modify' and userid='{}'".format(s, userid))
             con.commit()
+            db.close()
             profile = line_bot_api.get_profile(userid)
             for i in ids :
                 line_bot_api.push_message(
@@ -198,20 +207,23 @@ def get_reply(event, status, userid) :
             s = "modify_name"
             db.execute("UPDATE sell_list SET status='{}' WHERE status='modify' and userid='{}'".format(s, userid))
             con.commit()
+            db.close()
             return  TextSendMessage(text="請輸入商品名:")
         elif event.message.text=="單價" :
             s = "modify_price"
             db.execute("UPDATE sell_list SET status='{}' WHERE status='modify' and userid='{}'".format(s, userid))
             con.commit()
+            db.close()
             return TextSendMessage(text="請輸入單價:")
         elif event.message.text=="數量" :
             s = "modify_amount"
             db.execute("UPDATE sell_list SET status='{}' WHERE status='modify' and userid='{}'".format(s, userid))
             con.commit()
+            db.close()
             return TextSendMessage(text="請輸入數量:")
         elif event.message.text=="介紹及優惠":
             s = "modify_intro"
             db.execute("UPDATE sell_list SET status='{}' WHERE status='modify' and userid='{}'".format(s, userid))
             con.commit()
+            db.close()
             return TextSendMessage(text="請輸入介紹及優惠:")
-        db.close()

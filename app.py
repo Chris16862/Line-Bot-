@@ -11,7 +11,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import *
-from func import *
+from func.actions import *
 
 app = Flask(__name__)
 channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
@@ -84,18 +84,20 @@ def callback():
         if event.message.text=="/Cancel" and sell_status :
             line_bot_api.reply_message(
                 event.reply_token,
-                    cancel.get_reply(
+                    Cancel(
                         sell_status,
-                        userid
+                        userid,
+                        con
                         )
                 )
         elif event.message.text=="/Sell" or sell_status :
             line_bot_api.reply_message(
                 event.reply_token,
-                sell.get_reply(
+                Sell(
                     event,
                     sell_status,
-                    userid
+                    userid,
+                    con
                     )
                 )
         elif event.message.text=="/Buy" :
@@ -131,10 +133,11 @@ def callback():
         elif event.message.text=="/Info" or user_status :
             line_bot_api.reply_message(
                 event.reply_token,
-                info.get_reply(
+                Info(
                     event,
                     userid,
-                    user_status
+                    user_status,
+                    con
                     )
                 )
     return 'OK'
