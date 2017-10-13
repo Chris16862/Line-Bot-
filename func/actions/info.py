@@ -8,7 +8,7 @@ from linebot import (
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
 line_bot_api = LineBotApi(channel_access_token)
 
-
+# test
 def Info(event, userid, status,con) :
     db = con.cursor()
     if not status :
