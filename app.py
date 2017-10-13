@@ -2,7 +2,7 @@
 import os
 import sys
 from argparse import ArgumentParser
-from connection import con
+from func.connection import con
 from flask import Flask, request, abort
 from linebot import (
     LineBotApi, WebhookParser
@@ -11,10 +11,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import *
-import sell as s
-import pic as p 
-import cancel as c
-import info as i
+from func import *
 
 app = Flask(__name__)
 channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
@@ -87,7 +84,7 @@ def callback():
         if event.message.text=="/Cancel" and sell_status :
             line_bot_api.reply_message(
                 event.reply_token,
-                    c.get_reply(
+                    cancel.get_reply(
                         sell_status,
                         userid
                         )
@@ -95,7 +92,7 @@ def callback():
         elif event.message.text=="/Sell" or sell_status :
             line_bot_api.reply_message(
                 event.reply_token,
-                s.get_reply(
+                sell.get_reply(
                     event,
                     sell_status,
                     userid
@@ -111,10 +108,19 @@ def callback():
         elif event.message.text=='/BuyList' :
             line_bot_api.reply_message(
                 event.reply_token,
-                TextMessage(
-                    text="不好意思,此功能尚未開放,敬請期待"
+                TemplateSendMessage(
+                    alt_text='Buttons template',
+                    template=ButtonsTemplate(
+                        title='功能選單',
+                        actions=[
+                            MessageTemplateAction(
+                                label='商品清單',
+                                text='/Shop'
+                            )
+                        ]
                     )
                 )
+            )
         elif event.message.text=='/SellList' :
              line_bot_api.reply_message(
                 event.reply_token,
@@ -125,7 +131,7 @@ def callback():
         elif event.message.text=="/Info" or user_status :
             line_bot_api.reply_message(
                 event.reply_token,
-                i.get_reply(
+                info.get_reply(
                     event,
                     userid,
                     user_status
