@@ -146,7 +146,7 @@ def callback():
                 )
         elif event.message.text=="/Shop" :
             line_bot_api.reply_message(
-                event.reply_token.
+                event.reply_token,
                 Shop(
                     userid,
                     con
