@@ -94,26 +94,26 @@ def Info(event, userid, status,con) :
                 )
             )
         elif event.message.text == "No" :
-        	db.execute("UPDATE user_list SET status='finish' WHERE userid='{}'".format(userid))
-        	con.commit()
+              db.execute("UPDATE user_list SET status='finish' WHERE userid='{}'".format(userid))
+              con.commit()
               db.close()
-        	return TextSendMessage(
-        		text="用戶資料更改完成"
-        		)
+              return TextSendMessage(
+                   text="用戶資料更改完成"
+                   )
         elif event.message.text == "姓名" :
-        	db.execute("UPDATE user_list SET status='modify_name' WHERE userid='{}'".format(userid))
-        	con.commit()
+              db.execute("UPDATE user_list SET status='modify_name' WHERE userid='{}'".format(userid))
+              con.commit()
               db.close()
-        	return TextSendMessage(
-        		text="請輸入姓名:"
-        		)
+              return TextSendMessage(
+                    text="請輸入姓名:"
+                    )
         elif event.message.text == "手機" :
-        	db.execute("UPDATE user_list SET status='modify_phone' WHERE userid='{}'".format(userid))
-        	con.commit()
+              db.execute("UPDATE user_list SET status='modify_phone' WHERE userid='{}'".format(userid))
+              con.commit()
               db.close()
-        	return TextSendMessage(
-        		text="請輸入手機號碼 : "
-        		)
+              return TextSendMessage(
+                   text="請輸入手機號碼 : "
+                   )
     elif status[0][0] == "modify_name" :
         db.execute("UPDATE user_list SET status='modify' WHERE userid='{}'".format(userid))
         con.commit()
