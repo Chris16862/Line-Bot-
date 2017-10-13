@@ -40,14 +40,17 @@ def callback():
         if isinstance(event, JoinEvent) :
             db.execute("INSERT INTO group_list (grid) VALUES (%s)", (event.source.group_id,))
             con.commit()
+            continue
         if isinstance(event, LeaveEvent):
             db.execute("DELETE FROM group_list WHERE grid='{}'".format(event.source.group_id))
             con.commit()
+            continue
         if isinstance(event, FollowEvent) :
             db.execute("INSERT INTO user_list(userid,status) VALUES (%s,%s)", (event.source.user_id,"new",))
             con.commit()
+            continue
         if not isinstance(event, MessageEvent):
-            print (event.postback.postback.data)
+            print (event.postback.data)
             continue
         if not isinstance(event.message, TextMessage):
             continue
