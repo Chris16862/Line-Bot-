@@ -50,7 +50,6 @@ def callback():
             con.commit()
             continue
         if not isinstance(event, MessageEvent):
-            print (event.postback.data)
             continue
         if not isinstance(event.message, TextMessage):
             continue
@@ -120,11 +119,6 @@ def callback():
                         title='功能選單',
                         text='請選擇想使用的功能',
                         actions=[
-                            PostbackTemplateAction(
-                                label='postback1',
-                                text='postback text1',
-                                data='action=buy&itemid=1'
-                            ),
                             MessageTemplateAction(
                                 label='商品清單',
                                 text='/Shop',
