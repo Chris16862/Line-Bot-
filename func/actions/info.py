@@ -7,9 +7,10 @@ from linebot import (
 )
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
 line_bot_api = LineBotApi(channel_access_token)
-db = con.cursor()
 
-def Info(event, userid, status) :
+
+def Info(event, userid, status,con) :
+    db = con.cursor()
     if not status :
         db.execute("SELECT name,phone FROM user_list WHERE userid='{}'".format(userid))
         data = db.fetchall()
@@ -74,6 +75,7 @@ def Info(event, userid, status) :
          )
     elif status[0][0] == "modify" :
         if event.message.text == "Yes" :
+            db.close()
             return TemplateSendMessage(
                 alt_text='Buttons template',
                 template=ButtonsTemplate(
