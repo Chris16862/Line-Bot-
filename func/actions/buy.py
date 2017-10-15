@@ -7,10 +7,11 @@ channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
 line_bot_api = LineBotApi(channel_access_token)
 
 def Buy(event, status, userid, con):
-
+    db = con.cursor()
     if not status:
         s="check"
         db.execute("INSERT INTO buy_list (userid, status) VALUES (%s, %s)",(userid, s))
+        db.close()
         return TextSendMessage(text="請輸入商品編號:")
     elif status[0][0]=="check":
         buy=event.message.text
@@ -20,8 +21,10 @@ def Buy(event, status, userid, con):
             data=db.fetchall()
             db.execute("UPDATE buy_list SET thing_id={},status='{}' WHERE status='check' and userid='{}'".format(int(buy), s, userid))
             con.commit()
+            db.close()
             return TextSendMessage(text="購買商品為: {}\n請輸入購買數量:".format(data[0][0]))
         else :
+            db.close()
             return TextSendMessage(text="只需要輸入數字，請重新輸入")
     elif status[0][0]=="count":
         s="modify"
@@ -32,6 +35,7 @@ def Buy(event, status, userid, con):
         name = data[0][1]
         db.execute("UPDATE buy_list SET status='{}',amount={} WHERE status='count' and userid='{}'".format(s, amount, userid))
         con.commit()
+        db.close()
         return TemplateSendMessage(
             alt_text='Confirm template',
             template=ConfirmTemplate(
@@ -50,6 +54,7 @@ def Buy(event, status, userid, con):
             )	
     elif status[0][0]=="modify" :
         if event.message.text=='Yes' : 
+            db.close()
             return TemplateSendMessage(
                 alt_text='Buttons template',
                 template=ButtonsTemplate(
@@ -81,12 +86,15 @@ def Buy(event, status, userid, con):
                 seller_id,
                 text="{}購買了您的商品: {}\n 購買數量為: {}".format(profile.display_name, name , str(amount[0][0]))
                 )
+            db.close()
             return TextSendMessage(text="購買成功")
         elif event.message.text=='商品' :
             db.execute("UPDATE buy_list SET status='check' WHERE status='modify' and userid='{}'".format(userid))
             con.commit()
+            db.close()
             return TextSendMessage(text="請重新輸入商品編號:")
         elif event.message.text=='數量' :
             db.execute("UPDATE buy_list SET status='count' WHERE status='modify' and userid='userid'".format(userid))
             con.commit()
+            db.close()
             return TextSendMessage(text="請重新輸入購買數量:")
