@@ -12,7 +12,7 @@ def Buy(event, status, userid, con):
         s="check"
         db.execute("INSERT INTO buy_list (userid, status) VALUES (%s, %s)",(userid, s))
         return TextSendMessage(text="請輸入商品編號:")
-    elif status[0][0]="check":
+    elif status[0][0]=="check":
         buy=event.message.text
         if buy.isdigit():
             s="count"
@@ -23,7 +23,7 @@ def Buy(event, status, userid, con):
             return TextSendMessage(text="購買商品為: {}\n請輸入購買數量:".format(data[0][0]))
         else :
             return TextSendMessage(text="只需要輸入數字，請重新輸入")
-    elif status[0][0]="count":
+    elif status[0][0]=="count":
         s="modify"
         db.execute("SELECT price,name FROM sell_list WHERE id={}".format(buy))
         data=db.fetchall()
@@ -48,7 +48,7 @@ def Buy(event, status, userid, con):
                 ]
                )
             )	
-    elif status[0][0]="modify" :
+    elif status[0][0]=="modify" :
         if event.message.text=='Yes' : 
             return TemplateSendMessage(
                 alt_text='Buttons template',
