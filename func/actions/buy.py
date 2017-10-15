@@ -27,6 +27,7 @@ def Buy(event, status, userid, con):
             db.close()
             return TextSendMessage(text="只需要輸入數字，請重新輸入")
     elif status[0][0]=="count":
+        print ("enter")
         s="modify"
         db.execute("SELECT thing_id FROM buy_list WHERE userid='{}' and status='count'".format(userid))
         buy_id = db.fetchall()
@@ -41,7 +42,7 @@ def Buy(event, status, userid, con):
         return TemplateSendMessage(
             alt_text='Confirm template',
             template=ConfirmTemplate(
-                text="輸入完畢，請確認內容是否需要更改\n商品名:"+name+"\n總額:"+str(total)+"購買數量:"+str(amount),
+                text="輸入完畢，請確認內容是否需要更改\n商品名:"+name+"\n總額:"+str(total)+"\n購買數量:"+str(amount),
                 actions=[
                 MessageTemplateAction(
                     label='Yes',
