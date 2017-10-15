@@ -83,8 +83,10 @@ def callback():
         sell_status = db.fetchall()
         db.execute("SELECT status FROM user_list WHERE status!='finish' and userid='{}'".format(userid))
         user_status = db.fetchall()
+        db.execute("SELECT status FROM buy_list WHERE status!='finish' and userid='{}'".format(userid))
+        buy_status = db.fetchall()
         print (user_status)
-        if event.message.text=="/Cancel" and sell_status :
+        if event.message.text=="/Cancel" and (sell_status or buy_status) :
             line_bot_api.reply_message(
                 event.reply_token,
                     Cancel(
@@ -103,11 +105,14 @@ def callback():
                     con
                     )
                 )
-        elif event.message.text=="/Buy" :
+        elif event.message.text=="/Buy" or buy_status :
             line_bot_api.reply_message(
                 event.reply_token,
-                TextMessage(
-                    text="不好意思,此功能尚未開放,敬請期待"
+                Buy(
+                    event,
+                    buy_status,
+                    userid,
+                    con
                     )
                 )
         elif event.message.text=='/BuyList' :

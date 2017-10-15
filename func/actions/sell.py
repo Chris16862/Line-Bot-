@@ -200,7 +200,7 @@ def Sell(event, status, userid,con) :
             for i in ids :
                 line_bot_api.push_message(
                 i[0],
-                TextSendMessage(text="商品編號#"+str(number)+"\n賣家: @"+profile.display_name+"\n商品名:"+name+"\n單價:"+str(price)+"\n數量:"+str(amount)+"\n\n"+intro+"\n如需購買請私訊我喔～")
+                TextSendMessage(text="商品編號#"+str(number)+"\n賣家: "+profile.display_name+"\n商品名:"+name+"\n單價:"+str(price)+"\n數量:"+str(amount)+"\n\n"+intro+"\n如需購買請私訊我喔～")
                 )
             return TextSendMessage(text="產品新增成功")
         elif event.message.text=="商品名" :
