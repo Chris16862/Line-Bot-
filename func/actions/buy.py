@@ -92,12 +92,12 @@ def Buy(event, status, userid, con):
             db.close()
             return TextSendMessage(text="購買成功")
         elif event.message.text=='商品' :
-            db.execute("UPDATE buy_list SET status='check' WHERE status='modify' and userid='{}'".format(userid))
+            db.execute("UPDATE buy_list SET status='check' WHERE status='check' and userid='{}'".format(userid))
             con.commit()
             db.close()
             return TextSendMessage(text="請重新輸入商品編號:")
         elif event.message.text=='數量' :
-            db.execute("UPDATE buy_list SET status='count' WHERE status='modify' and userid='{}'".format(userid))
+            db.execute("UPDATE buy_list SET status='count' WHERE status='count' and userid='{}'".format(userid))
             con.commit()
             db.close()
             return TextSendMessage(text="請重新輸入購買數量:")
