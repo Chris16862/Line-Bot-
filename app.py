@@ -87,14 +87,26 @@ def callback():
         buy_status = db.fetchall()
         print (user_status)
         if event.message.text=="/Cancel" and (sell_status or buy_status) :
-            line_bot_api.reply_message(
-                event.reply_token,
-                    Cancel(
-                        sell_status,
-                        userid,
-                        con
-                        )
-                )
+            if sell_status :
+                line_bot_api.reply_message(
+                    event.reply_token,
+                        Cancel(
+                            sell_status,
+                            "sell",
+                            userid,
+                            con
+                            )
+                    )
+            elif buy_status :
+                line_bot_api.reply_message(
+                    event.reply_token,
+                        Cancel(
+                            buy_status,
+                            "buy",
+                            userid,
+                            con
+                            )
+                    )
         elif event.message.text=="/Sell" or sell_status :
             line_bot_api.reply_message(
                 event.reply_token,
