@@ -11,6 +11,7 @@ def Buy(event, status, userid, con):
     if not status:
         s="check"
         db.execute("INSERT INTO buy_list (userid, status) VALUES (%s, %s)",(userid, s))
+        con.commit()
         db.close()
         return TextSendMessage(text="請輸入商品編號:")
     elif status[0][0]=="check":
