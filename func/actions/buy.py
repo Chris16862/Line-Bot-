@@ -88,8 +88,10 @@ def Buy(event, status, userid, con):
             con.commit()
             line_bot_api.push_message(
                 seller_id,
-                text="{}購買了您的商品: {}\n 購買數量為: {}".format(profile.display_name, name , str(amount[0][0]))
+                TextSendMessage(
+                    text="{}購買了您的商品: {}\n 購買數量為: {}".format(profile.display_name, name , str(amount[0][0]))
                 )
+            )
             db.close()
             return TextSendMessage(text="購買成功")
         elif event.message.text=='商品' :
