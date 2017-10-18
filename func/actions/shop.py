@@ -12,7 +12,7 @@ def Shop(userid,count,con) :
     max = db.fetchall()
     if count < 0 :
         return TextSendMessage(text="沒有上一頁了！")
-    elif count > max[0][0] :
+    elif count == 0 :
         return TextSendMessage(text="沒有下一頁了！")
     db.execute("SELECT * FROM sell_list WHERE id<{} ORDER BY id DESC LIMIT 5 ".format(count))
     data = db.fetchall()
@@ -44,6 +44,12 @@ def Shop(userid,count,con) :
             )
         )
     )
+    db.execute("SELECT id FROM sell_list WHERE id>{} LIMIT 6")
+    c = db.fetchall()
+    if count == max[0][0] :
+        pg = 0
+    else :
+        pg = c[6][0]
     return TemplateSendMessage(
         alt_text='Confirm template',
         template=ConfirmTemplate(
@@ -51,7 +57,7 @@ def Shop(userid,count,con) :
             actions=[
                 PostbackTemplateAction(
                     label='上一頁',
-                    data='turnpg,{}'.format(data[0][0])
+                    data='turnpg,{}'.format(pg)
                 ),
                 PostbackTemplateAction(
                     label='下一頁',
