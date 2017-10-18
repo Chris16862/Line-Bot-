@@ -190,7 +190,7 @@ def callback():
                 event.reply_token,
                 Shop(
                     userid,
-                    count[0][0],
+                    count[0][0]+1,
                     con
                     )
                 )

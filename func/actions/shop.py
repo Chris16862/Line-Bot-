@@ -47,10 +47,10 @@ def Shop(userid,count,con) :
     db.execute("SELECT id FROM sell_list WHERE id>{} LIMIT 6".format(data[0][0]))
     c = db.fetchall()
     print (c)
-    if count == max[0][0] :
+    if count == max[0][0]+1 :
         pg = 0
     else :
-        pg = c[6][0]
+        pg = c[5][0]
     return TemplateSendMessage(
         alt_text='Confirm template',
         template=ConfirmTemplate(
