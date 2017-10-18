@@ -16,6 +16,7 @@ def Shop(userid,count,con) :
         return TextSendMessage(text="沒有下一頁了！")
     db.execute("SELECT * FROM sell_list WHERE id<{} ORDER BY id DESC LIMIT 5 ".format(count))
     data = db.fetchall()
+    print (data)
     thing = []
     for d in data :
         thing.append(
