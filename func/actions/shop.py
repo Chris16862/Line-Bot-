@@ -44,7 +44,7 @@ def Shop(userid,count,con) :
             )
         )
     )
-    db.execute("SELECT id FROM sell_list WHERE id>{} LIMIT 6")
+    db.execute("SELECT id FROM sell_list WHERE id>{} LIMIT 6".format(data[0][0]))
     c = db.fetchall()
     if count == max[0][0] :
         pg = 0
