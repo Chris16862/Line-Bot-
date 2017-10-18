@@ -22,7 +22,7 @@ def Shop(userid,con) :
                         text=d[5]
                     ),
                     PostbackTemplateAction(
-                        label='buy',
+                        label='立即購買',
                         data='buy,{}'.format(d[0])
                     )
                 ]

@@ -54,12 +54,15 @@ def callback():
             d = event.postback.data
             data = d.split(",")
             if data[0]=="buy" :
-                Buy(
-                    event,
-                    [],
-                    userid,
-                    con
-                    )
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    Buy(
+                        event,
+                        [],
+                        userid,
+                        con
+                        )
+                )
         if not isinstance(event, MessageEvent):
             continue
         if not isinstance(event.message, TextMessage):
