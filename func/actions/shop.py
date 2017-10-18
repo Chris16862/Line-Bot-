@@ -53,11 +53,12 @@ def Shop(userid,count,con) :
         npg = c[len(c)-1][0]
         if npg == max[0][0] :
             npg += 1
-    db.execute("SELECT * FROM sell_list WHERE id<{}".format(data[len(data)-1][0]))
-    if db.fetchall() :
+    db.execute("SELECT COUNT(*) FROM sell_list WHERE id<{}".format(data[len(data)-1][0]))
+    if db.fetchone() :
         lpg = -1
     else :
         lpg = data[len(data)-1][0]
+    print (lpg)
     return TemplateSendMessage(
         alt_text='Confirm template',
         template=ConfirmTemplate(
