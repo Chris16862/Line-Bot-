@@ -50,7 +50,9 @@ def Shop(userid,count,con) :
     if count == max[0][0]+1 :
         pg = 0
     else :
-        pg = c[5][0]
+        pg = c[len(data)-1][0]
+        if pg == max[0][0]+1 :
+            pg += 1
     return TemplateSendMessage(
         alt_text='Confirm template',
         template=ConfirmTemplate(
