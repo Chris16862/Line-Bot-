@@ -51,7 +51,7 @@ def Shop(userid,count,con) :
         pg = 0
     else :
         pg = c[len(c)-1][0]
-        if pg == max[0][0]+1 :
+        if pg == max[0][0] :
             pg += 1
     return TemplateSendMessage(
         alt_text='Confirm template',
