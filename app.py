@@ -37,18 +37,29 @@ def callback():
     except InvalidSignatureError:
         abort(400)
     for event in events:
+        userid = event.source.user_id
         if isinstance(event, JoinEvent) :
             db.execute("INSERT INTO group_list (grid) VALUES (%s)", (event.source.group_id,))
             con.commit()
             continue
-        if isinstance(event, LeaveEvent):
+        elif isinstance(event, LeaveEvent):
             db.execute("DELETE FROM group_list WHERE grid='{}'".format(event.source.group_id))
             con.commit()
             continue
-        if isinstance(event, FollowEvent) :
+        elif isinstance(event, FollowEvent) :
             db.execute("INSERT INTO user_list(userid,status) VALUES (%s,%s)", (event.source.user_id,"new",))
             con.commit()
             continue
+        if isinstance(event, PostbackEvent) :
+            d = event.postback.data
+            data = d.split(",")
+            if data[0]=="buy" :
+                Buy(
+                    event,
+                    [],
+                    userid,
+                    con
+                    )
         if not isinstance(event, MessageEvent):
             continue
         if not isinstance(event.message, TextMessage):
@@ -65,7 +76,6 @@ def callback():
                     preview_image_url="https://stickershop.line-scdn.net/stickershop/v1/product/1254734/LINEStorePC/main@2x.png;compress=true"
                     )
                 )
-        userid = event.source.user_id
         db.execute("SELECT userid FROM user_list WHERE userid='{}'".format(userid))
         if not db.fetchall() :
             db.execute("INSERT INTO user_list(userid,status) VALUES (%s,%s)", (event.source.user_id,"new",))

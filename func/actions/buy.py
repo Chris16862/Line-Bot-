@@ -8,6 +8,15 @@ line_bot_api = LineBotApi(channel_access_token)
 
 def Buy(event, status, userid, con):
     db = con.cursor()
+    if isinstance(event, PostbackEvent) :
+        d = event.postback.data
+        data = d.split(",")
+        buy = data[1]
+        db.execute("SELECT name FROM sell_list WHERE id={}".format(int(buy)))
+        data = db.fetchall()
+        db.execute("INSERT INTO buy_list (userid, status, thing_id) VALUES (%s, %s, %s)",(userid, "count", int(buy)))
+        con.commit()
+        return TextSendMessage(text="購買商品為: {}\n請輸入購買數量:".format(data[0][0]))
     if not status:
         s="check"
         db.execute("INSERT INTO buy_list (userid, status) VALUES (%s, %s)",(userid, s))

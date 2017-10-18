@@ -20,6 +20,10 @@ def Shop(userid,con) :
                     MessageTemplateAction(
                         label='詳細資料',
                         text=d[5]
+                    ),
+                    PostbackTemplateAction(
+                        label='buy',
+                        data='buy,{}'.format(d[0])
                     )
                 ]
             )
