@@ -58,6 +58,7 @@ def Shop(userid,count,con) :
         lpg = data[len(data)-1][0]
     else :
         lpg = -1
+    print (lpg)
     return TemplateSendMessage(
         alt_text='Confirm template',
         template=ConfirmTemplate(
