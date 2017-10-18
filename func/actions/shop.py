@@ -50,11 +50,11 @@ def Shop(userid,count,con) :
             actions=[
                 PostbackTemplateAction(
                     label='上一頁',
-                    data='turnpg,{}'.format(data[len(data)-1][0])
+                    data='turnpg,{}'.format(data[0][0])
                 ),
                 PostbackTemplateAction(
                     label='下一頁',
-                    data='turnpg,{}'.format(data[0][0])
+                    data='turnpg,{}'.format(data[len(data)-1][0])
                 )
             ]
         )
