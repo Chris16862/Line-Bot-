@@ -63,6 +63,15 @@ def callback():
                         con
                         )
                 )
+            if data[0]=="turnpg" :
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    Shop(
+                        userid,
+                        int(data[1]),
+                        con
+                        )
+                    )
         if not isinstance(event, MessageEvent):
             continue
         if not isinstance(event.message, TextMessage):
@@ -175,10 +184,13 @@ def callback():
                     )
                 )
         elif event.message.text=="/Shop" :
+            db.execute("SELECT id FROM sell_list ORDER BY id DESC LIMIT 1")
+            count = db.fetchall()
             line_bot_api.reply_message(
                 event.reply_token,
                 Shop(
                     userid,
+                    count[0][0],
                     con
                     )
                 )
