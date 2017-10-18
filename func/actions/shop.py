@@ -62,7 +62,7 @@ def Shop(userid,count,con) :
     return TemplateSendMessage(
         alt_text='Confirm template',
         template=ConfirmTemplate(
-            text="輸入完畢，請確認內容是否需要更改",
+            text="選單",
             actions=[
                 PostbackTemplateAction(
                     label='上一頁',

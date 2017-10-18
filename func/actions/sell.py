@@ -119,7 +119,7 @@ def Sell(event, status, userid,con) :
         return TemplateSendMessage(
             alt_text='Confirm template',
             template=ConfirmTemplate(
-                text="輸入完畢，請確認內容是否需要更改\n商品名:"+data[0][0]+"\n單價:"+str(data[0][1])+"\n數量:"+event.message.text+"\n介紹及優惠:"+data[0][2],
+                text="輸入完畢，請確認內容是否正確\n商品名:"+data[0][0]+"\n單價:"+str(data[0][1])+"\n數量:"+event.message.text+"\n介紹及優惠:"+data[0][2],
                 actions=[
                 MessageTemplateAction(
                     label='Yes',
@@ -157,7 +157,28 @@ def Sell(event, status, userid,con) :
             )
     elif status[0][0]=="modify" :
         if event.message.text=='Yes' : 
-                return TemplateSendMessage(
+            s = 'finish'
+            db.execute("SELECT * FROM group_list")
+            ids = db.fetchall()
+            db.execute("SELECT intro,id,name,amount,price FROM sell_list WHERE userid='{}' and status='modify'".format(userid))
+            data = db.fetchall()
+            intro = data[0][0]
+            number = data[0][1]
+            name = data[0][2]
+            amount = data[0][3]
+            price = data[0][4]
+            db.execute("UPDATE sell_list SET status='{}' WHERE status='modify' and userid='{}'".format(s, userid))
+            con.commit()
+            db.close()
+            profile = line_bot_api.get_profile(userid)
+            for i in ids :
+                line_bot_api.push_message(
+                i[0],
+                TextSendMessage(text="商品編號#"+str(number)+"\n賣家: "+profile.display_name+"\n商品名:"+name+"\n單價:"+str(price)+"\n數量:"+str(amount)+"\n\n"+intro+"\n如需購買請私訊我喔～")
+                )
+            return TextSendMessage(text="產品新增成功")
+        elif event.message.text=='No' :
+            return TemplateSendMessage(
                     alt_text='Buttons template',
                     template=ButtonsTemplate(
                         title='List',
@@ -182,27 +203,6 @@ def Sell(event, status, userid,con) :
                         ]
                         )
                     )
-        elif event.message.text=='No' :
-            s = 'finish'
-            db.execute("SELECT * FROM group_list")
-            ids = db.fetchall()
-            db.execute("SELECT intro,id,name,amount,price FROM sell_list WHERE userid='{}' and status='modify'".format(userid))
-            data = db.fetchall()
-            intro = data[0][0]
-            number = data[0][1]
-            name = data[0][2]
-            amount = data[0][3]
-            price = data[0][4]
-            db.execute("UPDATE sell_list SET status='{}' WHERE status='modify' and userid='{}'".format(s, userid))
-            con.commit()
-            db.close()
-            profile = line_bot_api.get_profile(userid)
-            for i in ids :
-                line_bot_api.push_message(
-                i[0],
-                TextSendMessage(text="商品編號#"+str(number)+"\n賣家: "+profile.display_name+"\n商品名:"+name+"\n單價:"+str(price)+"\n數量:"+str(amount)+"\n\n"+intro+"\n如需購買請私訊我喔～")
-                )
-            return TextSendMessage(text="產品新增成功")
         elif event.message.text=="商品名" :
             s = "modify_name"
             db.execute("UPDATE sell_list SET status='{}' WHERE status='modify' and userid='{}'".format(s, userid))
