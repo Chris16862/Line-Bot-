@@ -192,10 +192,24 @@ def callback():
         elif event.message.text=='/SellList' :
              line_bot_api.reply_message(
                 event.reply_token,
-                TextMessage(
-                    text="不好意思,此功能尚未開放,敬請期待"
+                TemplateSendMessage(
+                    alt_text='Buttons template',
+                    template=ButtonsTemplate(
+                        title='功能選單',
+                        text='請選擇想使用的功能',
+                        actions=[
+                            MessageTemplateAction(
+                                label='我的商品',
+                                text='/BuyerList',
+                            ),
+                            MessageTemplateAction(
+                                label='查看訂單',
+                                text='Test',
+                            )
+                        ]
                     )
                 )
+            )
         elif event.message.text=="/Info" or user_status :
             line_bot_api.reply_message(
                 event.reply_token,
