@@ -37,13 +37,15 @@ def Buy(event, status, userid, con):
             db.close()
             return TextSendMessage(text="只需要輸入數字，請重新輸入")
     elif status[0][0]=="count":
-        print ("enter")
+        amount = int(event.message.text)
         s="modify"
         db.execute("SELECT thing_id FROM buy_list WHERE userid='{}' and status='count'".format(userid))
         buy_id = db.fetchall()
-        db.execute("SELECT price,name FROM sell_list WHERE id={}".format(buy_id[0][0]))
+        db.execute("SELECT price,name,amount FROM sell_list WHERE id={}".format(buy_id[0][0]))
         data=db.fetchall()
-        amount = int(event.message.text)
+        if data[0][3] < amount :
+            db.close()
+            return TextSendMessage(text="商品剩餘{}件，請重新輸入購買數量".format(data[0][3]))
         total=data[0][0]*amount
         name = data[0][1]
         db.execute("UPDATE buy_list SET status='{}',amount={} WHERE status='count' and userid='{}'".format(s, amount, userid))
