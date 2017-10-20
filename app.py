@@ -87,7 +87,9 @@ def callback():
                 p = db.fetchone()
                 line_bot_api.reply_message(
                     event.reply_token,
-                    text="姓名: {}\nLine暱稱: {}\n聯絡電話: {}".format(p[0],profile.display_name, p[1])
+                    TextSendMessage(
+                        text="姓名: {}\nLine暱稱: {}\n聯絡電話: {}".format(p[0],profile.display_name, p[1])
+                    )
                 )
         if not isinstance(event, MessageEvent):
             continue
