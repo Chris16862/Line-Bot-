@@ -40,7 +40,8 @@ def ThingList(userid, count, con) :
     data2 = db.fetchall()
     db.execute("SELECT thing_id FROM buy_list WHERE userid='{}' and status = 'finish' ORDER BY thing_id ASC LIMIT 1".format(userid))
     max = db.fetchone()
-    print (max,data2)
+    print ("max=",max)
+    print ("data2=",data2)
     if not data2 :
         lpg = -1
     else : 
