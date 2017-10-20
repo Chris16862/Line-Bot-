@@ -184,29 +184,29 @@ def Sell(event, status, userid,con) :
                         title='List',
                         text='請問需要更改哪個項目？',
                         actions=[
-                        MessageTemplateAction(
-                            label='商品名',
-                            text='商品名',
+                            MessageTemplateAction(
+                                label='商品名',
+                                text='商品名',
                             ),
-                        MessageTemplateAction(
-                            label='單價',
-                            text='單價'
+                            MessageTemplateAction(
+                                label='單價',
+                                text='單價'
                             ),
-                        MessageTemplateAction(
-                            label='數量',
-                            text='數量'
+                            MessageTemplateAction(
+                                label='數量',
+                                text='數量'
                             ),
-                        MessageTemplateAction(
-                            label='介紹及優惠',
-                            text='介紹及優惠'
+                            MessageTemplateAction(
+                                label='介紹及優惠',
+                                text='介紹及優惠'
                             ),
-                        MessageTemplateAction(
-                            label='取消更改',
-                            text='Yes'
+                            MessageTemplateAction(
+                                label='取消更改',
+                                text='Yes'
                             )
                         ]
-                        )
                     )
+                )
         elif event.message.text=="商品名" :
             s = "modify_name"
             db.execute("UPDATE sell_list SET status='{}' WHERE status='modify' and userid='{}'".format(s, userid))
