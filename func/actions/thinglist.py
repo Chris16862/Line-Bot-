@@ -21,7 +21,7 @@ def ThingList(userid, count, con) :
         buy.append(
             CarouselColumn(
                 title='商品編號#{}\n'.format(d[1]),
-                text='商品名稱: {}\n總價: {}\n數量: {}'.format(d2[2],d1[0]*d[3],d[3]),
+                text='商品名稱: {}\n總價: {}\n數量: {}'.format(d2[2],d2[0]*d[3],d[3]),
                 actions=[
                     MessageTemplateAction(
                         label='詳細資料',

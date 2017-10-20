@@ -37,7 +37,6 @@ def Shop(userid,count,con) :
         )
     db.execute("SELECT id FROM sell_list WHERE id>{} and status = 'finish' ORDER BY id ASC LIMIT 6".format(data[0][0]))
     c = db.fetchall()
-    print ("lpg id = {}".format(lpg))
     if count == max[0][0]+1 :
         lpg = 0
     else :
@@ -49,6 +48,7 @@ def Shop(userid,count,con) :
         npg = data[len(data)-1][0]
     else :
         npg = -1
+    print ("lpg id = {}".format(lpg))
     print ("npg = {}".format(npg))
     line_bot_api.push_message(
         userid,
