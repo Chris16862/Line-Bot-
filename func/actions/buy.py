@@ -43,7 +43,7 @@ def Buy(event, status, userid, con):
         buy_id = db.fetchall()
         db.execute("SELECT price,name,amount FROM sell_list WHERE id={}".format(buy_id[0][0]))
         data=db.fetchall()
-        if data[0][3] < amount :
+        if data[0][2] < amount :
             db.close()
             return TextSendMessage(text="商品剩餘{}件，請重新輸入購買數量".format(data[0][3]))
         total=data[0][0]*amount
@@ -70,18 +70,20 @@ def Buy(event, status, userid, con):
     elif status[0][0]=="modify" :
         if event.message.text=='Yes' : 
             profile = line_bot_api.get_profile(userid)
-            db.execute("SELECT userid,name FROM sell_list WHERE id=(SELECT thing_id FROM buy_list WHERE userid='{}' and status='modify')".format(userid))
+            db.execute("SELECT userid,name,id FROM sell_list WHERE id=(SELECT thing_id FROM buy_list WHERE userid='{}' and status='modify')".format(userid))
             data = db.fetchall()
             seller_id = data[0][0]
             name = data[0][1]
+            thing_id = data[0][2]
             db.execute("SELECT amount FROM buy_list WHERE userid='{}' and status='modify'".format(userid))
-            amount = db.fetchall()
+            amount = db.fetchall()[0][0]
+            db.execute("UPDATE sell_list SET amount=amount-{} WHERE id ={}".format(amount, thing_id))
             db.execute("UPDATE buy_list SET status='finish' WHERE status='modify' and userid='{}'".format(userid))
             con.commit()
             line_bot_api.push_message(
                 seller_id,
                 TextSendMessage(
-                    text="{}購買了您的商品: {}\n 購買數量為: {}".format(profile.display_name, name , str(amount[0][0]))
+                    text="{}購買了您的商品: {}\n 購買數量為: {}".format(profile.display_name, name , str(amount))
                 )
             )
             db.close()
