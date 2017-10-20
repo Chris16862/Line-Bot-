@@ -170,6 +170,10 @@ def callback():
                             MessageTemplateAction(
                                 label='商品清單',
                                 text='/Shop',
+                            ),
+                            MessageTemplateAction(
+                                label='我的購買清單',
+                                text='/ThingList',
                             )
                         ]
                     )
@@ -203,6 +207,17 @@ def callback():
                     con
                     )
                 )
+        elif event.message.text=="/ThingList" :
+            db.execute("SELECT thing_id FROM buy_list WHERE userid='{}' DESC LIMIT 1")
+            count = db.fetchall()
+            line_bot_api.reply_message(
+                event.reply_token,
+                ThingList(
+                    userid,
+                    count[0][0]+1,
+                    con
+                )
+            )
     return 'OK'
    
 
