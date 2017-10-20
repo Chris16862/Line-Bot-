@@ -49,7 +49,7 @@ def Sell(event, status, userid,con) :
         return TemplateSendMessage(
             alt_text='Confirm template',
             template=ConfirmTemplate(
-                text="輸入完畢，請確認內容是否需要更改",
+                text="輸入完畢，請確認內容是否正確",
                 actions=[
                 MessageTemplateAction(
                     label='Yes',
@@ -73,7 +73,7 @@ def Sell(event, status, userid,con) :
         return TemplateSendMessage(
             alt_text='Confirm template',
             template=ConfirmTemplate(
-                text="輸入完畢，請確認內容是否需要更改\n商品名:"+event.message.text+"\n單價:"+str(data[0][0])+"\n數量:"+str(data[0][1])+"\n介紹及優惠:"+data[0][2],
+                text="輸入完畢，請確認內容是否正確\n商品名:"+event.message.text+"\n單價:"+str(data[0][0])+"\n數量:"+str(data[0][1])+"\n介紹及優惠:"+data[0][2],
                 actions=[
                 MessageTemplateAction(
                     label='Yes',
@@ -96,7 +96,7 @@ def Sell(event, status, userid,con) :
         return TemplateSendMessage(
             alt_text='Confirm template',
             template=ConfirmTemplate(
-                text="輸入完畢，請確認內容是否需要更改\n商品名:"+data[0][0]+"\n單價:"+event.message.text+"\n數量:"+str(data[0][1])+"\n介紹及優惠:"+data[0][2],
+                text="輸入完畢，請確認內容是否正確\n商品名:"+data[0][0]+"\n單價:"+event.message.text+"\n數量:"+str(data[0][1])+"\n介紹及優惠:"+data[0][2],
                 actions=[
                 MessageTemplateAction(
                     label='Yes',
@@ -142,7 +142,7 @@ def Sell(event, status, userid,con) :
         return TemplateSendMessage(
             alt_text='Confirm template',
             template=ConfirmTemplate(
-                text="輸入完畢，請確認內容是否需要更改\n商品名:"+data[0][0]+"\n單價:"+str(data[0][1])+"\n數量:"+str(data[0][2])+"\n介紹及優惠:"+event.message.text,
+                text="輸入完畢，請確認內容是否正確\n商品名:"+data[0][0]+"\n單價:"+str(data[0][1])+"\n數量:"+str(data[0][2])+"\n介紹及優惠:"+event.message.text,
                 actions=[
                 MessageTemplateAction(
                     label='Yes',

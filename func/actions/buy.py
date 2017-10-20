@@ -52,7 +52,7 @@ def Buy(event, status, userid, con):
         return TemplateSendMessage(
             alt_text='Confirm template',
             template=ConfirmTemplate(
-                text="輸入完畢，請確認內容是否需要更改\n商品名:"+name+"\n總額:"+str(total)+"\n購買數量:"+str(amount),
+                text="輸入完畢，請確認內容是否正確\n商品名:"+name+"\n總額:"+str(total)+"\n購買數量:"+str(amount),
                 actions=[
                 MessageTemplateAction(
                     label='Yes',
@@ -67,6 +67,24 @@ def Buy(event, status, userid, con):
             )	
     elif status[0][0]=="modify" :
         if event.message.text=='Yes' : 
+            profile = line_bot_api.get_profile(userid)
+            db.execute("SELECT userid,name FROM sell_list WHERE id=(SELECT thing_id FROM buy_list WHERE userid='{}' and status='modify')".format(userid))
+            data = db.fetchall()
+            seller_id = data[0][0]
+            name = data[0][1]
+            db.execute("SELECT amount FROM buy_list WHERE userid='{}' and status='modify'".format(userid))
+            amount = db.fetchall()
+            db.execute("UPDATE buy_list SET status='finish' WHERE status='modify' and userid='{}'".format(userid))
+            con.commit()
+            line_bot_api.push_message(
+                seller_id,
+                TextSendMessage(
+                    text="{}購買了您的商品: {}\n 購買數量為: {}".format(profile.display_name, name , str(amount[0][0]))
+                )
+            )
+            db.close()
+            return TextSendMessage(text="購買成功")
+        elif event.message.text=='No' :
             db.close()
             return TemplateSendMessage(
                 alt_text='Buttons template',
@@ -85,24 +103,6 @@ def Buy(event, status, userid, con):
                     ]
                 )
             )
-        elif event.message.text=='No' :
-            profile = line_bot_api.get_profile(userid)
-            db.execute("SELECT userid,name FROM sell_list WHERE id=(SELECT thing_id FROM buy_list WHERE userid='{}' and status='modify')".format(userid))
-            data = db.fetchall()
-            seller_id = data[0][0]
-            name = data[0][1]
-            db.execute("SELECT amount FROM buy_list WHERE userid='{}' and status='modify'".format(userid))
-            amount = db.fetchall()
-            db.execute("UPDATE buy_list SET status='finish' WHERE status='modify' and userid='{}'".format(userid))
-            con.commit()
-            line_bot_api.push_message(
-                seller_id,
-                TextSendMessage(
-                    text="{}購買了您的商品: {}\n 購買數量為: {}".format(profile.display_name, name , str(amount[0][0]))
-                )
-            )
-            db.close()
-            return TextSendMessage(text="購買成功")
         elif event.message.text=='商品' :
             db.execute("UPDATE buy_list SET status='check' WHERE status='modify' and userid='{}'".format(userid))
             con.commit()
