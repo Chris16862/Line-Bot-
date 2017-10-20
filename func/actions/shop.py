@@ -48,8 +48,8 @@ def Shop(userid,count,con) :
         npg = data[len(data)-1][0]
     else :
         npg = -1
-    print ("lpg id = {}".format(lpg))
-    print ("npg = {}".format(npg))
+    print ("lpg = ",lpg)
+    print ("npg = ",npg)
     line_bot_api.push_message(
         userid,
         TemplateSendMessage(
