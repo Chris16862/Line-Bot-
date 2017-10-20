@@ -246,7 +246,7 @@ def callback():
             db.execute("SELECT id FROM sell_list WHERE userid='{}' ORDER BY id DESC LIMIT 1".format(userid))
             count = db.fetchone()
             line_bot_api.reply_message(
-                reply_token,
+                event.reply_token,
                 BuyerList(
                     userid,
                     count[0]+1,
