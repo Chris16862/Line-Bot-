@@ -12,7 +12,7 @@ def ThingList(userid, count, con) :
     elif count == -2 :
         return TextSendMessage(text="沒有下一頁了！")
     db = con.cursor()
-    db.execute("SELECT * FROM buy_list WHERE userid='{}' and thing_id<{} ORDER BY id DESC LIMIT 5 ".format(userid, count))
+    db.execute("SELECT * FROM buy_list WHERE userid='{}' and thing_id<{} ORDER BY thing_id DESC LIMIT 5 ".format(userid, count))
     data = db.fetchall()
     buy = []
     for d in data :
@@ -34,9 +34,9 @@ def ThingList(userid, count, con) :
                 ]
             )
         )
-    db.execute("SELECT thing_id FROM buy_list WHERE userid='{}' and thing_id>{} ORDER BY id ASC LIMIT 6".format(userid, count))
+    db.execute("SELECT thing_id FROM buy_list WHERE userid='{}' and thing_id>{} ORDER BY thing_id ASC LIMIT 6".format(userid, count))
     data2 = db.fetchall()
-    db.execute("SELECT thing_id FROM buy_list WHERE userid='{}' ORDER BY id ASC LIMIT 1".format(userid))
+    db.execute("SELECT thing_id FROM buy_list WHERE userid='{}' ORDER BY thing_id ASC LIMIT 1".format(userid))
     max = db.fetchone()
     if not data2 :
         lpg = -1
