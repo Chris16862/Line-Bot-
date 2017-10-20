@@ -21,7 +21,7 @@ def Shop(userid,count,con) :
     for d in data :
         thing.append(
             CarouselColumn(
-                title='商品編號#{}\n賣家: {}'.format(d[0],d[1]),
+                title='商品編號#{}\n'.format(d[0]),
                 text='商品名稱: {}\n單價: {}\n剩餘數量: {}'.format(d[2],d[3],d[4]),
                 actions=[
                     MessageTemplateAction(
