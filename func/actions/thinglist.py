@@ -40,19 +40,20 @@ def ThingList(userid, count, con) :
     data2 = db.fetchall()
     db.execute("SELECT thing_id FROM buy_list WHERE userid='{}' and status = 'finish' ORDER BY thing_id ASC LIMIT 1".format(userid))
     max = db.fetchone()
+    print (max,data2)
     if not data2 :
         lpg = -1
     else : 
         lpg = data2[len(data2)-1][0]
         if lpg == max[0][0] :
             lpg += 1
-    print ("lpg = %s",(lpg,))
     db.execute("SELECT thing_id FROM buy_list WHERE userid='{}' and status='finish' and thing_id<{}".format(userid, data[len(data)-1][1]))
     if db.fetchone() :
         npg = data[len(data)-1][1]
     else :
         npg = -2
-    print ("ngp = %s",(npg,))
+    print ("lpg id = {}".format(lpg))
+    print ("npg = {}".format(npg))
     line_bot_api.push_message(
         userid,
         TemplateSendMessage(
