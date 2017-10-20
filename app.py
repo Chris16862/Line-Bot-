@@ -63,10 +63,19 @@ def callback():
                         con
                         )
                 )
-            if data[0]=="turnpg" :
+            if data[0]=="shop_turnpg" :
                 line_bot_api.reply_message(
                     event.reply_token,
                     Shop(
+                        userid,
+                        int(data[1]),
+                        con
+                        )
+                    )
+            if data[0]=="thinglist_turnpg" :
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    ThingList(
                         userid,
                         int(data[1]),
                         con
