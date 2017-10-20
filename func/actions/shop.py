@@ -35,15 +35,6 @@ def Shop(userid,count,con) :
                 ]
             )
         )
-    line_bot_api.push_message(
-        userid,
-        TemplateSendMessage(
-            alt_text='Carousel template',
-            template=CarouselTemplate(
-                columns=thing,
-            )
-        )
-    )
     db.execute("SELECT id FROM sell_list WHERE id>{} LIMIT 6".format(data[0][0]))
     c = db.fetchall()
     print (c)
@@ -59,6 +50,15 @@ def Shop(userid,count,con) :
     else :
         lpg = -1
     print (lpg)
+    line_bot_api.push_message(
+        userid,
+        TemplateSendMessage(
+            alt_text='Carousel template',
+            template=CarouselTemplate(
+                columns=thing,
+            )
+        )
+    )
     return TemplateSendMessage(
         alt_text='Confirm template',
         template=ConfirmTemplate(

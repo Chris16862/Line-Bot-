@@ -97,7 +97,7 @@ def callback():
             line_bot_api.reply_message(
                 event.reply_token,
                 TextMessage(
-                    text="需填寫用戶資料，才能使用功能"
+                    text="需填寫用戶資料，才能使用功能，請點選功能列表內的用戶資料"
                     )
                 )
             return "OK"
