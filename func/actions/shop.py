@@ -12,9 +12,9 @@ def Shop(userid,count,con) :
     elif count == 0 :
         return TextSendMessage(text="沒有上一頁了！")
     db = con.cursor()
-    db.execute("SELECT id FROM sell_list ORDER BY id DESC LIMIT 1")
+    db.execute("SELECT id FROM sell_list WHERE status = 'finish' ORDER BY id DESC LIMIT 1")
     max = db.fetchall()
-    db.execute("SELECT * FROM sell_list WHERE id<{} ORDER BY id DESC LIMIT 5 ".format(count))
+    db.execute("SELECT * FROM sell_list WHERE id<{} and status='finish' ORDER BY id DESC LIMIT 5 ".format(count))
     data = db.fetchall()
     print (data)
     thing = []
@@ -35,7 +35,7 @@ def Shop(userid,count,con) :
                 ]
             )
         )
-    db.execute("SELECT id FROM sell_list WHERE id>{} ORDER BY id ASC LIMIT 6".format(data[0][0]))
+    db.execute("SELECT id FROM sell_list WHERE id>{} and status = 'finish' ORDER BY id ASC LIMIT 6".format(data[0][0]))
     c = db.fetchall()
     print ("lpg id : %s",(c,))
     if count == max[0][0]+1 :
@@ -44,7 +44,7 @@ def Shop(userid,count,con) :
         lpg = c[len(c)-1][0]
         if npg == max[0][0] :
             lpg += 1
-    db.execute("SELECT id FROM sell_list WHERE id<{}".format(data[len(data)-1][0]))
+    db.execute("SELECT id FROM sell_list WHERE id<{} and status='finish'".format(data[len(data)-1][0]))
     if db.fetchone() :
         npg = data[len(data)-1][0]
     else :
