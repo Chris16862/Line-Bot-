@@ -208,7 +208,7 @@ def callback():
                     )
                 )
         elif event.message.text=="/ThingList" :
-            db.execute("SELECT thing_id FROM buy_list WHERE userid='{}' ORDER BY thing_id DESC LIMIT 1".format(userid))
+            db.execute("SELECT id FROM buy_list WHERE userid='{}' ORDER BY id DESC LIMIT 1".format(userid))
             count = db.fetchall()
             line_bot_api.reply_message(
                 event.reply_token,
