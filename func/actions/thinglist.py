@@ -50,7 +50,7 @@ def ThingList(userid, count, con) :
             lpg += 1
     db.execute("SELECT id FROM buy_list WHERE userid='{}' and status='finish' and id<{}".format(userid, data[len(data)-1][0]))
     if db.fetchone() :
-        npg = data[len(data)-1][1]
+        npg = data[len(data)-1][0]
     else :
         npg = -2
     print ("lpg = ",lpg)
