@@ -63,7 +63,7 @@ def callback():
                         con
                         )
                 )
-            if data[0]=="shop_turnpg" :
+            elif data[0]=="shop_turnpg" :
                 line_bot_api.reply_message(
                     event.reply_token,
                     Shop(
@@ -72,7 +72,7 @@ def callback():
                         con
                         )
                     )
-            if data[0]=="thinglist_turnpg" :
+            elif data[0]=="thinglist_turnpg" :
                 line_bot_api.reply_message(
                     event.reply_token,
                     ThingList(
@@ -81,6 +81,14 @@ def callback():
                         con
                         )
                     )
+            elif data[0]=="contact" :
+                profile = line_bot_api.profile(data[1])
+                db.execute("SELECT name FROM user_list WHERE userid='{}'".format(data[1]))
+                data = db.fetchone()
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    text="姓名: {}\nLine暱稱: {}\n聯絡電話: {}".format(data[1],profile.display_name, data[2])
+                )
         if not isinstance(event, MessageEvent):
             continue
         if not isinstance(event.message, TextMessage):
