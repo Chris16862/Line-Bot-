@@ -40,7 +40,7 @@ def Shop(userid,count,con) :
         TemplateSendMessage(
             alt_text='Carousel template',
             template=CarouselTemplate(
-                columns=thing
+                columns=thing,
             )
         )
     )
