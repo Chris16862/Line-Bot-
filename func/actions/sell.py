@@ -199,6 +199,10 @@ def Sell(event, status, userid,con) :
                         MessageTemplateAction(
                             label='介紹及優惠',
                             text='介紹及優惠'
+                            ),
+                        MessageTemplateAction(
+                            label='取消更改',
+                            text='Yes'
                             )
                         ]
                         )

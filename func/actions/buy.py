@@ -99,6 +99,10 @@ def Buy(event, status, userid, con):
                         MessageTemplateAction(
                             label='數量',
                             text='數量'
+                        ),
+                        MessageTemplateAction(
+                            label='取消更改',
+                            text='Yes'
                         )
                     ]
                 )

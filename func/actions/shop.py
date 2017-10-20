@@ -22,7 +22,7 @@ def Shop(userid,count,con) :
         thing.append(
             CarouselColumn(
                 title='商品編號#{}'.format(d[0]),
-                text='商品名稱: {}\n單價: {}\n剩餘數量: {}'.format(d[2],d[3],d[4]),
+                text='商品名稱: {}\n賣家: {}\n單價: {}\n剩餘數量: {}'.format(d[2],d[1],d[3],d[4]),
                 actions=[
                     MessageTemplateAction(
                         label='詳細資料',
