@@ -45,7 +45,7 @@ def Buy(event, status, userid, con):
         data=db.fetchall()
         if data[0][2] < amount :
             db.close()
-            return TextSendMessage(text="商品剩餘{}件，請重新輸入購買數量".format(data[0][3]))
+            return TextSendMessage(text="商品剩餘{}件，請重新輸入購買數量".format(data[0][2]))
         total=data[0][0]*amount
         name = data[0][1]
         db.execute("UPDATE buy_list SET status='{}',amount={} WHERE status='count' and userid='{}'".format(s, amount, userid))
