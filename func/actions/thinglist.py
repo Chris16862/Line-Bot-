@@ -48,7 +48,7 @@ def ThingList(userid, count, con) :
         lpg = data2[len(data2)-1][0]
         if lpg == max[0] :
             lpg += 1
-    db.execute("SELECT id FROM buy_list WHERE userid='{}' and status='finish' and id<{}".format(userid, data[len(data)-1][1]))
+    db.execute("SELECT id FROM buy_list WHERE userid='{}' and status='finish' and id<{}".format(userid, data[len(data)-1][0]))
     if db.fetchone() :
         npg = data[len(data)-1][1]
     else :
