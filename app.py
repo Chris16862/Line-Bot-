@@ -82,7 +82,7 @@ def callback():
                         )
                     )
             elif data[0]=="contact" :
-                profile = line_bot_api.profile(data[1])
+                profile = line_bot_api.get_profile(data[1])
                 db.execute("SELECT name FROM user_list WHERE userid='{}'".format(data[1]))
                 data = db.fetchone()
                 line_bot_api.reply_message(
