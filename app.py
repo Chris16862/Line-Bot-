@@ -84,10 +84,10 @@ def callback():
             elif data[0]=="contact" :
                 profile = line_bot_api.get_profile(data[1])
                 db.execute("SELECT name FROM user_list WHERE userid='{}'".format(data[1]))
-                data = db.fetchone()
+                p = db.fetchone()
                 line_bot_api.reply_message(
                     event.reply_token,
-                    text="姓名: {}\nLine暱稱: {}\n聯絡電話: {}".format(data[1],profile.display_name, data[2])
+                    text="姓名: {}\nLine暱稱: {}\n聯絡電話: {}".format(p[1],profile.display_name, p[2])
                 )
         if not isinstance(event, MessageEvent):
             continue
