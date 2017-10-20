@@ -16,12 +16,14 @@ def ThingList(userid, count, con) :
     data = db.fetchall()
     buy = []
     for d in data :
-        db.execute("SELECT price,userid,name,userid FROM sell_list WHERE id={}".format(d[1]))
+        db.execute("SELECT price,name FROM sell_list WHERE id={}".format(d[1]))
         d2 = db.fetchall()
+        print (d)
+        print (d2)
         buy.append(
             CarouselColumn(
                 title='商品編號#{}\n'.format(d[1]),
-                text='商品名稱: {}\n總價: {}\n數量: {}'.format(d2[2],d2[0]*d[3],d[3]),
+                text='商品名稱: {}\n總價: {}\n數量: {}'.format(d2[1],d2[0]*d[3],d[3]),
                 actions=[
                     MessageTemplateAction(
                         label='詳細資料',
