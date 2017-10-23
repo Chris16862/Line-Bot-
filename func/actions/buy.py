@@ -81,7 +81,7 @@ def Buy(event, status, userid, con):
             db.execute("SELECT amount FROM buy_list WHERE userid='{}' and status='modify'".format(userid))
             amount = db.fetchall()[0][0]
             db.execute("UPDATE sell_list SET amount=amount-{} WHERE id ={}".format(amount, thing_id))
-            db.execute("UPDATE buy_list SET input_time = TIMESTAMP'{}' status='finish' WHERE status='modify' and userid='{}'".format(input_dt, userid))
+            db.execute("UPDATE buy_list SET input_time = TIMESTAMP'{}',status='finish' WHERE status='modify' and userid='{}'".format(input_dt, userid))
             con.commit()
             line_bot_api.push_message(
                 seller_id,
