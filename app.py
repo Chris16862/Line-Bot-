@@ -92,7 +92,29 @@ def callback():
                     )
                 )
             elif data[0]=="buyer" :
-                pass
+                db.execute("SELECT userid,amount,id,input_time FROM buy_list ORDER BY id ASC WHERE thing_id={}".format(data[1]))
+                data = db.fetchall()
+                reply = []
+                for d in data :
+                    profile = line_bot_api.get_profile(d[0])
+                    db.execute("SELECT name,phone FROM user_list WHERE userid={}".format(d[0]))
+                    buyer_data = db.fetchone()
+                    r = "訂單編號#{}\n  買家: {} 真實姓名: {}\n 聯絡方式:{}\n 購買數量: {}\n 時間: {}".format(d[2],profile.display_name, buyer_data[0], buyer_data[1],d[1],str(d[3]))
+                    if len("\n".join(reply)) + len(r) >= 1000 :
+                        line_bot_api.push_message(
+                            userid,
+                            TextSendMessage(
+                                text="\n".join(reply)
+                            )
+                        )
+                        reply = []
+                    reply.append(r)
+                line_bot_api.push_message(
+                    userid,
+                    TextSendMessage(
+                       text="\n".join(reply) 
+                    )
+                )
         if not isinstance(event, MessageEvent):
             continue
         if not isinstance(event.message, TextMessage):
