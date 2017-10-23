@@ -92,7 +92,7 @@ def callback():
                     )
                 )
             elif data[0]=="buyer" :
-
+                pass
         if not isinstance(event, MessageEvent):
             continue
         if not isinstance(event.message, TextMessage):
