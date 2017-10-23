@@ -115,11 +115,8 @@ def callback():
                        text="\n".join(reply) 
                     )
                 )
-        if not isinstance(event, MessageEvent):
-            continue
-        if not isinstance(event.message, TextMessage):
-            continue
         if isinstance(event.message, ImageMessage) :
+            print ("TEST")
             line_bot_api.reply_message(
                 event.reply_token,
                 #p.get_reply(event)
@@ -127,7 +124,11 @@ def callback():
                     original_content_url="https://www.gpxlcj.com:5487/image1",
                     preview_image_url="https://www.gpxlcj.com:5487/image1"
                     )
-                )
+            )
+        if not isinstance(event, MessageEvent):
+            continue
+        if not isinstance(event.message, TextMessage):
+            continue
         userid = event.source.user_id
         db.execute("SELECT * FROM user_list WHERE userid='{}'".format(userid))
         if not db.fetchall() :
