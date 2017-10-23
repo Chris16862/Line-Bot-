@@ -37,7 +37,6 @@ def callback():
     except InvalidSignatureError:
         abort(400)
     for event in events:
-        userid = event.source.user_id
         if isinstance(event, JoinEvent) :
             db.execute("INSERT INTO group_list (grid) VALUES (%s)", (event.source.group_id,))
             con.commit()
@@ -51,6 +50,7 @@ def callback():
             con.commit()
             continue
         if isinstance(event, PostbackEvent) :
+            userid = event.source.user_id
             d = event.postback.data
             data = d.split(",")
             if data[0]=="buy" :
@@ -91,12 +91,11 @@ def callback():
                         text="姓名: {}\nLine暱稱: {}\n聯絡電話: {}".format(p[0],profile.display_name, p[1])
                     )
                 )
+            elif data[0]=="buyer" :
+
         if not isinstance(event, MessageEvent):
             continue
         if not isinstance(event.message, TextMessage):
-            continue
-        if not isinstance(event.source, SourceUser) :
-            print (event.message.text)
             continue
         if isinstance(event.message, ImageMessage) :
             line_bot_api.reply_message(
@@ -107,6 +106,7 @@ def callback():
                     preview_image_url="https://stickershop.line-scdn.net/stickershop/v1/product/1254734/LINEStorePC/main@2x.png;compress=true"
                     )
                 )
+        userid = event.source.user_id
         db.execute("SELECT userid FROM user_list WHERE userid='{}'".format(userid))
         if not db.fetchall() :
             db.execute("INSERT INTO user_list(userid,status) VALUES (%s,%s)", (event.source.user_id,"new",))
