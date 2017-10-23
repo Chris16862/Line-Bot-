@@ -121,8 +121,8 @@ def callback():
                 event.reply_token,
                 #p.get_reply(event)
                 ImageSendMessage(
-                    original_content_url="https://www.gpxlcj.com:5487/image1",
-                    preview_image_url="https://www.gpxlcj.com:5487/image1"
+                    original_content_url="https://163.13.128.41:5487/image1",
+                    preview_image_url="https://163.13.128.41:5487/image1"
                     )
             )
         if not isinstance(event, MessageEvent):
