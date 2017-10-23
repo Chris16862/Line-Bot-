@@ -97,7 +97,7 @@ def callback():
                 reply = []
                 for d in data :
                     profile = line_bot_api.get_profile(d[0])
-                    db.execute("SELECT name,phone FROM user_list WHERE userid={}".format(d[0]))
+                    db.execute("SELECT name,phone FROM user_list WHERE userid='{}'".format(d[0]))
                     buyer_data = db.fetchone()
                     r = "訂單編號#{}\n  買家: {} 真實姓名: {}\n 聯絡方式:{}\n 購買數量: {}\n 時間: {}".format(d[2],profile.display_name, buyer_data[0], buyer_data[1],d[1],str(d[3]))
                     if len("\n".join(reply)) + len(r) >= 1000 :
@@ -129,7 +129,6 @@ def callback():
                     )
                 )
         userid = event.source.user_id
-        db.execute("SELECT userid FROM user_list WHERE userid='{}'".format(userid))
         if not db.fetchall() :
             db.execute("INSERT INTO user_list(userid,status) VALUES (%s,%s)", (event.source.user_id,"new",))
             con.commit()
