@@ -99,7 +99,7 @@ def callback():
                     profile = line_bot_api.get_profile(d[0])
                     db.execute("SELECT name,phone FROM user_list WHERE userid='{}'".format(d[0]))
                     buyer_data = db.fetchone()
-                    r = "訂單編號#{}\n買家: {} 真實姓名: {}\n聯絡方式:{}\n購買數量: {}\n時間: {}".format(d[2],profile.display_name, buyer_data[0], buyer_data[1],d[1],str(d[3]))
+                    r = "訂單編號#{}\n買家: {} 真實姓名: {}\n聯絡方式:{}\n購買數量: {}\n時間: {}\n".format(d[2],profile.display_name, buyer_data[0], buyer_data[1],d[1],str(d[3]))
                     if len("\n\n".join(reply)) + len(r) >= 1000 :
                         line_bot_api.push_message(
                             userid,
