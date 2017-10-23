@@ -1,4 +1,5 @@
 from linebot.models import *
+from datetime import datetime
 import os
 from linebot import (
     LineBotApi
@@ -69,6 +70,8 @@ def Buy(event, status, userid, con):
             )	
     elif status[0][0]=="modify" :
         if event.message.text=='Yes' : 
+            dt = datetime.now()
+            input_dt = dt.year + "-" + dt.month + "-" + dt.day + " " + dt.hour + ":" + dt.minute + ":" + dt.second
             profile = line_bot_api.get_profile(userid)
             db.execute("SELECT userid,name,id FROM sell_list WHERE id=(SELECT thing_id FROM buy_list WHERE userid='{}' and status='modify')".format(userid))
             data = db.fetchall()
@@ -78,7 +81,7 @@ def Buy(event, status, userid, con):
             db.execute("SELECT amount FROM buy_list WHERE userid='{}' and status='modify'".format(userid))
             amount = db.fetchall()[0][0]
             db.execute("UPDATE sell_list SET amount=amount-{} WHERE id ={}".format(amount, thing_id))
-            db.execute("UPDATE buy_list SET status='finish' WHERE status='modify' and userid='{}'".format(userid))
+            db.execute("UPDATE buy_list SET input_time = TIMESTAMP'{}' status='finish' WHERE status='modify' and userid='{}'".format(input_dt, userid))
             con.commit()
             line_bot_api.push_message(
                 seller_id,
