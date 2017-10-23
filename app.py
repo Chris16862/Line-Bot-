@@ -129,6 +129,7 @@ def callback():
                     )
                 )
         userid = event.source.user_id
+        db.execute("SELECT * FROM user_list WHERE userid='{}'".format(userid))
         if not db.fetchall() :
             db.execute("INSERT INTO user_list(userid,status) VALUES (%s,%s)", (event.source.user_id,"new",))
             con.commit()
