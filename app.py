@@ -92,7 +92,7 @@ def callback():
                     )
                 )
             elif data[0]=="buyer" :
-                db.execute("SELECT userid,amount,id,input_time FROM buy_list ORDER BY id ASC WHERE thing_id={}".format(data[1]))
+                db.execute("SELECT userid,amount,id,input_time FROM buy_list WHERE thing_id={} ORDER BY id ASC".format(data[1]))
                 data = db.fetchall()
                 reply = []
                 for d in data :
