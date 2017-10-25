@@ -116,7 +116,7 @@ def Sell(event, status, userid,con) :
                         alt_text='template',
                         template=ButtonsTemplate(
                             title='商品編號#{}'.format(number),
-                            text='商品名稱: {}\n單價: {}\n數量: {}'.format(name, price, amout),
+                            text='商品名稱: {}\n單價: {}\n數量: {}'.format(name, price, amount),
                             actions=[
                                 PostbackTemplateAction(
                                     label='商品詳情',
@@ -244,7 +244,7 @@ def Sell(event, status, userid,con) :
                         alt_text='template',
                         template=ButtonsTemplate(
                             title='商品編號#{}'.format(number),
-                            text='商品名稱: {}\n單價: {}\n數量: {}'.format(name, price, amout),
+                            text='商品名稱: {}\n單價: {}\n數量: {}'.format(name, price, amount),
                             actions=[
                                 PostbackTemplateAction(
                                     label='商品詳情',
