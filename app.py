@@ -122,6 +122,7 @@ def callback():
                     )
                 )
         if isinstance(event.message, ImageMessage) and sell_status:
+            """
             line_bot_api.reply_message(
                 event.reply_token,
                 Sell(
@@ -130,6 +131,14 @@ def callback():
                     userid,
                     con
                     )
+            )
+            """
+            line_bot_api.reply_message(
+                event.reply_token,
+                ImageSendMessage(
+                    original_content_url='https://stu-web.tkucs.cc/404411240/chatbot-images/pic7.jpg',
+                    preview_image_url='https://stu-web.tkucs.cc/404411240/chatbot-images/pic-p7.jpg'
+                )
             )
         if not isinstance(event, MessageEvent):
             continue
