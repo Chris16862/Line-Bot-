@@ -21,6 +21,7 @@ def Shop(userid,count,con) :
     for d in data :
         thing.append(
             CarouselColumn(
+                thumbnail_image_url='https://stu-web.tkucs.cc/404411240/chatbot-images/pic{}.jpg'.format(d[0]),
                 title='商品編號#{}\n'.format(d[0]),
                 text='商品名稱: {}\n單價: {}\n剩餘數量: {}'.format(d[2],d[3],d[4]),
                 actions=[
