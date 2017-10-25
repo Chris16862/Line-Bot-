@@ -121,7 +121,7 @@ def callback():
                        text="\n".join(reply) 
                     )
                 )
-        if isinstance(event.message, ImageMessage) and sell_status:
+        if isinstance(event.message, ImageMessage) :#and sell_status:
             """
             line_bot_api.reply_message(
                 event.reply_token,
