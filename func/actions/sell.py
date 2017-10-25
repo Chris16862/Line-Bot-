@@ -15,7 +15,7 @@ def Sell(event, status, userid,con) :
             pic_id = db.fetchone()
             if save_pic(event,pic_id) == "OK" :
                 db.execute("UPDATE sell_list SET status='modify_pic' WHERE userid='{}' and status='enter_pic'".format(userid))
-                db.commit()
+                con.commit()
                 db.close()
                 return TemplateSendMessage(
                     alt_text='Confirm template',
