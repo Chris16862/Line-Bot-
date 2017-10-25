@@ -1,5 +1,5 @@
 from paramiko import SSHClient,AutoAddPolicy
-from scp import SCPClient
+from .scp import SCPClient
 from PIL import Image
 from linebot.models import *
 import os
