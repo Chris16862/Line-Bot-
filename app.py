@@ -49,8 +49,14 @@ def callback():
             db.execute("INSERT INTO user_list(userid,status) VALUES (%s,%s)", (event.source.user_id,"new",))
             con.commit()
             continue
+        userid = event.source.user_id
+        db.execute("SELECT status FROM sell_list WHERE status!='finish' and userid='{}'".format(userid))
+        sell_status = db.fetchall()
+        db.execute("SELECT status FROM user_list WHERE status!='finish' and userid='{}'".format(userid))
+        user_status = db.fetchall()
+        db.execute("SELECT status FROM buy_list WHERE status!='finish' and userid='{}'".format(userid))
+        buy_status = db.fetchall()
         if isinstance(event, PostbackEvent) :
-            userid = event.source.user_id
             d = event.postback.data
             data = d.split(",")
             if data[0]=="buy" :
@@ -115,7 +121,7 @@ def callback():
                        text="\n".join(reply) 
                     )
                 )
-        if isinstance(event.message, ImageMessage) :
+        if isinstance(event.message, ImageMessage) and user_status:
             print ("TEST")
             line_bot_api.reply_message(
                 event.reply_token,
@@ -129,7 +135,6 @@ def callback():
             continue
         if not isinstance(event.message, TextMessage):
             continue
-        userid = event.source.user_id
         db.execute("SELECT * FROM user_list WHERE userid='{}'".format(userid))
         if not db.fetchall() :
             db.execute("INSERT INTO user_list(userid,status) VALUES (%s,%s)", (event.source.user_id,"new",))
@@ -143,13 +148,6 @@ def callback():
                     )
                 )
             return "OK"
-        db.execute("SELECT status FROM sell_list WHERE status!='finish' and userid='{}'".format(userid))
-        sell_status = db.fetchall()
-        db.execute("SELECT status FROM user_list WHERE status!='finish' and userid='{}'".format(userid))
-        user_status = db.fetchall()
-        db.execute("SELECT status FROM buy_list WHERE status!='finish' and userid='{}'".format(userid))
-        buy_status = db.fetchall()
-        print (user_status)
         if event.message.text=="/Cancel" and (sell_status or buy_status) :
             if sell_status :
                 line_bot_api.reply_message(

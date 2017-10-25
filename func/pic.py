@@ -8,19 +8,19 @@ from linebot import LineBotApi
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
 line_bot_api = LineBotApi(channel_access_token)
 
-def get_reply(event) :
-        os.system("touch pic.jpeg")
-        os.system("touch pic-p.jpeg")
-        os.system("touch pic-o.jpeg")
+def save_pic(event,pic_id) :
+        os.system("touch pic.jpg")
+        os.system("touch pic-p.jpg")
+        os.system("touch pic-o.jpg")
         message_content = line_bot_api.get_message_content(event.message.id)
-        with open('pic.jpeg', 'wb') as fd:
+        with open('pic.jpg', 'wb') as fd:
             for chunk in message_content.iter_content():
                 fd.write(chunk)
-        img = Image.open('pic.jpeg')
+        img = Image.open('pic.jpg')
         new_img= img.resize((240, 160),Image.ANTIALIAS)
-        new_img.save('pic-p.jpeg',quality=100)
+        new_img.save('pic-p.jpg',quality=100)
         new_img = img.resize((1024, 720),Image.ANTIALIAS)
-        new_img.save('pic-o.jpeg',quality=100)
+        new_img.save('pic-o.jpg',quality=100)
         server = "cscc.hsexpert.net"
         port = 22
         user = "apie0419"
@@ -30,11 +30,8 @@ def get_reply(event) :
         client.set_missing_host_key_policy(AutoAddPolicy())
         client.connect(server, port, user, password)
         scp = SCPClient(client.get_transport())
-        scp.put('pic-o.jpeg','public_html/pic.jpeg')
-        scp.put('pic-p.jpeg','public_html/pic-p.jpeg')
+        scp.put('pic-o.jpg','public_html/chatbot-images/pic{}.jpg'.format(pic_id))
+        scp.put('pic-p.jpg','public_html/chatbot-images/pic-p{}.jpg'.format(pic_id))
         scp.close()
-        return ImageSendMessage(
-                original_content_url="https://stu-web.tkucs.cc/404411240/pic.jpeg",
-                preview_image_url="https://stu-web.tkucs.cc/404411240/pic-p.jpeg"
-                )
+        return "OK"
         

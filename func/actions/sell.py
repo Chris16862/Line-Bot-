@@ -1,5 +1,6 @@
 from linebot.models import *
 import os
+from func.pic import save_pic
 from linebot import (
     LineBotApi
 )
@@ -8,7 +9,31 @@ line_bot_api = LineBotApi(channel_access_token)
 
 def Sell(event, status, userid,con) :
     db = con.cursor()
-    if not status :
+    if isinstance(event.message, ImageMessage) :
+        if status[0][0] == 'enter_pic' :
+            db.execute("SELECT id FROM sell_list WHERE userid='{}' and status='enter_pic'")
+            pic_id = db.fetchone()
+            if save_pic(event,pic_id) == "OK" :
+                db.execute("UPDATE sell_list SET status='modify_pic' WHERE userid='{}' and status='enter_pic'".format(userid))
+                db.commit()
+                db.close()
+                return TemplateSendMessage(
+                    alt_text='Confirm template',
+                    template=ConfirmTemplate(
+                        text="確定使用這張圖片？",
+                        actions=[
+                        MessageTemplateAction(
+                            label='Yes',
+                            text='Yes',
+                            ),
+                        MessageTemplateAction(
+                            label='No',
+                            text='No'
+                            )
+                        ]
+                    )
+                )
+    elif not status :
         s = "enter_name"
         db.execute("INSERT INTO sell_list (userid, status) VALUES (%s, %s)",(userid, s))
         con.commit()
@@ -62,6 +87,47 @@ def Sell(event, status, userid,con) :
                 ]
                 )
             )
+    elif status[0][0]=="ask_pic" :
+        if event.message.text=='Yes' :
+            db.execute("UPDATE sell_list SET status='enter_pic' WHERE userid='{}' and stauts='ask_pic'".format(userid))
+            con.commit()
+            db.close()
+            return TextSendMessage(
+                text='請傳入你想使用的圖片'
+            )
+        else :
+            s = 'finish'
+            db.execute("SELECT * FROM group_list")
+            ids = db.fetchall()
+            db.execute("SELECT id,name,amount,price FROM sell_list WHERE userid='{}' and status='ask_pic'".format(userid))
+            data = db.fetchall()
+            number = data[0][0]
+            name = data[0][1]
+            amount = data[0][2]
+            price = data[0][3]
+            db.execute("UPDATE sell_list SET status='{}' WHERE status='ask_pic' and userid='{}'".format(s, userid))
+            con.commit()
+            db.close()
+            profile = line_bot_api.get_profile(userid)
+            for i in ids :
+                line_bot_api.push_message(
+                    i[0],
+                    TemplateSendMessage(
+                        alt_text='template',
+                        template=ButtonsTemplate(
+                            title='商品編號#{}'.format(number),
+                            text='商品名稱: {}\n單價: {}\n數量: {}'.format(name, price, amout),
+                            actions=[
+                                PostbackTemplateAction(
+                                    label='商品詳情',
+                                    data='info,{}'.format(number),
+                                )
+                            ]
+                        )
+                    )
+                )
+            db.close()
+            return TextSendMessage(text="產品新增成功")
     elif status[0][0]=="modify_name":
         db.execute("SELECT price,amount,intro FROM sell_list WHERE status='modify_name' and userid='{}'".format(userid))
         data = db.fetchall()
@@ -155,28 +221,67 @@ def Sell(event, status, userid,con) :
                 ]
                 )
             )
-    elif status[0][0]=="modify" :
-        if event.message.text=='Yes' : 
+    elif status[0][0] == "modify_pic" :
+        if event.message.text=="Yes" :
             s = 'finish'
             db.execute("SELECT * FROM group_list")
             ids = db.fetchall()
-            db.execute("SELECT intro,id,name,amount,price FROM sell_list WHERE userid='{}' and status='modify'".format(userid))
+            db.execute("SELECT id,name,amount,price FROM sell_list WHERE userid='{}' and status='modify_pic'".format(userid))
             data = db.fetchall()
-            intro = data[0][0]
-            number = data[0][1]
-            name = data[0][2]
-            amount = data[0][3]
-            price = data[0][4]
-            db.execute("UPDATE sell_list SET status='{}' WHERE status='modify' and userid='{}'".format(s, userid))
+            number = data[0][0]
+            name = data[0][1]
+            amount = data[0][2]
+            price = data[0][3]
+            db.execute("UPDATE sell_list SET status='{}' WHERE status='modify_pic' and userid='{}'".format(s, userid))
             con.commit()
             db.close()
             profile = line_bot_api.get_profile(userid)
             for i in ids :
                 line_bot_api.push_message(
-                i[0],
-                TextSendMessage(text="商品編號#"+str(number)+"\n賣家: "+profile.display_name+"\n商品名:"+name+"\n單價:"+str(price)+"\n數量:"+str(amount)+"\n\n"+intro+"\n如需購買請私訊我喔～")
+                    i[0],
+                    TemplateSendMessage(
+                        thumbnailImageUrl='https://stu-web.tkucs.cc/404411240/pic{}.jpg'.format(number),
+                        alt_text='template',
+                        template=ButtonsTemplate(
+                            title='商品編號#{}'.format(number),
+                            text='商品名稱: {}\n單價: {}\n數量: {}'.format(name, price, amout),
+                            actions=[
+                                PostbackTemplateAction(
+                                    label='商品詳情',
+                                    data='info,{}'.format(number),
+                                )
+                            ]
+                        )
+                    )
                 )
+            db.close()
             return TextSendMessage(text="產品新增成功")
+        else :
+            db.execute("UPDATE sell_list SET status='enter_pic' WHERE status='modify_pic' and userid='{}'".format(userid))
+            con.commit()
+            db.close()
+            return TextSendMessage(text="請重新傳入圖片")
+    elif status[0][0]=="modify" :
+        if event.message.text=='Yes' : 
+            db.execute("UPDATE sell_list SET status='ask_pic' WHERE userid='{}' and status='modify'".format(userid))
+            con.commit()
+            db.close()
+            return TemplateSendMessage(
+                alt_text="Confirm",
+                template=ConfirmTemplate(
+                    text="請問需要新增圖片嗎？",
+                    actions=[
+                    MessageTemplateAction(
+                        label='Yes',
+                        text='Yes'
+                        ),
+                    MessageTemplateAction(
+                        label='No',
+                        text='No'
+                        )
+                    ]
+                )
+            )
         elif event.message.text=='No' :
             return TemplateSendMessage(
                     alt_text='Buttons template',
