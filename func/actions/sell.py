@@ -13,7 +13,7 @@ def Sell(event, status, userid,con) :
         if status[0][0] == 'enter_pic' :
             db.execute("SELECT id FROM sell_list WHERE userid='{}' and status='enter_pic'")
             pic_id = db.fetchone()
-            if save_pic(event,pic_id) == "OK" :
+            if save_pic(event,pic_id[0]) == "OK" :
                 db.execute("UPDATE sell_list SET status='modify_pic' WHERE userid='{}' and status='enter_pic'".format(userid))
                 con.commit()
                 db.close()
