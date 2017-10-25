@@ -125,10 +125,11 @@ def callback():
             print ("TEST")
             line_bot_api.reply_message(
                 event.reply_token,
-                #p.get_reply(event)
-                ImageSendMessage(
-                    original_content_url="https://stu-web.tkucs.cc/404411240/pic.jpg",
-                    preview_image_url="https://stu-web.tkucs.cc/404411240/pic-p.jpg"
+                Sell(
+                    event,
+                    sell_status,
+                    userid,
+                    con
                     )
             )
         if not isinstance(event, MessageEvent):
