@@ -240,9 +240,9 @@ def Sell(event, status, userid,con) :
                 line_bot_api.push_message(
                     i[0],
                     TemplateSendMessage(
-                        thumbnailImageUrl='https://stu-web.tkucs.cc/404411240/chatbot-images/pic{}.jpg'.format(number),
                         alt_text='template',
                         template=ButtonsTemplate(
+                            thumbnail_image_url='https://stu-web.tkucs.cc/404411240/chatbot-images/pic{}.jpg'.format(number),
                             title='商品編號#{}'.format(number),
                             text='商品名稱: {}\n單價: {}\n數量: {}'.format(name, price, amount),
                             actions=[
