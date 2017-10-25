@@ -89,7 +89,7 @@ def Sell(event, status, userid,con) :
             )
     elif status[0][0]=="ask_pic" :
         if event.message.text=='Yes' :
-            db.execute("UPDATE sell_list SET status='enter_pic' WHERE userid='{}' and stauts='ask_pic'".format(userid))
+            db.execute("UPDATE sell_list SET status='enter_pic' WHERE userid='{}' and status='ask_pic'".format(userid))
             con.commit()
             db.close()
             return TextSendMessage(
