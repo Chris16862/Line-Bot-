@@ -55,7 +55,7 @@ def callback():
                 data = d.split(",")
                 if data[0] == "info" :
                     line_bot_api.reply_message(
-                        reply_token,
+                        event.reply_token,
                         Product(
                             data[1],
                             con
@@ -136,7 +136,7 @@ def callback():
                 )
             elif data[0]=="info" :
                 line_bot_api.reply_message(
-                        reply_token,
+                        event.reply_token,
                         Product(
                             data[1],
                             con
