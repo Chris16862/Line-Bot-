@@ -38,36 +38,40 @@ def Buy(event, status, userid, con):
             db.close()
             return TextSendMessage(text="只需要輸入數字，請重新輸入")
     elif status[0][0]=="count":
-        amount = int(event.message.text)
-        s="modify"
-        db.execute("SELECT thing_id FROM buy_list WHERE userid='{}' and status='count'".format(userid))
-        buy_id = db.fetchall()
-        db.execute("SELECT price,name,amount FROM sell_list WHERE id={}".format(buy_id[0][0]))
-        data=db.fetchall()
-        if data[0][2] < amount :
+        if event.message.text.isdigit() :
+            amount = int(event.message.text)
+            s="modify"
+            db.execute("SELECT thing_id FROM buy_list WHERE userid='{}' and status='count'".format(userid))
+            buy_id = db.fetchall()
+            db.execute("SELECT price,name,amount FROM sell_list WHERE id={}".format(buy_id[0][0]))
+            data=db.fetchall()
+            if data[0][2] < amount :
+                db.close()
+                return TextSendMessage(text="商品剩餘{}件，請重新輸入購買數量".format(data[0][2]))
+            total=data[0][0]*amount
+            name = data[0][1]
+            db.execute("UPDATE buy_list SET status='{}',amount={} WHERE status='count' and userid='{}'".format(s, amount, userid))
+            con.commit()
             db.close()
-            return TextSendMessage(text="商品剩餘{}件，請重新輸入購買數量".format(data[0][2]))
-        total=data[0][0]*amount
-        name = data[0][1]
-        db.execute("UPDATE buy_list SET status='{}',amount={} WHERE status='count' and userid='{}'".format(s, amount, userid))
-        con.commit()
-        db.close()
-        return TemplateSendMessage(
-            alt_text='Confirm template',
-            template=ConfirmTemplate(
-                text="輸入完畢，請確認內容是否正確\n商品名:"+name+"\n總額:"+str(total)+"\n購買數量:"+str(amount),
-                actions=[
-                MessageTemplateAction(
-                    label='Yes',
-                    text='Yes',
-                    ),
-                MessageTemplateAction(
-                    label='No',
-                    text='No'
-                    )
-                ]
-               )
-            )	
+            return TemplateSendMessage(
+                alt_text='Confirm template',
+                template=ConfirmTemplate(
+                    text="輸入完畢，請確認內容是否正確\n商品名:"+name+"\n總額:"+str(total)+"\n購買數量:"+str(amount),
+                    actions=[
+                    MessageTemplateAction(
+                        label='Yes',
+                        text='Yes',
+                        ),
+                    MessageTemplateAction(
+                        label='No',
+                        text='No'
+                        )
+                    ]
+                   )
+                )
+        else :
+            db.close()
+            return TextSendMessage(text="只需要輸入數字，請重新輸入")
     elif status[0][0]=="modify" :
         if event.message.text=='Yes' : 
             dt = datetime.now()
