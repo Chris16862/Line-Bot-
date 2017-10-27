@@ -245,12 +245,7 @@ def Sell(event, status, userid,con) :
                             thumbnail_image_url='https://stu-web.tkucs.cc/404411240/chatbot-images/pic{}.jpg'.format(number),
                             title='商品編號#{}'.format(number),
                             text='商品名稱: {}\n單價: {}\n數量: {}'.format(name, price, amount),
-                            actions=[
-                                PostbackTemplateAction(
-                                    label='商品詳情',
-                                    data='info,{}'.format(number),
-                                )
-                            ]
+                            actions=[]
                         )
                     )
                 )
