@@ -50,6 +50,7 @@ def callback():
             con.commit()
             continue
         elif isinstance(event.source, SourceGroup) :
+            print (event)
             if isinstance(event, PostbackEvent) :
                 d = event.postback.data
                 data = d.split(",")
