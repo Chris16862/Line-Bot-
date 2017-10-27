@@ -49,6 +49,19 @@ def callback():
             db.execute("INSERT INTO user_list(userid,status) VALUES (%s,%s)", (event.source.user_id,"new",))
             con.commit()
             continue
+        elif isinstance(event.source, SourceGroup) :
+            if isinstance(event, PostbackEvent) :
+                d = event.postback.data
+                data = d.split(",")
+                if data[0] == "info" :
+                    line_bot_api.reply_message(
+                        reply_token,
+                        Product(
+                            data[1],
+                            con
+                            )
+                        )
+            continue
         userid = event.source.user_id
         db.execute("SELECT status FROM sell_list WHERE status!='finish' and userid='{}'".format(userid))
         sell_status = db.fetchall()
@@ -121,6 +134,15 @@ def callback():
                        text="\n".join(reply) 
                     )
                 )
+            elif data[0]=="info" :
+                line_bot_api.reply_message(
+                        reply_token,
+                        Product(
+                            data[1],
+                            con
+                        )
+                    )
+            continue
         if isinstance(event.message, ImageMessage) and sell_status:
             line_bot_api.reply_message(
                 event.reply_token,
