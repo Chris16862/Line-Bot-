@@ -74,7 +74,9 @@ def callback():
             if sell_status or user_status or buy_status :
                 line_bot_api.reply_message(
                     event.reply_token,
-                    text="您還未完成之前的交易，請先輸入完畢\n若想取消本次交易，請按\"功能列表\"內的\"取消輸入\""
+                    TextSendMessage(
+                        text="您還未完成之前的交易，請先輸入完畢\n若想取消本次交易，請按\"功能列表\"內的\"取消輸入\""
+                    )
                 )
                 continue
             d = event.postback.data
