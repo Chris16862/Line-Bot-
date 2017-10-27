@@ -36,7 +36,7 @@ def Buy(event, status, userid, con):
             return TextSendMessage(text="購買商品為: {}\n請輸入購買數量:".format(data[0][0]))
         else :
             db.close()
-            return TextSendMessage(text="只需要輸入數字，請重新輸入")
+            return TextSendMessage(text="只需要輸入數字，請重新輸入\n若要取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
     elif status[0][0]=="count":
         if event.message.text.isdigit() :
             amount = int(event.message.text)
@@ -71,7 +71,7 @@ def Buy(event, status, userid, con):
                 )
         else :
             db.close()
-            return TextSendMessage(text="只需要輸入數字，請重新輸入")
+            return TextSendMessage(text="只需要輸入數字，請重新輸入\n若要取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
     elif status[0][0]=="modify" :
         if event.message.text=='Yes' : 
             dt = datetime.now()

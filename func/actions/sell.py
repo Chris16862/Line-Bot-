@@ -41,7 +41,7 @@ def Sell(event, status, userid,con) :
         return TextSendMessage(text="請輸入商品名:")
     elif (status[0][0]=="enter_price" or status[0][0]=="enter_amount" or status[0][0]=="modify_price" or status[0][0]=="modify_amount") and not event.message.text.isdigit() :
         db.close()
-        return TextSendMessage(text="只需要輸入數字，請重新輸入")
+        return TextSendMessage(text="只需要輸入數字，請重新輸入\n若要取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
     elif status[0][0]=="enter_name":
         s = "enter_price"
         SQL = "UPDATE sell_list SET name='{}',status='{}' WHERE status='enter_name' and userid='{}';".format(event.message.text, s, userid)
