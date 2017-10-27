@@ -25,9 +25,9 @@ def Shop(userid,count,con) :
                 title='商品編號#{}\n'.format(d[0]),
                 text='商品名稱: {}\n單價: {}\n剩餘數量: {}'.format(d[2],d[3],d[4]),
                 actions=[
-                    MessageTemplateAction(
-                        label='詳細資料',
-                        text=d[5]
+                    PostbackTemplateAction(
+                        label='商品詳情',
+                        data="info,{}".format(d[0])
                     ),
                     PostbackTemplateAction(
                         label='立即購買',
