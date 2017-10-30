@@ -279,7 +279,7 @@ def callback():
                     )
                 )
         elif event.message.text=="/Shop" :
-            db.execute("SELECT id FROM sell_list ORDER BY id DESC LIMIT 1")
+            db.execute("SELECT id FROM sell_list WHERE status='finish' and amount>0 ORDER BY id DESC LIMIT 1")
             count = db.fetchall()
             line_bot_api.reply_message(
                 event.reply_token,
