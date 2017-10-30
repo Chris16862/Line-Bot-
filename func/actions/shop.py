@@ -38,6 +38,7 @@ def Shop(userid,count,con) :
         )
     db.execute("SELECT id FROM sell_list WHERE id>{} and status = 'finish' and amount>0 ORDER BY id ASC LIMIT 6".format(data[0][0]))
     c = db.fetchall()
+    print (c)
     if count == max[0][0]+1 :
         lpg = 0
     else :
