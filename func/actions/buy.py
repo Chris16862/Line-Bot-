@@ -45,7 +45,11 @@ def Buy(event, status, userid, con):
             buy_id = db.fetchall()
             db.execute("SELECT price,name,amount FROM sell_list WHERE id={}".format(buy_id[0][0]))
             data=db.fetchall()
-            if data[0][2] < amount :
+            if data[0][2] == 0 :
+                db.execute("DELETE FROM buy_list WHERE userid='{}' and status='count'".format(userid))
+                db.close()
+                return TextSendMessage(text="商品已售完")
+            elif data[0][2] < amount :
                 db.close()
                 return TextSendMessage(text="商品剩餘{}件，請重新輸入購買數量".format(data[0][2]))
             total=data[0][0]*amount

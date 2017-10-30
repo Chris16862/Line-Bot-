@@ -122,6 +122,12 @@ def callback():
             elif data[0]=="buyer" :
                 db.execute("SELECT userid,amount,id,input_time FROM buy_list WHERE thing_id={} ORDER BY id ASC".format(data[1]))
                 data = db.fetchall()
+                if not data :
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text="尚無買家")
+                    )
+                    return "OK"
                 reply = []
                 for d in data :
                     profile = line_bot_api.get_profile(d[0])
