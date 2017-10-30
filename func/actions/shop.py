@@ -12,7 +12,7 @@ def Shop(userid,count,con) :
     elif count == 0 :
         return TextSendMessage(text="沒有上一頁了！")
     db = con.cursor()
-    db.execute("SELECT id FROM sell_list WHERE status = 'finish' ORDER BY id DESC LIMIT 1")
+    db.execute("SELECT id FROM sell_list WHERE status = 'finish' and amount>0 ORDER BY id DESC LIMIT 1")
     max = db.fetchall()
     db.execute("SELECT * FROM sell_list WHERE id<{} and status='finish' ORDER BY id DESC LIMIT 5 ".format(count))
     data = db.fetchall()
