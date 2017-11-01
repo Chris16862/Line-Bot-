@@ -32,7 +32,7 @@ def Buy(event, status, userid, con):
             data=db.fetchall()
             if not data :
                 db.close()
-                return TextSendMessage(text="商品不存在")
+                return TextSendMessage(text="商品不存在，請重新輸入商品編號\n若想取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
             db.execute("UPDATE buy_list SET thing_id={},status='{}' WHERE status='check' and userid='{}'".format(int(buy), s, userid))
             con.commit()
             db.close()
@@ -88,7 +88,7 @@ def Buy(event, status, userid, con):
             db.execute("SELECT amount FROM buy_list WHERE userid='{}' and status='modify'".format(userid))
             amount = db.fetchall()[0][0]
             db.execute("UPDATE sell_list SET amount=amount-{} WHERE id ={}".format(amount, thing_id))
-            db.execute("UPDATE buy_list SET input_time = TIMESTAMP'{}',status='finish' WHERE status='modify' and userid='{}'".format(input_dt, userid))
+            db.execute("UPDATE buy_list SET input_time = TIMESTAMP '{}',status='finish' WHERE status='modify' and userid='{}'".format(input_dt, userid))
             con.commit()
             line_bot_api.push_message(
                 seller_id,

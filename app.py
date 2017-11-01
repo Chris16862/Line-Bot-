@@ -373,6 +373,11 @@ def callback():
                 event.reply_token,
                 reply
             )
+        else :
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text="點選下方功能列表內的按鈕，即可使用功能喔～～")
+            )
     return 'OK'
    
 
