@@ -134,7 +134,7 @@ def Info(event, userid, status,con) :
                 )
              )
     elif status[0][0] == "modify_name" :
-        db.execute("UPDATE user_list SET status='modify' WHERE userid='{}'".format(userid))
+        db.execute("UPDATE user_list SET status='modify',name='{}' WHERE userid='{}'".format(userid,event.message.text))
         con.commit()
         db.execute("SELECT phone FROM user_list WHERE userid='{}'".format(userid))
         data = db.fetchall()
