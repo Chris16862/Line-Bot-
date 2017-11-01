@@ -57,20 +57,20 @@ def Info(event, userid, status,con) :
         data = db.fetchall()
         db.close()
         return TemplateSendMessage(
-	        alt_text='Confirm template',
-	        template=ConfirmTemplate(
-	            text="輸入完畢，請確認內容是否需要更改\n姓名:"+data[0][0]+"\n手機:"+event.message.text,
-	            actions=[
-	            MessageTemplateAction(
-	                label='Yes',
-	                text='Yes',
-	                    ),
-	            MessageTemplateAction(
-	                label='No',
-	                text='No'
-	                )
-	             ]
-	        )
+            alt_text='Confirm template',
+            template=ConfirmTemplate(
+                text="輸入完畢，請確認內容是否需要更改\n姓名:"+data[0][0]+"\n手機:"+event.message.text,
+                actions=[
+                MessageTemplateAction(
+                    label='Yes',
+                    text='Yes',
+                        ),
+                MessageTemplateAction(
+                    label='No',
+                    text='No'
+                    )
+                 ]
+            )
          )
     elif status[0][0] == "modify" :
         if event.message.text == "Yes" :
@@ -134,26 +134,26 @@ def Info(event, userid, status,con) :
                 )
              )
     elif status[0][0] == "modify_name" :
-        db.execute("UPDATE user_list SET status='modify',name='{}' WHERE userid='{}'".format(userid,event.message.text))
+        db.execute("UPDATE user_list SET status='modify',name='{}' WHERE userid='{}'".format(event.message.text,userid))
         con.commit()
         db.execute("SELECT phone FROM user_list WHERE userid='{}'".format(userid))
         data = db.fetchall()
         db.close()
         return TemplateSendMessage(
-	        alt_text='Confirm template',
-	        template=ConfirmTemplate(
-	            text="輸入完畢，請確認內容是否需要更改\n姓名:"+event.message.text+"\n手機:"+data[0][0],
-	            actions=[
-	            MessageTemplateAction(
-	                label='Yes',
-	                text='Yes',
-	                    ),
-	            MessageTemplateAction(
-	                label='No',
-	                text='No'
-	                )
-	             ]
-	        )
+            alt_text='Confirm template',
+            template=ConfirmTemplate(
+                text="輸入完畢，請確認內容是否需要更改\n姓名:"+event.message.text+"\n手機:"+data[0][0],
+                actions=[
+                MessageTemplateAction(
+                    label='Yes',
+                    text='Yes',
+                        ),
+                MessageTemplateAction(
+                    label='No',
+                    text='No'
+                    )
+                 ]
+            )
          )
     elif status[0][0] == "modify_phone" :
         if len(event.message.text)!=10 or not re.match(r'09(.+)',event.message.text) :
@@ -166,18 +166,18 @@ def Info(event, userid, status,con) :
         data = db.fetchall()
         db.close()
         return TemplateSendMessage(
-	        alt_text='Confirm template',
-	        template=ConfirmTemplate(
-	            text="輸入完畢，請確認內容是否需要更改\n姓名:"+data[0][0]+"\n手機:"+event.message.text,
-	            actions=[
-	            MessageTemplateAction(
-	                label='Yes',
-	                text='Yes',
-	                    ),
-	            MessageTemplateAction(
-	                label='No',
-	                text='No'
-	                )
-	             ]
-	        )
+            alt_text='Confirm template',
+            template=ConfirmTemplate(
+                text="輸入完畢，請確認內容是否需要更改\n姓名:"+data[0][0]+"\n手機:"+event.message.text,
+                actions=[
+                MessageTemplateAction(
+                    label='Yes',
+                    text='Yes',
+                        ),
+                MessageTemplateAction(
+                    label='No',
+                    text='No'
+                    )
+                 ]
+            )
          )
