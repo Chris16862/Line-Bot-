@@ -273,7 +273,7 @@ def callback():
                     base_size=BaseSize(height=520, width=1040),
                     actions=[
                         MessageImagemapAction(
-                            text='/Buylist',
+                            text='/BuyerList',
                             area=ImagemapArea(
                                 x=0, y=0, width=520, height=520
                             )

@@ -286,31 +286,43 @@ def Sell(event, status, userid,con) :
                 )
             )
         elif event.message.text=='No' :
-            return TemplateSendMessage(
-                    alt_text='Buttons template',
-                    template=ButtonsTemplate(
-                        title='List',
-                        text='請問需要更改哪個項目？',
-                        actions=[
-                            MessageTemplateAction(
-                                label='商品名',
-                                text='商品名',
-                            ),
-                            MessageTemplateAction(
-                                label='單價',
-                                text='單價'
-                            ),
-                            MessageTemplateAction(
-                                label='數量',
-                                text='數量'
-                            ),
-                            MessageTemplateAction(
-                                label='介紹及優惠',
-                                text='介紹及優惠'
-                            )
-                        ]
+            ImagemapSendMessage(
+                base_url='https://stu-web.tkucs.cc/404411091/linebot/Change/260.png?_ignored=',
+                alt_text='this is an imagemap',
+                base_size=BaseSize(height=260, width=1040),
+                actions=[
+                    MessageImagemapAction(
+                        text='商品名',
+                        area=ImagemapArea(
+                            x=0, y=0, width=346, height=130
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='單價',
+                        area=ImagemapArea(
+                            x=347, y=0, width=346, height=130
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='數量',
+                        area=ImagemapArea(
+                            x=694, y=0, width=346, height=130
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='介紹及優惠',
+                        area=ImagemapArea(
+                            x=0, y=130, width=520, height=130
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='Yes',
+                        area=ImagemapArea(
+                            x=520, y=130, width=520, height=130
+                        )
                     )
-                )
+                ]
+            )
         elif event.message.text=="商品名" :
             s = "modify_name"
             db.execute("UPDATE sell_list SET status='{}' WHERE status='modify' and userid='{}'".format(s, userid))
