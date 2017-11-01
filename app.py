@@ -173,6 +173,24 @@ def callback():
                         text="OK"
                         )
                 )
+            elif data[0]=="cancel_buy" :
+                db.execute("SELECT status FROM sell_list WHERE id={}".format(data[1]))
+                status = db.fetchone()
+                if status[0]=="check" :
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text="本商品已出單，無法退貨囉")
+                    )
+                else :
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        Cancel(
+                            [(finish,)],
+                            "buy",
+                            userid,
+                            con
+                            )
+                    )
         if isinstance(event.message, ImageMessage) and sell_status:
             line_bot_api.reply_message(
                 event.reply_token,
