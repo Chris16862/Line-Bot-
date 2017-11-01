@@ -286,7 +286,11 @@ def Sell(event, status, userid,con) :
                 )
             )
         elif event.message.text=='No' :
-            ImagemapSendMessage(
+            line_bot_api.push_message(
+                userid,
+                TextSendMessage(text="請點選需要修改的項目")
+            )
+            return ImagemapSendMessage(
                 base_url='https://stu-web.tkucs.cc/404411091/linebot/Change/260.png?_ignored=',
                 alt_text='this is an imagemap',
                 base_size=BaseSize(height=260, width=1040),
