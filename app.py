@@ -244,43 +244,47 @@ def callback():
         elif event.message.text=='/BuyList' and not buy_status and not user_status and not sell_status:
             line_bot_api.reply_message(
                 event.reply_token,
-                TemplateSendMessage(
-                    alt_text='Buttons template',
-                    template=ButtonsTemplate(
-                        title='功能選單',
-                        text='請選擇想使用的功能',
-                        actions=[
-                            MessageTemplateAction(
-                                label='商品清單',
-                                text='/Shop',
-                            ),
-                            MessageTemplateAction(
-                                label='我的購買清單',
-                                text='/ThingList',
+                ImagemapSendMessage(
+                    base_url='https://stu-web.tkucs.cc/404411091/linebot/ButtonBuy/1040.png?_ignored=',
+                    alt_text='買家專區',
+                    base_size=BaseSize(height=520, width=1040),
+                    actions=[
+                        MessageImagemapAction(
+                            text='/Shop',
+                            area=ImagemapArea(
+                                x=0, y=0, width=520, height=520
                             )
-                        ]
-                    )
+                        ),
+                        MessageImagemapAction(
+                            text='/ThingList',
+                            area=ImagemapArea(
+                                x=520, y=0, width=520, height=520
+                            )
+                        )
+                    ]
                 )
             )
         elif event.message.text=='/SellList' and not buy_status and not user_status and not sell_status :
              line_bot_api.reply_message(
                 event.reply_token,
-                TemplateSendMessage(
-                    alt_text='Buttons template',
-                    template=ButtonsTemplate(
-                        title='功能選單',
-                        text='請選擇想使用的功能',
-                        actions=[
-                            MessageTemplateAction(
-                                label='我的商品',
-                                text='/BuyerList',
-                            ),
-                            MessageTemplateAction(
-                                label='查看訂單',
-                                text='Test',
+                ImagemapSendMessage(
+                    base_url='https://stu-web.tkucs.cc/404411091/linebot/ButtonSell/1040.png?_ignored=',
+                    alt_text='賣家專區',
+                    base_size=BaseSize(height=520, width=1040),
+                    actions=[
+                        MessageImagemapAction(
+                            text='/Buylist',
+                            area=ImagemapArea(
+                                x=0, y=0, width=520, height=520
                             )
-                        ]
-                    )
+                        ),
+                        MessageImagemapAction(
+                            text='/',
+                            area=ImagemapArea(
+                                x=520, y=0, width=520, height=520
+                            )
+                        )
+                    ]
                 )
             )
         elif (event.message.text=="/Info" or user_status) and not buy_status and not sell_status :
