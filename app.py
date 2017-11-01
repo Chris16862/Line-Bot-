@@ -221,7 +221,7 @@ def callback():
                             con
                             )
                     )
-        elif event.message.text=="/Sell" or sell_status :
+        elif (event.message.text=="/Sell" or sell_status) and not buy_status and not user_status :
             line_bot_api.reply_message(
                 event.reply_token,
                 Sell(
@@ -231,7 +231,7 @@ def callback():
                     con
                     )
                 )
-        elif event.message.text=="/Buy" or buy_status :
+        elif event.message.text=="/Buy" or buy_status and not sell_status and not user_status :
             line_bot_api.reply_message(
                 event.reply_token,
                 Buy(
@@ -241,7 +241,7 @@ def callback():
                     con
                     )
                 )
-        elif event.message.text=='/BuyList' :
+        elif event.message.text=='/BuyList' and not buy_status and not user_status and not sell_status:
             line_bot_api.reply_message(
                 event.reply_token,
                 TemplateSendMessage(
@@ -262,7 +262,7 @@ def callback():
                     )
                 )
             )
-        elif event.message.text=='/SellList' :
+        elif event.message.text=='/SellList' and not buy_status and not user_status and not sell_status :
              line_bot_api.reply_message(
                 event.reply_token,
                 TemplateSendMessage(
@@ -283,7 +283,7 @@ def callback():
                     )
                 )
             )
-        elif event.message.text=="/Info" or user_status :
+        elif (event.message.text=="/Info" or user_status) and not buy_status and not sell_status :
             line_bot_api.reply_message(
                 event.reply_token,
                 Info(
@@ -293,7 +293,7 @@ def callback():
                     con
                     )
                 )
-        elif event.message.text=="/Shop" :
+        elif event.message.text=="/Shop" and not buy_status and not user_status and not sell_status :
             db.execute("SELECT id FROM sell_list WHERE status='finish' and amount>0 ORDER BY id DESC LIMIT 1")
             count = db.fetchall()
             line_bot_api.reply_message(
@@ -304,7 +304,7 @@ def callback():
                     con
                     )
                 )
-        elif event.message.text=="/ThingList" :
+        elif event.message.text=="/ThingList" and not buy_status and not user_status and not sell_status :
             db.execute("SELECT id FROM buy_list WHERE userid='{}' ORDER BY id DESC LIMIT 1".format(userid))
             count = db.fetchall()
             line_bot_api.reply_message(
@@ -315,7 +315,7 @@ def callback():
                     con
                 )
             )
-        elif event.message.text=="/BuyerList" :
+        elif event.message.text=="/BuyerList" and not buy_status and not user_status and not sell_status :
             db.execute("SELECT id FROM sell_list WHERE userid='{}' ORDER BY id DESC LIMIT 1".format(userid))
             count = db.fetchone()
             line_bot_api.reply_message(

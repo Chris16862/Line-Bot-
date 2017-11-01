@@ -113,6 +113,25 @@ def Info(event, userid, status,con) :
               return TextSendMessage(
                    text="請輸入手機號碼 : "
                    )
+        else :
+            db.close()
+            return TemplateSendMessage(
+                alt_text='Buttons template',
+                template=ButtonsTemplate(
+                    title='用戶資料',
+                    text='請問需要哪個項目？',
+                    actions=[
+                    MessageTemplateAction(
+                        label='姓名',
+                        text='姓名',
+                        ),
+                    MessageTemplateAction(
+                        label='手機',
+                        text='手機'
+                        ),
+                     ]
+                )
+            )
     elif status[0][0] == "modify_name" :
         db.execute("UPDATE user_list SET status='modify' WHERE userid='{}'".format(userid))
         con.commit()
