@@ -249,7 +249,7 @@ def callback():
                     con
                     )
                 )
-        elif event.message.text=="/Buy" or buy_status and not sell_status and not user_status :
+        elif (event.message.text=="/Buy" or buy_status) and not sell_status and not user_status :
             line_bot_api.reply_message(
                 event.reply_token,
                 Buy(
