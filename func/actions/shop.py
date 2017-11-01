@@ -16,9 +16,6 @@ def Shop(userid,count,con) :
     max = db.fetchall()
     db.execute("SELECT * FROM sell_list WHERE id<{} and status='finish' and amount>0 ORDER BY id DESC LIMIT 5 ".format(count))
     data = db.fetchall()
-    if not data :
-        db.close()
-        return TextSendMessage(text="目前系統中無販賣中的商品喔～")
     print (data)
     thing = []
     for d in data :

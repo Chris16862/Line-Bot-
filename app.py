@@ -300,14 +300,22 @@ def callback():
         elif event.message.text=="/Shop" and not buy_status and not user_status and not sell_status :
             db.execute("SELECT id FROM sell_list WHERE status='finish' and amount>0 ORDER BY id DESC LIMIT 1")
             count = db.fetchall()
-            line_bot_api.reply_message(
-                event.reply_token,
-                Shop(
-                    userid,
-                    count[0][0]+1,
-                    con
+            if not count :
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(
+                        text="目前系統中無販賣中的商品喔～"
                     )
                 )
+            else :
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    Shop(
+                        userid,
+                        count[0][0]+1,
+                        con
+                        )
+                    )
         elif event.message.text=="/ThingList" and not buy_status and not user_status and not sell_status :
             db.execute("SELECT id FROM buy_list WHERE userid='{}' ORDER BY id DESC LIMIT 1".format(userid))
             count = db.fetchall()
