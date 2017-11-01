@@ -100,27 +100,31 @@ def Buy(event, status, userid, con):
             return TextSendMessage(text="購買成功")
         elif event.message.text=='No' :
             db.close()
-            return TemplateSendMessage(
-                alt_text='Buttons template',
-                template=ButtonsTemplate(
-                    title='List',
-                    text='請問需要更改哪個項目？',
-                    actions=[
-                        MessageTemplateAction(
-                            label='商品',
-                            text='商品',
-                        ),
-                        MessageTemplateAction(
-                            label='數量',
-                            text='數量'
-                        ),
-                        MessageTemplateAction(
-                            label='取消更改',
-                            text='Yes'
+            return ImagemapSendMessage(
+                base_url='https://stu-web.tkucs.cc/404411091/linebot/Change/130.png?_ignored=',
+                alt_text='this is an imagemap',
+                base_size=BaseSize(height=130, width=1040),
+                actions=[
+                    MessageImagemapAction(
+                        text='商品',
+                        area=ImagemapArea(
+                            x=0, y=0, width=346, height=130
                         )
-                    ]
-                )
-            )
+                    ),
+                    MessageImagemapAction(
+                        text='數量',
+                        area=ImagemapArea(
+                            x=347, y=0, width=346, height=130
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='取消更改',
+                        area=ImagemapArea(
+                            x=694, y=0, width=346, height=130
+                        )
+                    )
+                ]
+        )
         elif event.message.text=='商品' :
             db.execute("UPDATE buy_list SET status='check' WHERE status='modify' and userid='{}'".format(userid))
             con.commit()
