@@ -157,7 +157,6 @@ def callback():
                             con
                         )
                     )
-            continue
             elif data[0]=="check" :
                 line_bot_api.reply_message(
                     event.reply_token,
@@ -167,7 +166,6 @@ def callback():
                         data[2]
                     )
                 )
-                continue
             elif data[0]=="cancel" :
                 line_bot_api.reply_message(
                     event.reply_token,
