@@ -214,7 +214,7 @@ def callback():
             line_bot_api.reply_message(
                 event.reply_token,
                 TextMessage(
-                    text="需填寫用戶資料，才能使用功能，請點選功能列表內的用戶資料"
+                    text="需填寫用戶資料，才能使用功能，請點選\"功能列表\"內的\"用戶資料\""
                     )
                 )
             return "OK"
@@ -223,7 +223,7 @@ def callback():
                 line_bot_api.reply_message(
                     event.reply_token,
                         Cancel(
-                            sell_status,
+                            sell_status,=
                             "sell",
                             userid,
                             con

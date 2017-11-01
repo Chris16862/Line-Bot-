@@ -38,7 +38,7 @@ def BuyerList(userid, count, con) :
                 ]
             )
         )
-    db.execute("SELECT id FROM sell_list WHERE id>{} and status = 'finish' ORDER BY id ASC LIMIT 6".format(data[0][0]))
+    db.execute("SELECT id FROM sell_list WHERE id>{} and status = 'finish' and userid='{}' ORDER BY id ASC LIMIT 6".format(data[0][0],userid))
     c = db.fetchall()
     if count == max[0][0]+1 :
         lpg = 0
@@ -46,7 +46,7 @@ def BuyerList(userid, count, con) :
         lpg = c[len(c)-1][0]
         if lpg == max[0][0] :
             lpg += 1
-    db.execute("SELECT id FROM sell_list WHERE id<{} and status='finish'".format(data[len(data)-1][0]))
+    db.execute("SELECT id FROM sell_list WHERE id<{} and status='finish' and userid='{}'".format(data[len(data)-1][0],userid))
     if db.fetchone() :
         npg = data[len(data)-1][0]
     else :
