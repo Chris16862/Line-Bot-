@@ -19,7 +19,7 @@ def save_pic(event,pic_id) :
         img = Image.open('pic.jpg')
         new_img= img.resize((240, 160),Image.ANTIALIAS)
         new_img.save('pic-p.jpg',quality=100)
-        new_img = img.resize((1024, 720),Image.ANTIALIAS)
+        new_img = img.resize((1024, 650),Image.ANTIALIAS)
         new_img.save('pic-o.jpg',quality=100)
         server = "cscc.hsexpert.net"
         port = 22
