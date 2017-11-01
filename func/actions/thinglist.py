@@ -30,9 +30,9 @@ def ThingList(userid, count, con) :
                         label='聯絡賣家',
                         data="contact,{}".format(d2[0][2])
                     ),
-                    MessageTemplateAction(
+                    PostbackTemplateAction(
                         label='取消購買',
-                        text="TEST"
+                        data="cancel_buy,{}".format(d[0])
                     )
                 ]
             )
