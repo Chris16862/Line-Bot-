@@ -30,6 +30,9 @@ def Buy(event, status, userid, con):
             s="count"
             db.execute("SELECT name FROM sell_list WHERE id={}".format(int(buy)))
             data=db.fetchall()
+            if not data :
+                db.close()
+                return TextSendMessage(text="商品不存在")
             db.execute("UPDATE buy_list SET thing_id={},status='{}' WHERE status='check' and userid='{}'".format(int(buy), s, userid))
             con.commit()
             db.close()
@@ -129,25 +132,28 @@ def Buy(event, status, userid, con):
             db.close()
             return TextSendMessage(text="請重新輸入購買數量:")
         else :
+            db.execute("SELECT name,price FROM sell_list WHERE id=(SELECT thing_id FROM buy_list WHERE userid='{}' and status='modify')".format(userid))
+            data = db.fetchone()
+            name = data[0]
+            price = data[1]
+            db.execute("SELECT amount FROM buy_list WHERE status='modify' and userid='{}'".format(userid))
+            data = db.fetchone()
+            amount = data[0]
+            total = price * amount
             db.close()
             return TemplateSendMessage(
-                alt_text='Buttons template',
-                template=ButtonsTemplate(
-                    title='List',
-                    text='請問需要更改哪個項目？',
+                alt_text='Confirm template',
+                template=ConfirmTemplate(
+                    text="輸入完畢，請確認內容是否正確\n商品名:"+name+"\n總額:"+str(total)+"\n購買數量:"+str(amount),
                     actions=[
-                        MessageTemplateAction(
-                            label='商品',
-                            text='商品',
+                    MessageTemplateAction(
+                        label='Yes',
+                        text='Yes',
                         ),
-                        MessageTemplateAction(
-                            label='數量',
-                            text='數量'
-                        ),
-                        MessageTemplateAction(
-                            label='取消更改',
-                            text='Yes'
+                    MessageTemplateAction(
+                        label='No',
+                        text='No'
                         )
                     ]
+                   )
                 )
-            )

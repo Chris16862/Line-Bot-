@@ -336,29 +336,22 @@ def Sell(event, status, userid,con) :
             db.close()
             return TextSendMessage(text="請輸入介紹及優惠:")
         else :
+            db.execute("SELECT name,price,amount,intro FROM sell_list WHERE userid='{}' and status='modify'".format(userid))
+            data = db.fetchall()
             db.close()
             return TemplateSendMessage(
-                    alt_text='Buttons template',
-                    template=ButtonsTemplate(
-                        title='List',
-                        text='請問需要更改哪個項目？',
-                        actions=[
-                            MessageTemplateAction(
-                                label='商品名',
-                                text='商品名',
-                            ),
-                            MessageTemplateAction(
-                                label='單價',
-                                text='單價'
-                            ),
-                            MessageTemplateAction(
-                                label='數量',
-                                text='數量'
-                            ),
-                            MessageTemplateAction(
-                                label='介紹及優惠',
-                                text='介紹及優惠'
-                            )
-                        ]
+            alt_text='Confirm template',
+            template=ConfirmTemplate(
+                text="輸入完畢，請確認內容是否正確\n商品名:"+data[0][0]+"\n單價:"+str(data[0][1])+"\n數量:"+str(data[0][2])+"\n介紹及優惠:"+data[0][3],
+                actions=[
+                MessageTemplateAction(
+                    label='Yes',
+                    text='Yes',
+                    ),
+                MessageTemplateAction(
+                    label='No',
+                    text='No'
                     )
+                ]
                 )
+            )
