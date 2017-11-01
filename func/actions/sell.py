@@ -335,3 +335,30 @@ def Sell(event, status, userid,con) :
             con.commit()
             db.close()
             return TextSendMessage(text="請輸入介紹及優惠:")
+        else :
+            db.close()
+            return TemplateSendMessage(
+                    alt_text='Buttons template',
+                    template=ButtonsTemplate(
+                        title='List',
+                        text='請問需要更改哪個項目？',
+                        actions=[
+                            MessageTemplateAction(
+                                label='商品名',
+                                text='商品名',
+                            ),
+                            MessageTemplateAction(
+                                label='單價',
+                                text='單價'
+                            ),
+                            MessageTemplateAction(
+                                label='數量',
+                                text='數量'
+                            ),
+                            MessageTemplateAction(
+                                label='介紹及優惠',
+                                text='介紹及優惠'
+                            )
+                        ]
+                    )
+                )

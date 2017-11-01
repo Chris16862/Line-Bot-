@@ -16,4 +16,5 @@ def Product(p_id, con) :
     profile = line_bot_api.get_profile(data[0])
     db.close()
     return TextSendMessage(
-        text="賣家姓名: {}\nLine暱稱: {}\n聯絡方式: {}\n商品介紹及優惠:\n{}".format(seller_data[0],profile.display_name,seller_data[1],data[1]))
+        text="賣家姓名: {}\nLine暱稱: {}\n聯絡方式: {}\n商品介紹及優惠:\n{}".format(seller_data[0],profile.display_name,seller_data[1],data[1])
+        )

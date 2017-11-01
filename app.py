@@ -158,6 +158,23 @@ def callback():
                         )
                     )
             continue
+            elif data[0]=="check" :
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    Check(
+                        data[1],
+                        con,
+                        data[2]
+                    )
+                )
+                continue
+            elif data[0]=="cancel" :
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(
+                        text="OK"
+                        )
+                )
         if isinstance(event.message, ImageMessage) and sell_status:
             line_bot_api.reply_message(
                 event.reply_token,

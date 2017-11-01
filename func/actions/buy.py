@@ -128,3 +128,26 @@ def Buy(event, status, userid, con):
             con.commit()
             db.close()
             return TextSendMessage(text="請重新輸入購買數量:")
+        else :
+            db.close()
+            return TemplateSendMessage(
+                alt_text='Buttons template',
+                template=ButtonsTemplate(
+                    title='List',
+                    text='請問需要更改哪個項目？',
+                    actions=[
+                        MessageTemplateAction(
+                            label='商品',
+                            text='商品',
+                        ),
+                        MessageTemplateAction(
+                            label='數量',
+                            text='數量'
+                        ),
+                        MessageTemplateAction(
+                            label='取消更改',
+                            text='Yes'
+                        )
+                    ]
+                )
+            )
