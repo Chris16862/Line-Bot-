@@ -69,11 +69,11 @@ def BuyerList(userid, count, con) :
             actions=[
                 PostbackTemplateAction(
                     label='上一頁',
-                    data='shop_turnpg,{}'.format(lpg)
+                    data='buyerlist_turnpg,{}'.format(lpg)
                 ),
                 PostbackTemplateAction(
                     label='下一頁',
-                    data='shop_turnpg,{}'.format(npg)
+                    data='buyerlist_turnpg,{}'.format(npg)
                 )
             ]
         )

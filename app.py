@@ -100,6 +100,15 @@ def callback():
                         con
                         )
                     )
+            elif data[0]=="buyerlist_turnpg" :
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    BuyerList(
+                        userid,
+                        int(data[1]),
+                        con
+                        )
+                    )
             elif data[0]=="thinglist_turnpg" :
                 line_bot_api.reply_message(
                     event.reply_token,
