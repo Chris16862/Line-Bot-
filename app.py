@@ -191,6 +191,8 @@ def callback():
                             con
                             )
                     )
+        if not isinstance(event, MessageEvent):
+            continue
         if isinstance(event.message, ImageMessage) and sell_status:
             line_bot_api.reply_message(
                 event.reply_token,
@@ -201,8 +203,6 @@ def callback():
                     con
                     )
             )
-        if not isinstance(event, MessageEvent):
-            continue
         if not isinstance(event.message, TextMessage):
             continue
         db.execute("SELECT * FROM user_list WHERE userid='{}'".format(userid))
@@ -337,24 +337,32 @@ def callback():
         elif event.message.text=="/ThingList" and not buy_status and not user_status and not sell_status :
             db.execute("SELECT id FROM buy_list WHERE userid='{}' ORDER BY id DESC LIMIT 1".format(userid))
             count = db.fetchall()
-            line_bot_api.reply_message(
-                event.reply_token,
-                ThingList(
+            if not count :
+                reply = TextSendMessage(text="您目前已無購買的商品囉~")
+            else :
+                reply = ThingList(
                     userid,
                     count[0][0]+1,
                     con
                 )
+            line_bot_api.reply_message(
+                event.reply_token,
+                reply
             )
         elif event.message.text=="/BuyerList" and not buy_status and not user_status and not sell_status :
             db.execute("SELECT id FROM sell_list WHERE userid='{}' ORDER BY id DESC LIMIT 1".format(userid))
             count = db.fetchone()
-            line_bot_api.reply_message(
-                event.reply_token,
-                BuyerList(
+            if not count :
+                reply = TextSendMessage(text="您目前已無販賣中的商品囉~")
+            else :
+                reply = BuyerList(
                     userid,
                     count[0]+1,
                     con
                 )
+            line_bot_api.reply_message(
+                event.reply_token,
+                reply
             )
     return 'OK'
    
