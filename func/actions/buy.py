@@ -78,7 +78,7 @@ def Buy(event, status, userid, con):
     elif status[0][0]=="modify" :
         if event.message.text=='Yes' : 
             dt = datetime.now()
-            input_dt = str(dt.year) + "-" + str(dt.month) + "-" + str(dt.day) + " " + str(dt.hour+8%24) + ":" + str(dt.minute) + ":" + str(dt.second)
+            input_dt = str(dt.year) + "-" + str(dt.month) + "-" + str(dt.day) + " " + str((dt.hour+8)%24) + ":" + str(dt.minute) + ":" + str(dt.second)
             profile = line_bot_api.get_profile(userid)
             db.execute("SELECT userid,name,id FROM sell_list WHERE id=(SELECT thing_id FROM buy_list WHERE userid='{}' and status='modify')".format(userid))
             data = db.fetchall()
