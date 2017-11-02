@@ -67,9 +67,9 @@ def ThingList(userid, count, con) :
     )
     db.close()
     return TemplateSendMessage(
-        alt_text='Confirm template',
+        alt_text='購買清單',
         template=ConfirmTemplate(
-            text="選單",
+            text="購買清單",
             actions=[
                 PostbackTemplateAction(
                     label='上一頁',

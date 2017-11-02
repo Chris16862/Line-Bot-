@@ -62,9 +62,9 @@ def Shop(userid,count,con) :
         )
     )
     return TemplateSendMessage(
-        alt_text='Confirm template',
+        alt_text='商品列表',
         template=ConfirmTemplate(
-            text="選單",
+            text="商品列表",
             actions=[
                 PostbackTemplateAction(
                     label='上一頁',

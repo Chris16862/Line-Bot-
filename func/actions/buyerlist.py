@@ -14,9 +14,9 @@ def BuyerList(userid, count, con) :
     elif count == 0 :
         return TextSendMessage(text="沒有上一頁了！")
     db = con.cursor()
-    db.execute("SELECT id FROM sell_list WHERE status = 'finish' and userid='{}' ORDER BY id DESC LIMIT 1".format(userid))
+    db.execute("SELECT id FROM sell_list WHERE userid='{}' ORDER BY id DESC LIMIT 1".format(userid))
     max = db.fetchall()
-    db.execute("SELECT * FROM sell_list WHERE id<{} and status = 'finish' and userid='{}' ORDER BY id DESC LIMIT 5".format(count,userid))
+    db.execute("SELECT * FROM sell_list WHERE id<{} and userid='{}' ORDER BY id DESC LIMIT 5".format(count,userid))
     data = db.fetchall()
     print (data)
     thing = []
@@ -38,7 +38,7 @@ def BuyerList(userid, count, con) :
                 ]
             )
         )
-    db.execute("SELECT id FROM sell_list WHERE id>{} and status = 'finish' and userid='{}' ORDER BY id ASC LIMIT 6".format(data[0][0],userid))
+    db.execute("SELECT id FROM sell_list WHERE id>{} and userid='{}' ORDER BY id ASC LIMIT 6".format(data[0][0],userid))
     c = db.fetchall()
     if count == max[0][0]+1 :
         lpg = 0
@@ -46,7 +46,7 @@ def BuyerList(userid, count, con) :
         lpg = c[len(c)-1][0]
         if lpg == max[0][0] :
             lpg += 1
-    db.execute("SELECT id FROM sell_list WHERE id<{} and status='finish' and userid='{}'".format(data[len(data)-1][0],userid))
+    db.execute("SELECT id FROM sell_list WHERE id<{} and userid='{}'".format(data[len(data)-1][0],userid))
     if db.fetchone() :
         npg = data[len(data)-1][0]
     else :
@@ -63,9 +63,9 @@ def BuyerList(userid, count, con) :
         )
     )
     return TemplateSendMessage(
-        alt_text='Confirm template',
+        alt_text='我的商品',
         template=ConfirmTemplate(
-            text="選單",
+            text="我的商品",
             actions=[
                 PostbackTemplateAction(
                     label='上一頁',
