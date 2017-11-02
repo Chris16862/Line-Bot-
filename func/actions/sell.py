@@ -9,7 +9,13 @@ line_bot_api = LineBotApi(channel_access_token)
 
 def Sell(event, status, userid,con) :
     db = con.cursor()
-    if status[0][0] == 'enter_pic' :
+    if not status :
+        s = "enter_name"
+        db.execute("INSERT INTO sell_list (userid, status) VALUES (%s, %s)",(userid, s))
+        con.commit()
+        db.close()
+        return TextSendMessage(text="請輸入商品名:")
+    elif status[0][0] == 'enter_pic' :
         if isinstance(event.message, ImageMessage) :
             db.execute("SELECT id FROM sell_list WHERE userid='{}' and status='enter_pic'".format(userid))
             pic_id = db.fetchone()
@@ -39,12 +45,9 @@ def Sell(event, status, userid,con) :
                         ]
                     )
                 )
-    elif not status :
-        s = "enter_name"
-        db.execute("INSERT INTO sell_list (userid, status) VALUES (%s, %s)",(userid, s))
-        con.commit()
-        db.close()
-        return TextSendMessage(text="請輸入商品名:")
+        else :
+            db.close()
+            return TextSendMessage(text="請傳入圖片喔～\n若要取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
     elif (status[0][0]=="enter_price" or status[0][0]=="enter_amount" or status[0][0]=="modify_price" or status[0][0]=="modify_amount") and not event.message.text.isdigit() :
         db.close()
         return TextSendMessage(text="只需要輸入數字，請重新輸入\n若要取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
