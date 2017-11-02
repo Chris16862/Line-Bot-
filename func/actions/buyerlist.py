@@ -21,10 +21,14 @@ def BuyerList(userid, count, con) :
     print (data)
     thing = []
     for d in data :
+        if d[6] == 'check' :
+            addition = '已結單'
+        else :
+            addition = ''
         thing.append(
             CarouselColumn(
                 thumbnail_image_url='https://stu-web.tkucs.cc/404411240/chatbot-images/pic{}.jpg'.format(d[0]),
-                title='商品編號#{}\n'.format(d[0]),
+                title='商品編號#{}\n({})'.format(d[0],addition),
                 text='商品名稱: {}\n單價: {}\n剩餘數量: {}'.format(d[2],d[3],d[4]),
                 actions=[
                     PostbackTemplateAction(
