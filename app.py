@@ -183,7 +183,7 @@ def callback():
                         )
                 )
             elif data[0]=="cancel_buy" :
-                db.execute("SELECT status FROM buy_list WHERE id={}".format(data[1]))
+                db.execute("SELECT status FROM sell_list WHERE id={}".format(data[1]))
                 status = db.fetchone()
                 if status[0]=="check" :
                     line_bot_api.reply_message(
