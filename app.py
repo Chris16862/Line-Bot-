@@ -185,16 +185,20 @@ def callback():
             elif data[0]=="cancel_buy" :
                 db.execute("SELECT status FROM sell_list WHERE id={}".format(data[1]))
                 status = db.fetchone()
+                db.execute("SELECT amount FROM buy_list WHERE thing_id={}".format(data[1]))
+                amount = db.fetchone()
                 if status[0]=="check" :
                     line_bot_api.reply_message(
                         event.reply_token,
                         TextSendMessage(text="本商品已出單，無法退貨囉")
                     )
                 else :
+                    db.execute("UPDATE sell_list SET amount=amount+{} WHERE id={}".format(amount,data[1]))
+                    con.commit()
                     line_bot_api.reply_message(
                         event.reply_token,
                         Cancel(
-                            [("finish",)],
+                            [('finish',)],
                             "buy",
                             userid,
                             con

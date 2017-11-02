@@ -32,7 +32,7 @@ def ThingList(userid, count, con) :
                     ),
                     PostbackTemplateAction(
                         label='取消購買',
-                        data="cancel_buy,{}".format(d[0])
+                        data="cancel_buy,{}".format(d[1])
                     )
                 ]
             )
