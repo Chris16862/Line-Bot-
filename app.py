@@ -231,27 +231,27 @@ def callback():
                     )
                 )
             return "OK"
-        if event.message.text=="/Cancel" and (sell_status or buy_status) :
+        if event.message.text=="/Cancel" and (sell_status or buy_status or user_status) :
             if sell_status :
-                line_bot_api.reply_message(
-                    event.reply_token,
-                        Cancel(
-                            sell_status,
-                            "sell",
-                            userid,
-                            con
-                            )
-                    )
+                status = sell_status
+                action = 'sell'
             elif buy_status :
-                line_bot_api.reply_message(
+                status = buy_status
+                action = 'buy'
+            elif user_status=='modify_name' or user_status=='modify_phone' or user_status=='modify':
+                status = user_status
+                action = 'user_modify'
+            else :
+                action = 'user_new'
+            line_bot_api.reply_message(
                     event.reply_token,
                         Cancel(
-                            buy_status,
-                            "buy",
+                            status,
+                            action,
                             userid,
                             con
-                            )
-                    )
+                        )
+                )
         elif (event.message.text=="/Sell" or sell_status) and not buy_status and not user_status :
             line_bot_api.reply_message(
                 event.reply_token,

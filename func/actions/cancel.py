@@ -12,6 +12,10 @@ def Cancel(status,action,userid,con) :
         db.execute("DELETE FROM sell_list WHERE userid='{}' and status='{}'".format(userid, status[0][0]))
     elif action=="buy" :
         db.execute("DELETE FROM buy_list WHERE userid='{}' and status='{}'".format(userid, status[0][0]))
+    elif action=='user_new' :
+        db.execute("DELETE FROM user_list WHERE userid='{}' and status='{}'".format(userid, status[0][0]))
+    elif action=='user_modify' :
+        db.execute("UPDATE user_list SET status='finish' WHERE userid='{}' and status='{}'".format(userid, status[0][0]))
     con.commit()
     db.close()
     return TextSendMessage(
