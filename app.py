@@ -64,7 +64,7 @@ def callback():
                         )
             continue
         userid = event.source.user_id
-        db.execute("SELECT status FROM sell_list WHERE status!='finish' and userid='{}'".format(userid))
+        db.execute("SELECT status FROM sell_list WHERE status!='finish' and status!='check' and userid='{}'".format(userid))
         sell_status = db.fetchall()
         db.execute("SELECT status FROM user_list WHERE status!='finish' and userid='{}'".format(userid))
         user_status = db.fetchall()

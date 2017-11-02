@@ -9,8 +9,8 @@ line_bot_api = LineBotApi(channel_access_token)
 
 def Sell(event, status, userid,con) :
     db = con.cursor()
-    if isinstance(event.message, ImageMessage) :
-        if status[0][0] == 'enter_pic' :
+    if status[0][0] == 'enter_pic' :
+        if isinstance(event.message, ImageMessage) :
             db.execute("SELECT id FROM sell_list WHERE userid='{}' and status='enter_pic'".format(userid))
             pic_id = db.fetchone()
             line_bot_api.push_message(
@@ -102,7 +102,7 @@ def Sell(event, status, userid,con) :
             con.commit()
             db.close()
             return TextSendMessage(
-                text='請傳入你想使用的圖片'
+                text='請傳入你想使用的圖片\n若要取消本次交易，請按\"功能列表\"內的\"取消輸入\"'
             )
         else :
             s = 'finish'
