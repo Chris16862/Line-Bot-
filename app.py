@@ -233,20 +233,20 @@ def callback():
             return "OK"
         if event.message.text=="/Cancel" and (sell_status or buy_status or user_status) :
             if sell_status :
-                status = sell_status
+                c_status = sell_status
                 action = 'sell'
             elif buy_status :
-                status = buy_status
+                c_status = buy_status
                 action = 'buy'
             elif user_status=='modify_name' or user_status=='modify_phone' or user_status=='modify':
-                status = user_status
+                c_status = user_status
                 action = 'user_modify'
             else :
                 action = 'user_new'
             line_bot_api.reply_message(
                     event.reply_token,
                         Cancel(
-                            status,
+                            c_status,
                             action,
                             userid,
                             con
