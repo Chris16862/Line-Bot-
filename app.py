@@ -193,7 +193,7 @@ def callback():
                         TextSendMessage(text="本商品已出單，無法退貨囉")
                     )
                 else :
-                    db.execute("UPDATE sell_list SET amount=amount+{} WHERE id={}".format(amount[0],data[1]))
+                    db.execute("UPDATE sell_list SET amount=amount+{},status='finish' WHERE id={}".format(amount[0],data[1]))
                     con.commit()
                     line_bot_api.reply_message(
                         event.reply_token,
