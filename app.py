@@ -242,6 +242,7 @@ def callback():
                 c_status = user_status
                 action = 'user_modify'
             else :
+                c_status = user_status
                 action = 'user_new'
             line_bot_api.reply_message(
                     event.reply_token,
