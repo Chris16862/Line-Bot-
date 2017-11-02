@@ -238,7 +238,7 @@ def callback():
             elif buy_status :
                 c_status = buy_status
                 action = 'buy'
-            elif user_status=='modify_name' or user_status=='modify_phone' or user_status=='modify':
+            elif user_status[0][0]=='modify_name' or user_status[0][0]=='modify_phone' or user_status[0][0]=='modify':
                 c_status = user_status
                 action = 'user_modify'
             else :
