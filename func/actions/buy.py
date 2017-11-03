@@ -13,10 +13,14 @@ def Buy(event, status, userid, con):
         d = event.postback.data
         data = d.split(",")
         buy = data[1]
-        db.execute("SELECT name FROM sell_list WHERE id={}".format(int(buy)))
+        db.execute("SELECT name,status FROM sell_list WHERE id={}".format(int(buy)))
         data = db.fetchall()
+        if data[0][1]=="check" :
+            db.close()
+            return TextSendMessage("本產品已經結單囉～\n請輸入其他商品編號")
         db.execute("INSERT INTO buy_list (userid, status, thing_id) VALUES (%s, %s, %s)",(userid, "count", int(buy)))
         con.commit()
+        db.close()
         return TextSendMessage(text="購買商品為: {}\n請輸入購買數量:".format(data[0][0]))
     if not status:
         s="enter_num"
@@ -28,11 +32,14 @@ def Buy(event, status, userid, con):
         buy=event.message.text
         if buy.isdigit():
             s="count"
-            db.execute("SELECT name FROM sell_list WHERE id={}".format(int(buy)))
+            db.execute("SELECT name,status FROM sell_list WHERE id={}".format(int(buy)))
             data=db.fetchall()
             if not data :
                 db.close()
                 return TextSendMessage(text="商品不存在，請重新輸入商品編號\n若想取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
+            elif data[0][1]=="check" :
+                db.close()
+                return TextSendMessage("本產品已經結單囉～\n請輸入其他商品編號")
             db.execute("UPDATE buy_list SET thing_id={},status='{}' WHERE status='check' and userid='{}'".format(int(buy), s, userid))
             con.commit()
             db.close()
