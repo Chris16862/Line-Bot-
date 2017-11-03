@@ -19,7 +19,7 @@ def ThingList(userid, count, con) :
         db.execute("SELECT price,name,userid,status FROM sell_list WHERE id={}".format(d[1]))
         d2 = db.fetchall()
         status = ''
-        if d2[3]=="check" :
+        if d2[0][3]=="check" :
             status = '(已結單)'
         print (d)
         print (d2)
