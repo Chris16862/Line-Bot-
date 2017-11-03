@@ -393,7 +393,7 @@ def callback():
                         )
                     )
         elif event.message.text=="/ThingList" :
-            db.execute("SELECT id FROM buy_list WHERE userid='{}' and status!='check' ORDER BY id DESC LIMIT 1".format(userid))
+            db.execute("SELECT id FROM buy_list WHERE userid='{}' ORDER BY id DESC LIMIT 1".format(userid))
             count = db.fetchall()
             if not count :
                 reply = TextSendMessage(text="您目前已無購買的商品囉~")
