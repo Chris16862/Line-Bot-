@@ -7,15 +7,15 @@ from linebot import (
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
 line_bot_api = LineBotApi(channel_access_token)
 
-def Check(pro_id, con, confirm) :
+def Check(id, con, confirm) :
     db = con.cursor()
-    if confirm=="yes" :
-        db.execute("UPDATE sell_list SET status='check' WHERE id={}".format(pro_id))
+    if confirm=="pro_yes" :
+        db.execute("UPDATE sell_list SET status='check' WHERE id={}".format(id))
         con.commit()
         db.close()
         return TextSendMessage(text="結單完成")
-    elif confirm=="no" :
-        db.execute("SELECT status FROM sell_list WHERE id={}".format(pro_id))
+    elif confirm=="pro_no" :
+        db.execute("SELECT status FROM sell_list WHERE id={}".format(id))
         status = db.fetchone()
         if status[0] == "check" :
             db.close()
@@ -27,7 +27,7 @@ def Check(pro_id, con, confirm) :
                 actions=[
                 PostbackTemplateAction(
                     label='Yes',
-                    data='check,{},yes'.format(pro_id),
+                    data='check,{},pro_yes'.format(id),
                     ),
                 PostbackTemplateAction(
                     label='No',
@@ -36,3 +36,8 @@ def Check(pro_id, con, confirm) :
                  ]
             )
          )
+    elif confirm=="order_yes" :
+        db.execute("UPDATE buy_list SET status='check' WHERE id={}".format(id))
+        con.commit()
+        db.close()
+        return TextSendMessage(text="設定出貨完成")

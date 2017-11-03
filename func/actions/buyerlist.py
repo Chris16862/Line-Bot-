@@ -37,7 +37,7 @@ def BuyerList(userid, count, con) :
                     ),
                     PostbackTemplateAction(
                         label='結單',
-                        data='check,{},no'.format(d[0])
+                        data='check,{},pro_no'.format(d[0])
                     )
                 ]
             )

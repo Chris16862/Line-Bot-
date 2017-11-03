@@ -37,6 +37,10 @@ def callback():
     except InvalidSignatureError:
         abort(400)
     for event in events:
+        db.execute("SELECT * FROM user_list WHERE userid='{}'".format(userid))
+        if not db.fetchall() :
+            db.execute("INSERT INTO user_list(userid,status) VALUES (%s,%s)", (event.source.user_id,"new",))
+            con.commit()
         if isinstance(event, JoinEvent) :
             db.execute("INSERT INTO group_list (grid) VALUES (%s)", (event.source.group_id,))
             con.commit()
@@ -66,7 +70,7 @@ def callback():
         userid = event.source.user_id
         db.execute("SELECT status FROM sell_list WHERE status!='finish' and status!='check' and userid='{}'".format(userid))
         sell_status = db.fetchall()
-        db.execute("SELECT status FROM user_list WHERE status!='finish' and userid='{}'".format(userid))
+        db.execute("SELECT status FROM user_list WHERE status!='finish' and status!='check' and userid='{}'".format(userid))
         user_status = db.fetchall()
         db.execute("SELECT status FROM buy_list WHERE status!='finish' and userid='{}'".format(userid))
         buy_status = db.fetchall()
@@ -218,10 +222,6 @@ def callback():
             )
         if not isinstance(event.message, TextMessage):
             continue
-        db.execute("SELECT * FROM user_list WHERE userid='{}'".format(userid))
-        if not db.fetchall() :
-            db.execute("INSERT INTO user_list(userid,status) VALUES (%s,%s)", (event.source.user_id,"new",))
-            con.commit()
         db.execute("SELECT * FROM user_list WHERE userid='{}' and status='new'".format(userid))
         if db.fetchall() and event.message.text!="/Info" :
             line_bot_api.reply_message(
@@ -231,14 +231,14 @@ def callback():
                     )
                 )
             return "OK"
-        if event.message.text=="/Cancel" and (sell_status or buy_status or user_status) :
+        if event.message.text=="/Cancel" :
             if sell_status :
                 c_status = sell_status
                 action = 'sell'
             elif buy_status :
                 c_status = buy_status
                 action = 'buy'
-            elif user_status[0][0]=='modify_name' or user_status[0][0]=='modify_phone' or user_status[0][0]=='modify':
+            elif user_status[0][0]=='modify_name' or user_status[0][0]=='modify_phone' or user_status[0][0]=='modify' or user_status[0][0]=="searching":
                 c_status = user_status
                 action = 'user_modify'
             else :
@@ -253,7 +253,7 @@ def callback():
                             con
                         )
                 )
-        elif (event.message.text=="/Sell" or sell_status) and not buy_status and not user_status :
+        elif sell_status :
             line_bot_api.reply_message(
                 event.reply_token,
                 Sell(
@@ -261,9 +261,9 @@ def callback():
                     sell_status,
                     userid,
                     con
-                    )
                 )
-        elif (event.message.text=="/Buy" or buy_status) and not sell_status and not user_status :
+            )
+        elif buy_status :
             line_bot_api.reply_message(
                 event.reply_token,
                 Buy(
@@ -271,9 +271,46 @@ def callback():
                     buy_status,
                     userid,
                     con
-                    )
                 )
-        elif event.message.text=='/BuyList' and not buy_status and not user_status and not sell_status:
+            )
+        elif user_status :
+            if user_status[0][0] == "searching" :
+                Search(
+                    event.message.text,
+                    userid,
+                    con
+                    )
+            else :
+                line_bot_api.reply_message(
+                event.reply_token,
+                Info(
+                    event,
+                    userid,
+                    user_status,
+                    con
+                )
+            )
+        elif event.message.text=="/Sell" :
+            line_bot_api.reply_message(
+                event.reply_token,
+                Sell(
+                    event,
+                    sell_status,
+                    userid,
+                    con
+                )
+            )
+        elif event.message.text=="/Buy" :
+            line_bot_api.reply_message(
+                event.reply_token,
+                Buy(
+                    event,
+                    buy_status,
+                    userid,
+                    con
+                )
+            )
+        elif event.message.text=='/BuyList' :
             line_bot_api.reply_message(
                 event.reply_token,
                 ImagemapSendMessage(
@@ -296,7 +333,7 @@ def callback():
                     ]
                 )
             )
-        elif event.message.text=='/SellList' and not buy_status and not user_status and not sell_status :
+        elif event.message.text=='/SellList' :
              line_bot_api.reply_message(
                 event.reply_token,
                 ImagemapSendMessage(
@@ -311,7 +348,7 @@ def callback():
                             )
                         ),
                         MessageImagemapAction(
-                            text='/',
+                            text='/Search',
                             area=ImagemapArea(
                                 x=520, y=0, width=520, height=520
                             )
@@ -319,7 +356,7 @@ def callback():
                     ]
                 )
             )
-        elif (event.message.text=="/Info" or user_status) and not buy_status and not sell_status :
+        elif event.message.text=="/Info" :
             line_bot_api.reply_message(
                 event.reply_token,
                 Info(
@@ -329,7 +366,7 @@ def callback():
                     con
                     )
                 )
-        elif event.message.text=="/Shop" and not buy_status and not user_status and not sell_status :
+        elif event.message.text=="/Shop" :
             db.execute("SELECT id FROM sell_list WHERE status='finish' and amount>0 ORDER BY id DESC LIMIT 1")
             count = db.fetchall()
             if not count :
@@ -348,7 +385,7 @@ def callback():
                         con
                         )
                     )
-        elif event.message.text=="/ThingList" and not buy_status and not user_status and not sell_status :
+        elif event.message.text=="/ThingList" :
             db.execute("SELECT id FROM buy_list WHERE userid='{}' ORDER BY id DESC LIMIT 1".format(userid))
             count = db.fetchall()
             if not count :
@@ -363,7 +400,7 @@ def callback():
                 event.reply_token,
                 reply
             )
-        elif event.message.text=="/BuyerList" and not buy_status and not user_status and not sell_status :
+        elif event.message.text=="/BuyerList" :
             db.execute("SELECT id FROM sell_list WHERE userid='{}' ORDER BY id DESC LIMIT 1".format(userid))
             count = db.fetchone()
             if not count :
@@ -383,6 +420,8 @@ def callback():
                 event.reply_token,
                 TextSendMessage(text="點選下方功能列表內的按鈕，即可使用功能喔～～")
             )
+        elif event.message.text=="/Search" :
+            return TextSendMessage(text="請輸入想搜尋的訂單編號: ")
     return 'OK'
    
 
