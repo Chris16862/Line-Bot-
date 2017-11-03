@@ -10,10 +10,12 @@ def Search(order_id,userid,con) :
     if not order_id.isdigit() :
         return TextSendMessage("訂單編號必須為數字喔～\n若想取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
     db = con.cursor()
-    db.execute("SELECT userid,thing_id,amount FROM buy_list WHERE id = {}".format(order_id))
+    db.execute("SELECT userid,thing_id,amount,status FROM buy_list WHERE id = {}".format(order_id))
     data = db.fetchone()
     if not data :
         return TextSendMessage("訂單不存在")
+    if data[3]=="check" :
+        return TextSendMessage("此訂單已出貨")
     db.execute("SELECT userid,name FROM sell_list WHERE id = {}".format(data[1]))
     data_2 = db.fetchone()
     if userid!=data_2[0] :
@@ -33,7 +35,7 @@ def Search(order_id,userid,con) :
             actions=[
             PostbackTemplateAction(
                 label='Yes',
-                data='check,{},order_yes'.format(order_id),
+                data='check,{},order_yes'.format(order_id)
                 ),
             PostbackTemplateAction(
                 label='No',

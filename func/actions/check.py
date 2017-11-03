@@ -37,6 +37,29 @@ def Check(id, con, confirm) :
             )
          )
     elif confirm=="order_yes" :
+        db.execute("SELECT userid,thing_id,amount FROM buy_list WHERE id={}".format(id))
+        data = db.fetchone()
+        db.execute("SELECT name FROM sell_list WHERE id={}".format(data[1]))
+        data_2 = db.fetchone()
+        name = data_2[0]
+        amount = data[2]
+        line_bot_api.push_message(
+            data[0],
+            TemplateSendMessage(
+                alt_text='商品確認',
+                template=ButtonsTemplate(
+                    thumbnail_image_url='https://stu-web.tkucs.cc/404411240/chatbot-images/pic{}.jpg'.format(data[1]),
+                    title='訂單編號#{}'.format(id),
+                    text='商品名稱: {}\n購買數量: {}'.format(name, amount),
+                    actions=[
+                        PostbackTemplateAction(
+                            label='已收到商品',
+                            data='order_receive,{}'.format(id),
+                        )
+                    ]
+                )
+            )
+        )
         db.execute("UPDATE buy_list SET status='check' WHERE id={}".format(id))
         con.commit()
         db.close()

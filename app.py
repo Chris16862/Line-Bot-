@@ -133,7 +133,7 @@ def callback():
                     )
                 )
             elif data[0]=="buyer" :
-                db.execute("SELECT userid,amount,id,input_time FROM buy_list WHERE thing_id={} ORDER BY id ASC".format(data[1]))
+                db.execute("SELECT userid,amount,id,input_time,status FROM buy_list WHERE thing_id={} ORDER BY id ASC".format(data[1]))
                 data = db.fetchall()
                 if not data :
                     line_bot_api.reply_message(
@@ -144,9 +144,12 @@ def callback():
                 reply = []
                 for d in data :
                     profile = line_bot_api.get_profile(d[0])
+                    b_status = ''
+                    if d[4] == "check" :
+                        b_status = '(已出貨)' 
                     db.execute("SELECT name,phone FROM user_list WHERE userid='{}'".format(d[0]))
                     buyer_data = db.fetchone()
-                    r = "訂單編號#{}\n買家: {} 真實姓名: {}\n聯絡方式:{}\n購買數量: {}\n時間: {}\n".format(d[2],profile.display_name, buyer_data[0], buyer_data[1],d[1],str(d[3]))
+                    r = "訂單編號#{} {}\n買家: {} 真實姓名: {}\n聯絡方式:{}\n購買數量: {}\n時間: {}\n".format(d[2],b_status,profile.display_name, buyer_data[0], buyer_data[1],d[1],str(d[3]))
                     if len("\n\n".join(reply)) + len(r) >= 1000 :
                         line_bot_api.push_message(
                             userid,
@@ -239,9 +242,10 @@ def callback():
             elif buy_status :
                 c_status = buy_status
                 action = 'buy'
-            elif user_status[0][0]=='modify_name' or user_status[0][0]=='modify_phone' or user_status[0][0]=='modify' or user_status[0][0]=="searching":
-                c_status = user_status
-                action = 'user_modify'
+            elif user_status:
+                if user_status[0][0]=='modify_name' or user_status[0][0]=='modify_phone' or user_status[0][0]=='modify' or user_status[0][0]=="searching":
+                    c_status = user_status
+                    action = 'user_modify'
             else :
                 c_status = user_status
                 action = 'user_new'
