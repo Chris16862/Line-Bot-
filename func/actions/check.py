@@ -39,12 +39,14 @@ def Check(id, con, confirm) :
     elif confirm=="order_yes" :
         db.execute("SELECT userid,thing_id,amount FROM buy_list WHERE id={}".format(id))
         data = db.fetchone()
-        db.execute("SELECT name FROM sell_list WHERE id={}".format(data[1]))
+        db.execute("SELECT userid,name FROM sell_list WHERE id={}".format(data[1]))
         data_2 = db.fetchone()
+        db.execute("SELECT name FROM user_list WHERE userid='{}'".format(data_2[0]))
+        seller = db.fetchone()
         name = data_2[0]
         amount = data[2]
-        line_bot_api.push_message(
-            data[0],
+        push = [
+            TextSendMessage(text="賣家姓名: {}\n已將商品出貨，若已收到商品請點下面的按鈕".format(seller[0])),
             TemplateSendMessage(
                 alt_text='商品確認',
                 template=ButtonsTemplate(
@@ -59,8 +61,50 @@ def Check(id, con, confirm) :
                     ]
                 )
             )
+        ]
+        line_bot_api.push_message(
+            data[0],
+            push
         )
         db.execute("UPDATE buy_list SET status='check' WHERE id={}".format(id))
         con.commit()
         db.close()
         return TextSendMessage(text="設定出貨完成")
+    elif confirm=="order_get" :
+        db.execute("SELECT userid,thing_id FROM buy_list WHERE id={}".format(id))
+        data = db.fetchone()
+        db.execute("SELECT name FROM user_list WHERE userid='{}'".format(data[0]))
+        buyername = db.fetchone()
+        db.execute("SELECT userid,name FROM sell_list WHERE id={}".format(data[1]))
+        data_2 = db.fetchone()
+        line_bot_api.push_message(
+            data_2[0],
+            TextSendMessage(text="買家已收到了您的商品:{}\n訂單編號#{}已完成".format(data_2[1],id))
+        )
+        db.execute("DELETE FROM buy_list WHERE id={}".format(id))
+        con.commit()
+        db.execute("SELECT * FROM buy_list WHERE thing_id={}".format(data[1]))
+        if not db.fetchone() :
+            line_bot_api.push_message(
+                data_2[0],
+                TextSendMessage(text="商品編號#{}的買家皆已收到商品，該商品將會自動刪除".format(data[1]))
+            )
+        return TextSendMessage(text="交易完成")
+def Order_Receive(order_id) :
+    return 
+    TemplateSendMessage(
+        alt_text="商品取貨確認",
+        template=ConfirmTemplate(
+            text="確認收到商品？",
+            actions=[
+            PostbackTemplateAction(
+                label='Yes',
+                data='check,{},order_get'
+            ),
+            PostbackTemplateAction(
+                label='No',
+                data='cancel'
+                )
+            ]
+        )
+    )

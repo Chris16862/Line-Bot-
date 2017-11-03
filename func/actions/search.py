@@ -16,11 +16,14 @@ def Search(order_id,userid,con) :
         return TextSendMessage("訂單不存在")
     if data[3]=="check" :
         return TextSendMessage("此訂單已出貨")
-    db.execute("SELECT userid,name FROM sell_list WHERE id = {}".format(data[1]))
+    db.execute("SELECT userid,name,status FROM sell_list WHERE id = {}".format(data[1]))
     data_2 = db.fetchone()
     if userid!=data_2[0] :
         db.close()
         return TextSendMessage(text="這不是您的訂單喔~\n請重新輸入")
+    elif data_2[2]!='check' :
+        db.close()
+        return TextSendMessage(text="您的商品還未結單喔～")
     db.execute("SELECT name FROM user_list WHERE userid = '{}'".format(data[0]))
     buyer_name = db.fetchone()
     name = data_2[1]

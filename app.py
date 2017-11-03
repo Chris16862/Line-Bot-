@@ -174,13 +174,19 @@ def callback():
                         )
                     )
             elif data[0]=="check" :
-                print (data[1])
                 line_bot_api.reply_message(
                     event.reply_token,
                     Check(
                         data[1],
                         con,
                         data[2]
+                    )
+                )
+            elif data[0]=="order_receive" :
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    Order_Receive(
+                        data[1]
                     )
                 )
             elif data[0]=="cancel" :
@@ -250,7 +256,10 @@ def callback():
                     c_status = user_status
                     action = 'user_new'
             else :
-                return TextMessage(text="目前沒有輸入東西喔～")
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextMessage(text="目前沒有輸入東西喔～")
+                )
             line_bot_api.reply_message(
                     event.reply_token,
                         Cancel(

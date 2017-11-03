@@ -6,5 +6,5 @@ from .shop import Shop
 from .thinglist import ThingList
 from .buyerlist import BuyerList
 from .product import Product
-from .check import Check
+from .check import *
 from .search import Search
