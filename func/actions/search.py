@@ -24,7 +24,7 @@ def Search(order_id,userid,con) :
     return TemplateSendMessage(
         alt_text='Confirm template',
         template=ConfirmTemplate(
-            text="輸入完畢\n商品名:"+name+"\n購買數量:"+str(amount)"\n買家姓名: "+buyer_name[0]+"\n確認出貨？",
+            text="輸入完畢\n商品名:"+name+"\n購買數量:"+str(amount)+"\n買家姓名: "+buyer_name[0]+"\n確認出貨？",
             actions=[
             PostbackTemplateAction(
                 label='Yes',
