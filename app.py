@@ -177,9 +177,9 @@ def callback():
                 line_bot_api.reply_message(
                     event.reply_token,
                     Check(
-                        data[2],
+                        data[1],
                         con,
-                        data[1]
+                        data[2]
                     )
                 )
             elif data[0]=="order_receive" :

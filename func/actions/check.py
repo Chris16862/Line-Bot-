@@ -98,7 +98,7 @@ def Order_Receive(order_id) :
             actions=[
             PostbackTemplateAction(
                 label='Yes',
-                data='check,{},order_get'
+                data='check,{},order_get'.format(order_id)
             ),
             PostbackTemplateAction(
                 label='No',
