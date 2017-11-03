@@ -246,9 +246,11 @@ def callback():
                 if user_status[0][0]=='modify_name' or user_status[0][0]=='modify_phone' or user_status[0][0]=='modify' or user_status[0][0]=="searching":
                     c_status = user_status
                     action = 'user_modify'
+                else :
+                    c_status = user_status
+                    action = 'user_new'
             else :
-                c_status = user_status
-                action = 'user_new'
+                return TextMessage(text="目前沒有輸入東西喔～")
             line_bot_api.reply_message(
                     event.reply_token,
                         Cancel(
