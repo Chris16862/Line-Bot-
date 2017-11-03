@@ -37,7 +37,7 @@ def callback():
     except InvalidSignatureError:
         abort(400)
     for event in events:
-        db.execute("SELECT * FROM user_list WHERE userid='{}'".format(userid))
+        db.execute("SELECT * FROM user_list WHERE userid='{}'".format(event.source.user_id))
         if not db.fetchall() :
             db.execute("INSERT INTO user_list(userid,status) VALUES (%s,%s)", (event.source.user_id,"new",))
             con.commit()
