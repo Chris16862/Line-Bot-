@@ -13,11 +13,14 @@ def Buy(event, status, userid, con):
         d = event.postback.data
         data = d.split(",")
         buy = data[1]
-        db.execute("SELECT name,status FROM sell_list WHERE id={}".format(int(buy)))
+        db.execute("SELECT name,status,amount FROM sell_list WHERE id={}".format(int(buy)))
         data = db.fetchall()
         if data[0][1]=="check" :
             db.close()
-            return TextSendMessage("本產品已經結單囉～\n請輸入其他商品編號")
+            return TextSendMessage("本產品已經結單囉～")
+        elif data[0][2] <= 0 :
+            db.close()
+            return TextSendMessage("本商品已售完~")
         db.execute("INSERT INTO buy_list (userid, status, thing_id) VALUES (%s, %s, %s)",(userid, "count", int(buy)))
         con.commit()
         db.close()
@@ -32,7 +35,7 @@ def Buy(event, status, userid, con):
         buy=event.message.text
         if buy.isdigit():
             s="count"
-            db.execute("SELECT name,status FROM sell_list WHERE id={}".format(int(buy)))
+            db.execute("SELECT name,status,amount FROM sell_list WHERE id={}".format(int(buy)))
             data=db.fetchall()
             if not data :
                 db.close()
@@ -40,6 +43,9 @@ def Buy(event, status, userid, con):
             elif data[0][1]=="check" :
                 db.close()
                 return TextSendMessage("本產品已經結單囉～\n請輸入其他商品編號")
+            elif data[0][2]<=0 :
+                db.close()
+                return TextSendMessage("本商品已售完~")
             db.execute("UPDATE buy_list SET thing_id={},status='{}' WHERE status='check' and userid='{}'".format(int(buy), s, userid))
             con.commit()
             db.close()
@@ -55,6 +61,8 @@ def Buy(event, status, userid, con):
             buy_id = db.fetchall()
             db.execute("SELECT price,name,amount FROM sell_list WHERE id={}".format(buy_id[0][0]))
             data=db.fetchall()
+            if amount<=0 :
+                return TextSendMessage("請輸入大於0的數字~")
             if data[0][2] < amount :
                 db.close()
                 return TextSendMessage(text="商品剩餘{}件，請重新輸入購買數量\n若要取消本次交易，請按\"功能列表\"內的\"取消輸入\"".format(data[0][2]))
