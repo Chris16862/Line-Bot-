@@ -16,11 +16,11 @@ def ThingList(userid, count, con) :
     data = db.fetchall()
     buy = []
     for d in data :
-        db.execute("SELECT price,name,userid FROM sell_list WHERE id={}".format(d[1]))
+        db.execute("SELECT price,name,userid,status FROM sell_list WHERE id={}".format(d[1]))
         d2 = db.fetchall()
         status = ''
-        if d[4]=="check" :
-            status = '(已出貨)'
+        if d2[3]=="check" :
+            status = '(已結單)'
         print (d)
         print (d2)
         print (status)

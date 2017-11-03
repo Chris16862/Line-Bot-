@@ -28,7 +28,7 @@ def Cancel_Buy(pro_id,userid,con) :
     status = db.fetchone()
     if status[0]=="check" :
         db.close()
-        return TextSendMessage(text="本商品已出單，無法退貨囉")
+        return TextSendMessage(text="本商品已結單，無法退貨囉")
     db.execute("SELECT amount FROM buy_list WHERE thing_id={}".format(pro_id))
     amount = db.fetchone()
     db.execute("UPDATE sell_list SET amount=amount+{},status='finish' WHERE id={}".format(amount[0],pro_id))
