@@ -186,7 +186,7 @@ def callback():
                 line_bot_api.reply_message(
                     event.reply_token,
                     Order_Receive(
-                        data[1]
+                        data[1],
                     )
                 )
             elif data[0]=="cancel" :
@@ -247,6 +247,7 @@ def callback():
                     event.reply_token,
                     TextMessage(text="目前沒有輸入東西喔～")
                 )
+                continue
             line_bot_api.reply_message(
                     event.reply_token,
                         Cancel(

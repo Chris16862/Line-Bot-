@@ -43,7 +43,7 @@ def Check(id, con, confirm) :
         data_2 = db.fetchone()
         db.execute("SELECT name FROM user_list WHERE userid='{}'".format(data_2[0]))
         seller = db.fetchone()
-        name = data_2[0]
+        name = data_2[1]
         amount = data[2]
         push = [
             TextSendMessage(text="賣家姓名: {}\n已將商品出貨，若已收到商品請點下面的按鈕".format(seller[0])),
@@ -91,8 +91,7 @@ def Check(id, con, confirm) :
             )
         return TextSendMessage(text="交易完成")
 def Order_Receive(order_id) :
-    return 
-    TemplateSendMessage(
+    return TemplateSendMessage(
         alt_text="商品取貨確認",
         template=ConfirmTemplate(
             text="確認收到商品？",
