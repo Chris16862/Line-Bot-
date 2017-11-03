@@ -12,6 +12,8 @@ def Search(order_id,userid,con) :
     db = con.cursor()
     db.execute("SELECT userid,thing_id,amount FROM buy_list WHERE id = {}".format(order_id))
     data = db.fetchone()
+    if not data :
+        return TextSendMessage("訂單不存在")
     db.execute("SELECT userid,name FROM sell_list WHERE id = {}".format(data[1]))
     data_2 = db.fetchone()
     if userid!=data_2[0] :
