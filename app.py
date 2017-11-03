@@ -416,6 +416,8 @@ def callback():
                 reply
             )
         elif event.message.text=="/Search" :
+            db.execute("UPDATE user_list SET status='searching' WHERE userid='{}'".format(userid))
+            con.commit()
             line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(text="請輸入想搜尋的訂單編號: ")

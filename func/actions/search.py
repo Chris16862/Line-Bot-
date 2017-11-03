@@ -16,11 +16,14 @@ def Search(order_id,userid,con) :
     data_2 = db.fetchone()
     if userid!=data_2[0] :
         db.close()
-        return TextSendMessage(text="這不是您的訂單喔~")
+        return TextSendMessage(text="這不是您的訂單喔~\n請重新輸入")
     db.execute("SELECT name FROM user_list WHERE userid = '{}'".format(data[0]))
     buyer_name = db.fetchone()
     name = data_2[1]
     amount = data[2]
+    db.execute("UPDATE user_list SET status='finish' WHERE userid='{}'".format(userid))
+    con.commit()
+    db.close()
     return TemplateSendMessage(
         alt_text='Confirm template',
         template=ConfirmTemplate(
