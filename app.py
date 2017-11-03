@@ -197,27 +197,13 @@ def callback():
                         )
                 )
             elif data[0]=="cancel_buy" :
-                db.execute("SELECT status FROM sell_list WHERE id={}".format(data[1]))
-                status = db.fetchone()
-                db.execute("SELECT amount FROM buy_list WHERE thing_id={}".format(data[1]))
-                amount = db.fetchone()
-                if status[0]=="check" :
-                    line_bot_api.reply_message(
-                        event.reply_token,
-                        TextSendMessage(text="本商品已出單，無法退貨囉")
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    Cancel_Buy(
+                        data[1],
+                        con
                     )
-                else :
-                    db.execute("UPDATE sell_list SET amount=amount+{},status='finish' WHERE id={}".format(amount[0],data[1]))
-                    con.commit()
-                    line_bot_api.reply_message(
-                        event.reply_token,
-                        Cancel(
-                            [('finish',)],
-                            "buy",
-                            userid,
-                            con
-                            )
-                    )
+                )
         if not isinstance(event, MessageEvent):
             continue
         if isinstance(event.message, ImageMessage) and sell_status:

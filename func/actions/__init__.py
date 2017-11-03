@@ -1,4 +1,4 @@
-from .cancel import Cancel
+from .cancel import *
 from .buy import Buy
 from .info import Info
 from .sell import Sell

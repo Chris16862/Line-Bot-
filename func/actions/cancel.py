@@ -21,3 +21,18 @@ def Cancel(status,action,userid,con) :
     return TextSendMessage(
     	text="取消成功"
     	)
+
+def Cancel_Buy(pro_id,userid,con) :
+    db = con.cursor()
+    db.execute("SELECT status FROM sell_list WHERE id={}".format(pro_id))
+    status = db.fetchone()
+    if status[0]=="check" :
+        return TextSendMessage(text="本商品已出單，無法退貨囉")
+    db.execute("SELECT amount FROM buy_list WHERE thing_id={}".format(pro_id))
+    amount = db.fetchone()
+    else :
+        db.execute("UPDATE sell_list SET amount=amount+{},status='finish' WHERE id={}".format(amount[0],pro_id))
+        con.commit()
+        db.execute("DELETE FROM buy_list WHERE thing_id={} and userid='{}'".format(pro_id, userid))
+        con.commit()
+    return  TextSendMessage(text="取消成功")
