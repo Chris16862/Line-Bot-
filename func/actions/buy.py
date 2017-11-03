@@ -58,7 +58,7 @@ def Buy(event, status, userid, con):
                                 PostbackTemplateAction(
                                     label='商品詳情',
                                     data='info,{}'.format(int(buy)),
-                                )
+                                ),
                                 PostbackTemplateAction(
                                     label='立即購買',
                                     data='buy,{}'.format(int(buy)),
