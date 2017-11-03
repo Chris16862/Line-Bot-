@@ -19,12 +19,12 @@ def Buy(event, status, userid, con):
         con.commit()
         return TextSendMessage(text="購買商品為: {}\n請輸入購買數量:".format(data[0][0]))
     if not status:
-        s="check"
+        s="enter_num"
         db.execute("INSERT INTO buy_list (userid, status) VALUES (%s, %s)",(userid, s))
         con.commit()
         db.close()
         return TextSendMessage(text="請輸入商品編號:")
-    elif status[0][0]=="check":
+    elif status[0][0]=="enter_num":
         buy=event.message.text
         if buy.isdigit():
             s="count"

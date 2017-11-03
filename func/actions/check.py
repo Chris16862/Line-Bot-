@@ -37,8 +37,10 @@ def Check(id, con, confirm) :
             )
          )
     elif confirm=="order_yes" :
-        db.execute("SELECT userid,thing_id,amount FROM buy_list WHERE id={}".format(id))
+        db.execute("SELECT userid,thing_id,amount,status FROM buy_list WHERE id={}".format(id))
         data = db.fetchone()
+        if data[3] == "check" :
+            return TextSendMessage("本商品已出貨")
         db.execute("SELECT userid,name FROM sell_list WHERE id={}".format(data[1]))
         data_2 = db.fetchone()
         db.execute("SELECT name FROM user_list WHERE userid='{}'".format(data_2[0]))
