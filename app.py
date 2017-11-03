@@ -37,10 +37,6 @@ def callback():
     except InvalidSignatureError:
         abort(400)
     for event in events:
-        db.execute("SELECT * FROM user_list WHERE userid='{}'".format(event.source.user_id))
-        if not db.fetchall() :
-            db.execute("INSERT INTO user_list(userid,status) VALUES (%s,%s)", (event.source.user_id,"new",))
-            con.commit()
         if isinstance(event, JoinEvent) :
             db.execute("INSERT INTO group_list (grid) VALUES (%s)", (event.source.group_id,))
             con.commit()
@@ -68,6 +64,10 @@ def callback():
                         )
             continue
         userid = event.source.user_id
+        db.execute("SELECT * FROM user_list WHERE userid='{}'".format(userid))
+        if not db.fetchall() :
+            db.execute("INSERT INTO user_list(userid,status) VALUES (%s,%s)", (userid,"new",))
+            con.commit()
         db.execute("SELECT status FROM sell_list WHERE status!='finish' and status!='check' and userid='{}'".format(userid))
         sell_status = db.fetchall()
         db.execute("SELECT status FROM user_list WHERE status!='finish' and userid='{}'".format(userid))
