@@ -415,13 +415,13 @@ def callback():
                 event.reply_token,
                 reply
             )
+        elif event.message.text=="/Search" :
+            return TextSendMessage(text="請輸入想搜尋的訂單編號: ")
         else :
             line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(text="點選下方功能列表內的按鈕，即可使用功能喔～～")
             )
-        elif event.message.text=="/Search" :
-            return TextSendMessage(text="請輸入想搜尋的訂單編號: ")
     return 'OK'
    
 
