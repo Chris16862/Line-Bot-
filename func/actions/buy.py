@@ -45,7 +45,7 @@ def Buy(event, status, userid, con):
             elif data[0][2]<=0 :
                 db.close()
                 return TextSendMessage("本商品已售完~ \n請輸入其他商品編號")
-            db.execute("DELETE FROM buy_list WHERE userid='{}' and status='enter_num'".format(int(buy), userid))
+            db.execute("DELETE FROM buy_list WHERE userid='{}' and status='enter_num'".format(userid))
             con.commit()
             db.close()
             return TemplateSendMessage(
