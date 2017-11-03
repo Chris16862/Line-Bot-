@@ -45,7 +45,7 @@ def Buy(event, status, userid, con):
                 return TextSendMessage("本產品已經結單囉～\n請輸入其他商品編號")
             elif data[0][2]<=0 :
                 db.close()
-                return TextSendMessage("本商品已售完~")
+                return TextSendMessage("本商品已售完~ \n請輸入其他商品編號")
             db.execute("UPDATE buy_list SET thing_id={},status='{}' WHERE status='check' and userid='{}'".format(int(buy), s, userid))
             con.commit()
             db.close()

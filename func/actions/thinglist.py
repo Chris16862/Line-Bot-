@@ -23,6 +23,7 @@ def ThingList(userid, count, con) :
             status = '(已出貨)'
         print (d)
         print (d2)
+        print (status)
         buy.append(
             CarouselColumn(
                 thumbnail_image_url='https://stu-web.tkucs.cc/404411240/chatbot-images/pic{}.jpg'.format(d[1]),
