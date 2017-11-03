@@ -12,18 +12,21 @@ def ThingList(userid, count, con) :
     elif count == -2 :
         return TextSendMessage(text="沒有下一頁了！")
     db = con.cursor()
-    db.execute("SELECT * FROM buy_list WHERE userid='{}' and id<{} and status='finish' ORDER BY id DESC LIMIT 5 ".format(userid, count))
+    db.execute("SELECT * FROM buy_list WHERE userid='{}' and id<{} and (status='finish' or status='check') ORDER BY id DESC LIMIT 5 ".format(userid, count))
     data = db.fetchall()
     buy = []
     for d in data :
         db.execute("SELECT price,name,userid FROM sell_list WHERE id={}".format(d[1]))
         d2 = db.fetchall()
+        status = ''
+        if d[4]=="check" :
+            status = '(已出貨)'
         print (d)
         print (d2)
         buy.append(
             CarouselColumn(
                 thumbnail_image_url='https://stu-web.tkucs.cc/404411240/chatbot-images/pic{}.jpg'.format(d[1]),
-                title='訂單編號#{}\n'.format(d[0]),
+                title='訂單編號#{}\n {}'.format(d[0],status),
                 text='商品編號#{}\n商品名稱: {}\n總價: {}\n數量: {}'.format(d[1],d2[0][1],d2[0][0]*d[2],d[2]),
                 actions=[
                     PostbackTemplateAction(
