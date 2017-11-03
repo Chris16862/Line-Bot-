@@ -70,9 +70,9 @@ def callback():
         userid = event.source.user_id
         db.execute("SELECT status FROM sell_list WHERE status!='finish' and status!='check' and userid='{}'".format(userid))
         sell_status = db.fetchall()
-        db.execute("SELECT status FROM user_list WHERE status!='finish' and status!='check' and userid='{}'".format(userid))
+        db.execute("SELECT status FROM user_list WHERE status!='finish' and userid='{}'".format(userid))
         user_status = db.fetchall()
-        db.execute("SELECT status FROM buy_list WHERE status!='finish' and userid='{}'".format(userid))
+        db.execute("SELECT status FROM buy_list WHERE status!='finish' and status!='check' and userid='{}'".format(userid))
         buy_status = db.fetchall()
         if isinstance(event, PostbackEvent) :
             if sell_status or user_status or buy_status :
@@ -275,11 +275,14 @@ def callback():
             )
         elif user_status :
             if user_status[0][0] == "searching" :
-                Search(
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    Search(
                     event.message.text,
                     userid,
                     con
                     )
+                )
             else :
                 line_bot_api.reply_message(
                 event.reply_token,
