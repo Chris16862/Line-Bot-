@@ -37,7 +37,7 @@ def Check(id, con, confirm) :
             )
          )
     elif confirm=="order_yes" :
-        db.execute("UPDATE buy_list SET status='check' WHERE id=(%s,)",(id,))
+        db.execute("UPDATE buy_list SET status='check' WHERE id={}".format(id))
         con.commit()
         db.close()
         return TextSendMessage(text="設定出貨完成")

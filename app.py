@@ -171,6 +171,7 @@ def callback():
                         )
                     )
             elif data[0]=="check" :
+                print (data[1])
                 line_bot_api.reply_message(
                     event.reply_token,
                     Check(
