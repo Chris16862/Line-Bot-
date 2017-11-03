@@ -12,6 +12,15 @@ def Check(id, con, confirm) :
     if confirm=="pro_yes" :
         db.execute("UPDATE sell_list SET status='check' WHERE id={}".format(id))
         con.commit()
+        db.execute("SELECT userid FROM buy_list WHERE thing_id={}".format(id))
+        buyer = db.fetchall()
+        db.execute("SELECT name FROM sell_list WHERE id={}".format(id))
+        name = db.fetchone()
+        for b in buyer :
+            line_bot_api.push_message(
+                b[0],
+                TextSendMessage(text="您所購買的商品已結單\n商品編號#{}\n商品名稱: {}\n請密切關注訂單".format(id,name[0]))
+            )
         db.close()
         return TextSendMessage(text="結單完成")
     elif confirm=="pro_no" :
