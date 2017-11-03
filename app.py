@@ -416,7 +416,10 @@ def callback():
                 reply
             )
         elif event.message.text=="/Search" :
-            return TextSendMessage(text="請輸入想搜尋的訂單編號: ")
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text="請輸入想搜尋的訂單編號: ")
+                )
         else :
             line_bot_api.reply_message(
                 event.reply_token,
