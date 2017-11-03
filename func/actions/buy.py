@@ -34,8 +34,7 @@ def Buy(event, status, userid, con):
     elif status[0][0]=="enter_num":
         buy=event.message.text
         if buy.isdigit():
-            s="count"
-            db.execute("SELECT name,status,amount FROM sell_list WHERE id={}".format(int(buy)))
+            db.execute("SELECT name,status,amount,price FROM sell_list WHERE id={}".format(int(buy)))
             data=db.fetchall()
             if not data :
                 db.close()
@@ -46,13 +45,30 @@ def Buy(event, status, userid, con):
             elif data[0][2]<=0 :
                 db.close()
                 return TextSendMessage("本商品已售完~ \n請輸入其他商品編號")
-            db.execute("UPDATE buy_list SET thing_id={},status='{}' WHERE status='check' and userid='{}'".format(int(buy), s, userid))
+            db.execute("DELETE FROM buy_list WHERE thing_id={} and userid='{}'".format(int(buy), userid))
             con.commit()
             db.close()
-            return TextSendMessage(text="購買商品為: {}\n請輸入購買數量:".format(data[0][0]))
+            return TemplateSendMessage(
+                        alt_text='template',
+                        template=ButtonsTemplate(
+                            thumbnail_image_url='https://stu-web.tkucs.cc/404411240/chatbot-images/pic{}.jpg'.format(int(buy)),
+                            title='商品編號#{}'.format(int(buy)),
+                            text='商品名稱: {}\n單價: {}\n數量: {}'.format(data[0][0], data[0][3], data[0][2]),
+                            actions=[
+                                PostbackTemplateAction(
+                                    label='商品詳情',
+                                    data='info,{}'.format(int(buy)),
+                                )
+                                PostbackTemplateAction(
+                                    label='立即購買',
+                                    data='buy,{}'.format(int(buy)),
+                                )
+                            ]
+                        )
+                    )
         else :
             db.close()
-            return TextSendMessage(text="只需要輸入數字，請重新輸入\n若要取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
+            return TextSendMessage(text="訂單編號需為數字，請重新輸入\n若要取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
     elif status[0][0]=="count":
         if event.message.text.isdigit() :
             amount = int(event.message.text)
