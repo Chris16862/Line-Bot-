@@ -89,6 +89,9 @@ def Check(id, con, confirm) :
                 data_2[0],
                 TextSendMessage(text="商品編號#{}的買家皆已收到商品，該商品將會自動刪除".format(data[1]))
             )
+            db.execute("DELETE FROM sell_list WHERE id={}".format(data[1]))
+            con.commit()
+        db.close()
         return TextSendMessage(text="交易完成")
 def Order_Receive(order_id) :
     return TemplateSendMessage(
