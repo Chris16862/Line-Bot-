@@ -346,7 +346,6 @@ def callback():
                     ]
                 )
             )
-            continue
         elif event.message.text=='賣家專區' :
              line_bot_api.reply_message(
                 event.reply_token,
@@ -376,7 +375,6 @@ def callback():
                     ]
                 )
             )
-            continue
         elif event.message.text=="用戶資料" :
             line_bot_api.reply_message(
                 event.reply_token,
