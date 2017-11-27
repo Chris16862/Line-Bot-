@@ -228,7 +228,7 @@ def callback():
                     )
                 )
             return "OK"
-        if event.message.text=="/Cancel" :
+        if event.message.text=="取消" :
             if sell_status :
                 c_status = sell_status
                 action = 'sell'
@@ -297,7 +297,7 @@ def callback():
                     con
                 )
             )
-        elif event.message.text=="/Sell" :
+        elif event.message.text=="賣東西" :
             line_bot_api.reply_message(
                 event.reply_token,
                 Sell(
@@ -307,7 +307,7 @@ def callback():
                     con
                 )
             )
-        elif event.message.text=="/Buy" :
+        elif event.message.text=="搜尋商品" :
             line_bot_api.reply_message(
                 event.reply_token,
                 Buy(
@@ -317,53 +317,67 @@ def callback():
                     con
                 )
             )
-        elif event.message.text=='/BuyList' :
+        elif event.message.text=='買家專區' :
             line_bot_api.reply_message(
                 event.reply_token,
                 ImagemapSendMessage(
                     base_url='https://stu-web.tkucs.cc/404411091/linebot/ButtonBuy/1040.png?_ignored=',
                     alt_text='買家專區',
-                    base_size=BaseSize(height=520, width=1040),
+                    base_size=BaseSize(height=1040, width=1040),
                     actions=[
                         MessageImagemapAction(
-                            text='/Shop',
+                            text='商城',
                             area=ImagemapArea(
-                                x=0, y=0, width=520, height=520
+                                x=0, y=0, width=1040, height=520
                             )
                         ),
                         MessageImagemapAction(
-                            text='/ThingList',
+                            text='我的購買清單',
                             area=ImagemapArea(
-                                x=520, y=0, width=520, height=520
+                                x=0, y=520, width=520, height=520
+                            )
+                        ),
+                        MessageImagemapAction(
+                            text='搜尋商品',
+                            area=ImagemapArea(
+                                x=520, y=520, width=520, height=520
                             )
                         )
                     ]
                 )
             )
-        elif event.message.text=='/SellList' :
+            continue
+        elif event.message.text=='賣家專區' :
              line_bot_api.reply_message(
                 event.reply_token,
                 ImagemapSendMessage(
                     base_url='https://stu-web.tkucs.cc/404411091/linebot/ButtonSell/1040.png?_ignored=',
                     alt_text='賣家專區',
-                    base_size=BaseSize(height=520, width=1040),
+                    base_size=BaseSize(height=1040, width=1040),
                     actions=[
                         MessageImagemapAction(
-                            text='/BuyerList',
+                            text='賣東西',
                             area=ImagemapArea(
-                                x=0, y=0, width=520, height=520
+                                x=0, y=0, width=1040, height=520
                             )
                         ),
                         MessageImagemapAction(
-                            text='/Search',
+                            text='出貨',
                             area=ImagemapArea(
-                                x=520, y=0, width=520, height=520
+                                x=0, y=520, width=520, height=520
+                            )
+                        ),
+                        MessageImagemapAction(
+                            text='商品管理',
+                            area=ImagemapArea(
+                                x=520, y=520, width=520, height=520
                             )
                         )
                     ]
                 )
             )
-        elif event.message.text=="/Info" :
+            continue
+        elif event.message.text=="用戶資料" :
             line_bot_api.reply_message(
                 event.reply_token,
                 Info(
@@ -373,7 +387,7 @@ def callback():
                     con
                     )
                 )
-        elif event.message.text=="/Shop" :
+        elif event.message.text=="商城" :
             db.execute("SELECT id FROM sell_list WHERE status='finish' and amount>0 ORDER BY id DESC LIMIT 1")
             count = db.fetchall()
             if not count :
@@ -392,7 +406,7 @@ def callback():
                         con
                         )
                     )
-        elif event.message.text=="/ThingList" :
+        elif event.message.text=="我的購買清單" :
             db.execute("SELECT id FROM buy_list WHERE userid='{}' ORDER BY id DESC LIMIT 1".format(userid))
             count = db.fetchall()
             if not count :
@@ -407,7 +421,7 @@ def callback():
                 event.reply_token,
                 reply
             )
-        elif event.message.text=="/BuyerList" :
+        elif event.message.text=="商品管理" :
             db.execute("SELECT id FROM sell_list WHERE userid='{}' ORDER BY id DESC LIMIT 1".format(userid))
             count = db.fetchone()
             if not count :
@@ -422,12 +436,12 @@ def callback():
                 event.reply_token,
                 reply
             )
-        elif event.message.text=="/Search" :
+        elif event.message.text=="出貨" :
             db.execute("UPDATE user_list SET status='searching' WHERE userid='{}'".format(userid))
             con.commit()
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text="請輸入想搜尋的訂單編號: ")
+                TextSendMessage(text="請輸入訂單編號: ")
                 )
         else :
             line_bot_api.reply_message(
