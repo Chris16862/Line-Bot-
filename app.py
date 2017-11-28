@@ -220,7 +220,7 @@ def callback():
         if not isinstance(event.message, TextMessage):
             continue
         db.execute("SELECT * FROM user_list WHERE userid='{}' and status='new'".format(userid))
-        if db.fetchall() and event.message.text!="/Info" :
+        if db.fetchall() and event.message.text!="用戶資料" :
             line_bot_api.reply_message(
                 event.reply_token,
                 TextMessage(
