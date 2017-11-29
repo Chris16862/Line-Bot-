@@ -15,15 +15,6 @@ def Excel(thing_id, userid, con) :
     db.execute("SELECT * FROM buy_list WHERE thing_id={}".format(thing_id))
     data = db.fetchall()
     os.system("touch profile.csv")
-    server = "cscc.hsexpert.net"
-    port = 22
-    user = "apie0419"
-    password = "a19970419"
-    client = SSHClient()
-    client.load_system_host_keys()
-    client.set_missing_host_key_policy(AutoAddPolicy())
-    client.connect(server, port, user, password)
-    scp = SCPClient(client.get_transport())
     file = open('profile.csv', 'w')
     csvCursor = csv.writer(file)
     csvCursor.writerow(['買家姓名','Line暱稱','電話','購買數量','是否出貨'])
@@ -36,6 +27,16 @@ def Excel(thing_id, userid, con) :
         else :
             status = 'no'
         csvCursor.writerow([data_2[0],profile.display_name,data_2[1],d[2],status])
+        print ([data_2[0],profile.display_name,data_2[1],d[2],status])
+    server = "cscc.hsexpert.net"
+    port = 22
+    user = "apie0419"
+    password = "a19970419"
+    client = SSHClient()
+    client.load_system_host_keys()
+    client.set_missing_host_key_policy(AutoAddPolicy())
+    client.connect(server, port, user, password)
+    scp = SCPClient(client.get_transport())
     scp.put('profile.csv','public_html/chatbot-excels/{}.csv'.format(userid))
     scp.close()
     return TextSendMessage(text="stu-web.tkucs.cc/404411240/chatbot-excels/{}.csv".format(userid))
