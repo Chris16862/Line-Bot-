@@ -225,6 +225,19 @@ def callback():
                         con
                     )
                 )
+            elif data[0]=="export" :
+                line_bot_api.push_message(
+                    userid,
+                    TextSendMessage("建立excel中，請稍候...")
+                )
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    Excel(
+                        data[1],
+                        userid,
+                        con
+                    )
+                )
         if not isinstance(event, MessageEvent):
             continue
         if isinstance(event.message, ImageMessage) and sell_status:

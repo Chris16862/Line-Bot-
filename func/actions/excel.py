@@ -38,4 +38,4 @@ def Excel(thing_id, userid, con) :
         csvCursor.writerow([data_2[0],profile.display_name,data_2[1],d[2],status])
     scp.put('profile.csv','public_html/chatbot-excels/{}.csv'.format(userid))
     scp.close()
-    return TextSendMessage(text="stu-web.tkucs.cc/404411240/{}.csv".format(userid))
+    return TextSendMessage(text="stu-web.tkucs.cc/404411240/chatbot-excels/{}.csv".format(userid))
