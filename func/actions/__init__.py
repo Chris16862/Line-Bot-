@@ -8,3 +8,4 @@ from .buyerlist import BuyerList
 from .product import Product
 from .check import *
 from .search import Search
+from .excel import Excel

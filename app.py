@@ -134,6 +134,7 @@ def callback():
                 )
             elif data[0]=="buyer" :
                 db.execute("SELECT userid,amount,id,input_time,status FROM buy_list WHERE thing_id={} ORDER BY id ASC".format(data[1]))
+                thing_id = data[1]
                 data = db.fetchall()
                 if not data :
                     line_bot_api.reply_message(
@@ -163,6 +164,25 @@ def callback():
                     userid,
                     TextSendMessage(
                        text="\n".join(reply) 
+                    )
+                )
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TemplateSendMessage(
+                        alt_text='Confirm template',
+                        template=ConfirmTemplate(
+                            text="是否需要將用戶資料匯出excel?",
+                            actions=[
+                                PostbackTemplateAction(
+                                    label='Yes',
+                                    data='export,{}'.format(thing_id)
+                                ),
+                                PostbackTemplateAction(
+                                    label='No',
+                                    data='cancel'
+                                )
+                            ]
+                        )
                     )
                 )
             elif data[0]=="info" :
