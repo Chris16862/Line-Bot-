@@ -28,7 +28,7 @@ def Excel(thing_id, userid, con) :
     csvCursor = csv.writer(file)
     csvCursor.writerow(['買家姓名','Line暱稱','電話','購買數量','是否出貨'])
     for d in data :
-        profile = line_bot_api.get_profile(d[0])
+        profile = line_bot_api.get_profile(d[3])
         db.execute("SELECT name,phone FROM user_list WHERE userid='{}'".format(d[3]))
         data_2 = db.fetchone()
         if d[4]=='check' :
