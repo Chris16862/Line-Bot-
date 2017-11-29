@@ -28,6 +28,7 @@ def Excel(thing_id, userid, con) :
             status = 'no'
         csvCursor.writerow([data_2[0],profile.display_name,data_2[1],d[2],status])
         print ([data_2[0],profile.display_name,data_2[1],d[2],status])
+    file.close()
     server = "cscc.hsexpert.net"
     port = 22
     user = "apie0419"
