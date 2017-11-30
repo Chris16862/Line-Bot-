@@ -1,6 +1,6 @@
 from linebot.models import *
 import os
-from func.pic import save_pic
+from .pic import save_pic
 from linebot import (
     LineBotApi
 )
