@@ -19,6 +19,7 @@ def save_pic(event,pic_id) :
                 fd.write(chunk)
         img = Image.open('pic.jpg')
         img_size = img.size # (width, height)
+        print (img_size)
         if img_size[0] > img_size[1] :
             p_size = [240, int(img_size[1]*(240/img_size[0]))]
             new_size = [1024, int(img_size[1]*(1024/img_size[0]))]
