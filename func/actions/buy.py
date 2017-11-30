@@ -130,6 +130,12 @@ def Buy(event, status, userid, con):
             db.close()
             return TextSendMessage(text="購買成功")
         elif event.message.text=='No' :
+            line_bot_api.push_message(
+                userid,
+                TextSendMessage(
+                    text="請點選需要更改的項目"
+                )
+            )
             db.close()
             return ImagemapSendMessage(
                 base_url='https://stu-web.tkucs.cc/404411091/linebot/Change/130.png?_ignored=',
@@ -149,7 +155,7 @@ def Buy(event, status, userid, con):
                         )
                     ),
                     MessageImagemapAction(
-                        text='取消更改',
+                        text='Yes',
                         area=ImagemapArea(
                             x=694, y=0, width=346, height=130
                         )

@@ -19,7 +19,7 @@ def Info(event, userid, status,con) :
         return TemplateSendMessage(
 	        alt_text='Confirm template',
 	        template=ConfirmTemplate(
-	            text="需要更改資料嗎？\n姓名:"+data[0][0]+"\n手機:"+data[0][1],
+	            text="正確資料嗎？\n姓名:"+data[0][0]+"\n手機:"+data[0][1],
 	            actions=[
 	            MessageTemplateAction(
 	                label='Yes',
@@ -59,7 +59,7 @@ def Info(event, userid, status,con) :
         return TemplateSendMessage(
             alt_text='Confirm template',
             template=ConfirmTemplate(
-                text="輸入完畢，請確認內容是否需要更改\n姓名:"+data[0][0]+"\n手機:"+event.message.text,
+                text="輸入完畢，請確認內容是否正確\n姓名:"+data[0][0]+"\n手機:"+event.message.text,
                 actions=[
                 MessageTemplateAction(
                     label='Yes',
@@ -74,31 +74,45 @@ def Info(event, userid, status,con) :
          )
     elif status[0][0] == "modify" :
         if event.message.text == "Yes" :
-            db.close()
-            return TemplateSendMessage(
-                alt_text='Buttons template',
-                template=ButtonsTemplate(
-                    title='用戶資料',
-                    text='請問需要哪個項目？',
-                    actions=[
-                    MessageTemplateAction(
-                        label='姓名',
-                        text='姓名',
-                        ),
-                    MessageTemplateAction(
-                        label='手機',
-                        text='手機'
-                        ),
-                     ]
-                )
-            )
-        elif event.message.text == "No" :
-              db.execute("UPDATE user_list SET status='finish' WHERE userid='{}'".format(userid))
+            db.execute("UPDATE user_list SET status='finish' WHERE userid='{}'".format(userid))
               con.commit()
               db.close()
               return TextSendMessage(
                    text="用戶資料更改完成"
                    )
+        elif event.message.text == "No" :
+             db.close()
+             line_bot_api.push_message(
+                userid,
+                TextSendMessage(
+                    text="請點選需要更改的項目"
+                )
+            )
+            return ImagemapSendMessage(
+                    base_url='https://stu-web.tkucs.cc/404411091/linebot/Change/130_2.png?_ignored=',
+                    alt_text='用戶資料更改',
+                    base_size=BaseSize(height=130, width=1040),
+                    actions=[
+                        MessageImagemapAction(
+                            text='姓名',
+                            area=ImagemapArea(
+                                x=0, y=0, width=346, height=130
+                            )
+                        ),
+                        MessageImagemapAction(
+                            text='手機',
+                            area=ImagemapArea(
+                                x=347, y=0, width=346, height=130
+                            )
+                        ),
+                        MessageImagemapAction(
+                            text='Yes',
+                            area=ImagemapArea(
+                                x=694, y=0, width=346, height=130
+                            )
+                        )
+                    ]
+                )
         elif event.message.text == "姓名" :
               db.execute("UPDATE user_list SET status='modify_name' WHERE userid='{}'".format(userid))
               con.commit()
@@ -120,7 +134,7 @@ def Info(event, userid, status,con) :
             return TemplateSendMessage(
                 alt_text='Confirm template',
                 template=ConfirmTemplate(
-                    text="輸入完畢，請確認內容是否需要更改\n姓名:"+data[0]+"\n手機:"+data[1],
+                    text="輸入完畢，請確認內容是否正確\n姓名:"+data[0]+"\n手機:"+data[1],
                     actions=[
                     MessageTemplateAction(
                         label='Yes',
@@ -142,7 +156,7 @@ def Info(event, userid, status,con) :
         return TemplateSendMessage(
             alt_text='Confirm template',
             template=ConfirmTemplate(
-                text="輸入完畢，請確認內容是否需要更改\n姓名:"+event.message.text+"\n手機:"+data[0][0],
+                text="輸入完畢，請確認內容是否正確\n姓名:"+event.message.text+"\n手機:"+data[0][0],
                 actions=[
                 MessageTemplateAction(
                     label='Yes',
@@ -168,7 +182,7 @@ def Info(event, userid, status,con) :
         return TemplateSendMessage(
             alt_text='Confirm template',
             template=ConfirmTemplate(
-                text="輸入完畢，請確認內容是否需要更改\n姓名:"+data[0][0]+"\n手機:"+event.message.text,
+                text="輸入完畢，請確認內容是否正確\n姓名:"+data[0][0]+"\n手機:"+event.message.text,
                 actions=[
                 MessageTemplateAction(
                     label='Yes',
