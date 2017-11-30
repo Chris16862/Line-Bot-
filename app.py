@@ -238,6 +238,13 @@ def callback():
                         con
                     )
                 )
+            elif data[0]=="picture" :
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    Trans_Pic(
+                        data[1]
+                    )
+                )
         if not isinstance(event, MessageEvent):
             continue
         if isinstance(event.message, ImageMessage) and sell_status:

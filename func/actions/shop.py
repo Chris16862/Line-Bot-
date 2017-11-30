@@ -32,6 +32,10 @@ def Shop(userid,count,con) :
                     PostbackTemplateAction(
                         label='立即購買',
                         data='buy,{}'.format(d[0])
+                    ),
+                    PostbackTemplateAction(
+                        label='觀看原圖',
+                        data='picture,{}'.format(d[0])
                     )
                 ]
             )

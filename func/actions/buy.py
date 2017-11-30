@@ -161,7 +161,7 @@ def Buy(event, status, userid, con):
                         )
                     )
                 ]
-        )
+            )
         elif event.message.text=='商品' :
             db.execute("UPDATE buy_list SET status='check' WHERE status='modify' and userid='{}'".format(userid))
             con.commit()
