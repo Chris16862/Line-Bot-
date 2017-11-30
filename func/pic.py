@@ -18,14 +18,14 @@ def save_pic(event,pic_id) :
             for chunk in message_content.iter_content():
                 fd.write(chunk)
         img = Image.open('pic.jpg')
-        img_size = img.size # (width, height)
+        width, height = img.size # (width, height)
         print (img_size)
-        if img_size[0] > img_size[1] :
-            p_size = [240, int(img_size[1]*(240/img_size[0]))]
-            new_size = [1024, int(img_size[1]*(1024/img_size[0]))]
+        if width > height :
+            p_size = [240, int(height*(240/width))]
+            new_size = [1024, int(height*(1024/width))]
         else : 
-            p_size = [int(img_size[0]*(240/img_size[1])), 240]
-            new_size = [int(img_size[0]*(1024/img_size[1])), 1024]
+            p_size = [int(width*(240/height)), 240]
+            new_size = [int(width*(1024/height)), 1024]
         print (p_size,new_size)
         new_img= img.resize((p_size[0], p_size[1]),Image.ANTIALIAS)
         new_img.save('pic-p.jpg',quality=100)
