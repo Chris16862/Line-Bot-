@@ -75,11 +75,11 @@ def Info(event, userid, status,con) :
     elif status[0][0] == "modify" :
         if event.message.text == "Yes" :
             db.execute("UPDATE user_list SET status='finish' WHERE userid='{}'".format(userid))
-              con.commit()
-              db.close()
-              return TextSendMessage(
-                   text="用戶資料更改完成"
-                   )
+            con.commit()
+            db.close()
+            return TextSendMessage(
+                 text="用戶資料更改完成"
+            )
         elif event.message.text == "No" :
              db.close()
              line_bot_api.push_message(
