@@ -88,7 +88,8 @@ def Info(event, userid, status,con) :
                     text="請點選需要更改的項目"
                 )
              )
-            return ImagemapSendMessage(
+            return 
+            ImagemapSendMessage(
                 base_url='https://stu-web.tkucs.cc/404411091/linebot/Change/130_2.png?_ignored=',
                 alt_text='用戶資料更改',
                 base_size=BaseSize(height=130, width=1040),
