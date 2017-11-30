@@ -89,30 +89,30 @@ def Info(event, userid, status,con) :
                 )
              )
             return ImagemapSendMessage(
-                    base_url='https://stu-web.tkucs.cc/404411091/linebot/Change/130_2.png?_ignored=',
-                    alt_text='用戶資料更改',
-                    base_size=BaseSize(height=130, width=1040),
-                    actions=[
-                        MessageImagemapAction(
-                            text='姓名',
-                            area=ImagemapArea(
-                                x=0, y=0, width=346, height=130
-                            )
-                        ),
-                        MessageImagemapAction(
-                            text='手機',
-                            area=ImagemapArea(
-                                x=347, y=0, width=346, height=130
-                            )
-                        ),
-                        MessageImagemapAction(
-                            text='Yes',
-                            area=ImagemapArea(
-                                x=694, y=0, width=346, height=130
-                            )
+                base_url='https://stu-web.tkucs.cc/404411091/linebot/Change/130_2.png?_ignored=',
+                alt_text='用戶資料更改',
+                base_size=BaseSize(height=130, width=1040),
+                actions=[
+                    MessageImagemapAction(
+                        text='姓名',
+                        area=ImagemapArea(
+                            x=0, y=0, width=346, height=130
                         )
-                    ]
-                )
+                    ),
+                    MessageImagemapAction(
+                        text='手機',
+                        area=ImagemapArea(
+                            x=347, y=0, width=346, height=130
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='Yes',
+                        area=ImagemapArea(
+                            x=694, y=0, width=346, height=130
+                        )
+                    )
+                ]
+            )
         elif event.message.text == "姓名" :
               db.execute("UPDATE user_list SET status='modify_name' WHERE userid='{}'".format(userid))
               con.commit()
