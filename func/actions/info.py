@@ -88,6 +88,7 @@ def Info(event, userid, status,con) :
                     text="請點選需要更改的項目"
                 )
              )
+             """
             return ImagemapSendMessage(
                 base_url='https://stu-web.tkucs.cc/404411091/linebot/Change/130_2.png?_ignored=',
                 alt_text='用戶資料更改',
@@ -113,6 +114,7 @@ def Info(event, userid, status,con) :
                     )
                 ]
             )
+            """
         elif event.message.text == "姓名" :
               db.execute("UPDATE user_list SET status='modify_name' WHERE userid='{}'".format(userid))
               con.commit()
