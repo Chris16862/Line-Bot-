@@ -18,8 +18,8 @@ def save_pic(event,pic_id) :
             for chunk in message_content.iter_content():
                 fd.write(chunk)
         img = Image.open('pic.jpg')
-        width, height = img.size # (width, height)
-        print (img_size)
+        width= img.width
+        height = img.height
         if width > height :
             p_size = [240, int(height*(240/width))]
             new_size = [1024, int(height*(1024/width))]
