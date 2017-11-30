@@ -9,3 +9,4 @@ from .product import Product
 from .check import *
 from .search import Search
 from .excel import Excel
+from .pic import Trans_Pic
