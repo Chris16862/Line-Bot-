@@ -19,7 +19,7 @@ def Info(event, userid, status,con) :
         return TemplateSendMessage(
 	        alt_text='Confirm template',
 	        template=ConfirmTemplate(
-	            text="正確資料嗎？\n姓名:"+data[0][0]+"\n手機:"+data[0][1],
+	            text="資料正確嗎？\n姓名:"+data[0][0]+"\n手機:"+data[0][1],
 	            actions=[
 	            MessageTemplateAction(
 	                label='Yes',
@@ -88,33 +88,31 @@ def Info(event, userid, status,con) :
                     text="請點選需要更改的項目"
                 )
              )
-             """
-            return ImagemapSendMessage(
-                base_url='https://stu-web.tkucs.cc/404411091/linebot/Change/130_2.png?_ignored=',
-                alt_text='用戶資料更改',
-                base_size=BaseSize(height=130, width=1040),
-                actions=[
-                    MessageImagemapAction(
-                        text='姓名',
-                        area=ImagemapArea(
-                            x=0, y=0, width=346, height=130
+            return ImagemapSendMessage (
+                    base_url='https://stu-web.tkucs.cc/404411091/linebot/Change/130_2.png?_ignored=',
+                    alt_text='用戶資料更改',
+                    base_size=BaseSize(height=130, width=1040),
+                    actions=[
+                        MessageImagemapAction(
+                            text='姓名',
+                            area=ImagemapArea(
+                                x=0, y=0, width=346, height=130
+                            )
+                        ),
+                        MessageImagemapAction(
+                            text='手機',
+                            area=ImagemapArea(
+                                x=347, y=0, width=346, height=130
+                            )
+                        ),
+                        MessageImagemapAction(
+                            text='Yes',
+                            area=ImagemapArea(
+                                x=694, y=0, width=346, height=130
+                            )
                         )
-                    ),
-                    MessageImagemapAction(
-                        text='手機',
-                        area=ImagemapArea(
-                            x=347, y=0, width=346, height=130
-                        )
-                    ),
-                    MessageImagemapAction(
-                        text='Yes',
-                        area=ImagemapArea(
-                            x=694, y=0, width=346, height=130
-                        )
-                    )
-                ]
+                    ]
             )
-            """
         elif event.message.text == "姓名" :
               db.execute("UPDATE user_list SET status='modify_name' WHERE userid='{}'".format(userid))
               con.commit()
