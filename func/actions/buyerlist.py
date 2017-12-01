@@ -82,3 +82,54 @@ def BuyerList(userid, count, con) :
             ]
         )
     )
+def ShowBuyer(thing_id, userid, con) :
+    db = con.cursor()
+    db.execute("SELECT userid,amount,id,input_time,status FROM buy_list WHERE thing_id={} ORDER BY id ASC".format(thing_id))
+    data = db.fetchall()
+    if not data :
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="尚無買家")
+        )
+        return "OK"
+    reply = []
+    for d in data :
+        profile = line_bot_api.get_profile(d[0])
+        b_status = ''
+        if d[4] == "check" :
+            b_status = '(已出貨)' 
+        db.execute("SELECT name,phone FROM user_list WHERE userid='{}'".format(d[0]))
+        buyer_data = db.fetchone()
+        r = "訂單編號#{} {}\n買家: {} 真實姓名: {}\n聯絡方式:{}\n購買數量: {}\n時間: {}\n".format(d[2],b_status,profile.display_name, buyer_data[0], buyer_data[1],d[1],str(d[3]))
+        if len("\n\n".join(reply)) + len(r) >= 1000 :
+            line_bot_api.push_message(
+                userid,
+                TextSendMessage(
+                    text="\n".join(reply)
+                )
+            )
+            reply = []
+        reply.append(r)
+    line_bot_api.push_message(
+        userid,
+        TextSendMessage(
+           text="\n".join(reply) 
+        )
+    )
+    db.close()
+    return TemplateSendMessage(
+        alt_text='Confirm template',
+        template=ConfirmTemplate(
+            text="是否需要將用戶資料匯出成表格?",
+            actions=[
+                PostbackTemplateAction(
+                    label='Yes',
+                    data='export,{}'.format(thing_id)
+                ),
+                PostbackTemplateAction(
+                    label='No',
+                    data='cancel'
+                )
+            ]
+        )
+    )
