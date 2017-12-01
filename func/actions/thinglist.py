@@ -20,7 +20,7 @@ def ThingList(userid, count, con) :
         d2 = db.fetchall()
         status = ''
         if d2[0][3]=="check" :
-            status = '(已結單)'
+            status = '(已收單)'
         print (d)
         print (d2)
         print (status)

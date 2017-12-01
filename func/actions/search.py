@@ -23,7 +23,7 @@ def Search(order_id,userid,con) :
         return TextSendMessage(text="這不是您的訂單喔~\n請重新輸入")
     elif data_2[2]!='check' :
         db.close()
-        return TextSendMessage(text="您的商品還未結單喔～")
+        return TextSendMessage(text="您的商品還未收單喔～")
     db.execute("SELECT name FROM user_list WHERE userid = '{}'".format(data[0]))
     buyer_name = db.fetchone()
     name = data_2[1]

@@ -22,7 +22,7 @@ def BuyerList(userid, count, con) :
     thing = []
     for d in data :
         if d[6] == 'check' :
-            addition = '(已結單)'
+            addition = '(已收單)'
         else :
             addition = ''
         thing.append(
@@ -36,7 +36,7 @@ def BuyerList(userid, count, con) :
                         data='buyer,{}'.format(d[0])
                     ),
                     PostbackTemplateAction(
-                        label='結單',
+                        label='收單',
                         data='check,{},pro_no'.format(d[0])
                     )
                 ]
