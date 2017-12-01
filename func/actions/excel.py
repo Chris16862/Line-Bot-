@@ -17,7 +17,7 @@ def Excel(thing_id, userid, con) :
     os.system("touch profile.csv")
     file = open('profile.csv', 'w')
     csvCursor = csv.writer(file)
-    csvCursor.writerow(['買家姓名','Line暱稱','電話','購買數量','是否出貨'])
+    csvCursor.writerow(['買家姓名','Line暱稱','電話','購買數量','是否出貨','購買時間'])
     for d in data :
         profile = line_bot_api.get_profile(d[3])
         db.execute("SELECT name,phone FROM user_list WHERE userid='{}'".format(d[3]))
@@ -26,8 +26,8 @@ def Excel(thing_id, userid, con) :
             status = 'yes'
         else :
             status = 'no'
-        csvCursor.writerow([data_2[0],profile.display_name,data_2[1],d[2],status])
-        print ([data_2[0],profile.display_name,data_2[1],d[2],status])
+        csvCursor.writerow([data_2[0],profile.display_name,data_2[1],d[2],status,data_2[5]])
+        print ([data_2[0],profile.display_name,data_2[1],d[2],status,data_2[5]])
     file.close()
     server = "cscc.hsexpert.net"
     port = 22
