@@ -69,9 +69,6 @@ def Buy(event, status, userid, con):
                         ]
                     )
                 )
-        else :
-            db.close()
-            return TextSendMessage(text="訂單編號需為數字，請重新輸入\n若要取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
     elif status[0][0]=="count":
         if event.message.text.isdigit() :
             amount = int(event.message.text)
