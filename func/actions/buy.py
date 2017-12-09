@@ -33,42 +33,42 @@ def Buy(event, status, userid, con):
         return TextSendMessage(text="請輸入商品名稱:")
     elif status[0][0]=="enter_num":
         buy=event.message.text
-            db.execute("SELECT id,status,amount,price FROM sell_list WHERE name={}".format(buy))
-            data=db.fetchall()
-            if not data :
-                db.close()
-                return TextSendMessage(text="商品不存在，請重新輸入商品名稱\n若想取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
+        db.execute("SELECT id,status,amount,price FROM sell_list WHERE name={}".format(buy))
+        data=db.fetchall()
+        if not data :
+            db.close()
+            return TextSendMessage(text="商品不存在，請重新輸入商品名稱\n若想取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
             elif data[0][1]=="check" :
                 db.close()
                 return TextSendMessage("本產品已經收單囉～\n請輸入其他商品編號")
             elif data[0][2]<=0 :
                 db.close()
                 return TextSendMessage("本商品已售完~ \n請輸入其他商品編號")
-            db.execute("DELETE FROM buy_list WHERE userid='{}' and status='enter_num'".format(userid))
-            con.commit()
-            db.close()
-            return TemplateSendMessage(
-                        alt_text='template',
-                        template=ButtonsTemplate(
-                            thumbnail_image_url='https://stu-web.tkucs.cc/404411240/chatbot-images/pic{}.jpg'.format(int(buy)),
-                            title='商品編號#{}'.format(int(buy)),
-                            text='商品名稱: {}\n單價: {}\n數量: {}'.format(data[0][0], data[0][3], data[0][2]),
-                            actions=[
-                                PostbackTemplateAction(
-                                    label='商品詳情',
-                                    data='info,{}'.format(int(buy)),
-                                ),
-                                PostbackTemplateAction(
-                                    label='立即購買',
-                                    data='buy,{}'.format(int(buy)),
-                                ),
-                                PostbackTemplateAction(
-                                    label='觀看原圖',
-                                    data='picture,{}'.format(int(buy)),
-                                )
-                            ]
-                        )
+        db.execute("DELETE FROM buy_list WHERE userid='{}' and status='enter_num'".format(userid))
+        con.commit()
+        db.close()
+        return TemplateSendMessage(
+                    alt_text='template',
+                    template=ButtonsTemplate(
+                        thumbnail_image_url='https://stu-web.tkucs.cc/404411240/chatbot-images/pic{}.jpg'.format(int(buy)),
+                        title='商品編號#{}'.format(int(buy)),
+                        text='商品名稱: {}\n單價: {}\n數量: {}'.format(data[0][0], data[0][3], data[0][2]),
+                        actions=[
+                            PostbackTemplateAction(
+                                label='商品詳情',
+                                data='info,{}'.format(int(buy)),
+                            ),
+                            PostbackTemplateAction(
+                                label='立即購買',
+                                data='buy,{}'.format(int(buy)),
+                            ),
+                            PostbackTemplateAction(
+                                label='觀看原圖',
+                                data='picture,{}'.format(int(buy)),
+                            )
+                        ]
                     )
+                )
         else :
             db.close()
             return TextSendMessage(text="訂單編號需為數字，請重新輸入\n若要取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
