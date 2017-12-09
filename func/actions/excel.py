@@ -15,7 +15,7 @@ def Excel(thing_id, userid, con) :
     db.execute("SELECT * FROM buy_list WHERE thing_id={}".format(thing_id))
     data = db.fetchall()
     os.system("touch profile.csv")
-    file = open('profile.csv', 'w',encoding='utf-8')
+    file = open('profile.csv', 'w',encoding='utf-8-sig')
     csvCursor = csv.writer(file)
     csvCursor.writerow(['買家姓名','Line暱稱','電話','購買數量','是否出貨','購買時間'])
     for d in data :

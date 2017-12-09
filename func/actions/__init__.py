@@ -4,7 +4,7 @@ from .info import Info
 from .sell import Sell
 from .shop import Shop
 from .thinglist import ThingList
-from .buyerlist import BuyerList
+from .buyerlist import *
 from .product import Product
 from .check import *
 from .search import Search

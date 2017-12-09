@@ -87,11 +87,9 @@ def ShowBuyer(thing_id, userid, con) :
     db.execute("SELECT userid,amount,id,input_time,status FROM buy_list WHERE thing_id={} ORDER BY id ASC".format(thing_id))
     data = db.fetchall()
     if not data :
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text="尚無買家")
-        )
-        return "OK"
+        return TextSendMessage(
+            text="尚無買家"
+            )
     reply = []
     for d in data :
         profile = line_bot_api.get_profile(d[0])
