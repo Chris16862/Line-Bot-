@@ -30,15 +30,14 @@ def Buy(event, status, userid, con):
         db.execute("INSERT INTO buy_list (userid, status) VALUES (%s, %s)",(userid, s))
         con.commit()
         db.close()
-        return TextSendMessage(text="請輸入商品編號:")
+        return TextSendMessage(text="請輸入商品名稱:")
     elif status[0][0]=="enter_num":
         buy=event.message.text
-        if buy.isdigit():
-            db.execute("SELECT name,status,amount,price FROM sell_list WHERE id={}".format(int(buy)))
+            db.execute("SELECT id,status,amount,price FROM sell_list WHERE name={}".format(buy))
             data=db.fetchall()
             if not data :
                 db.close()
-                return TextSendMessage(text="商品不存在，請重新輸入商品編號\n若想取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
+                return TextSendMessage(text="商品不存在，請重新輸入商品名稱\n若想取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
             elif data[0][1]=="check" :
                 db.close()
                 return TextSendMessage("本產品已經收單囉～\n請輸入其他商品編號")
