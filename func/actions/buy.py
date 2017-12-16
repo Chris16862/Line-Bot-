@@ -33,7 +33,7 @@ def Buy(event, status, userid, con):
         return TextSendMessage(text="請輸入商品名稱:")
     elif status[0][0]=="enter_num":
         buy=event.message.text
-        db.execute("SELECT name,status,amount,price FROM sell_list WHERE id={}".format(int(buy)))
+        db.execute("SELECT id,status,amount,price FROM sell_list WHERE id={}".format(buy))
         data=db.fetchall()
         if not data :
             db.close()
