@@ -35,7 +35,7 @@ def Buy(event, status, userid, con):
         buy=event.message.text
         db.execute("SELECT id,status,amount,price FROM sell_list WHERE id={}".format(buy))
         data=db.fetchall()
-        if (id=null) :
+        if (id==null) :
             db.close()
             return TextSendMessage(text="商品不存在，請重新輸入商品名稱\n若想取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
         elif data[0][1]=="check" :
