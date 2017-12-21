@@ -53,7 +53,7 @@ def Sell(event, status, userid,con) :
         return TextSendMessage(text="只需要輸入數字，請重新輸入\n若要取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
     elif status[0][0]=="enter_name":
         s = "enter_price"
-        SQL = "UPDATE sell_list SET name='{}',status='{}' WHERE status='enter_name' and userid='{}';".format(event.message.text, s, userid)
+        SQL = "UPDATE sell_list SET name='{}',status='{}' WHERE status='enter_name' and userid='{}'".format(event.message.text, s, userid)
         db.execute(SQL)
         con.commit()
         db.close()
