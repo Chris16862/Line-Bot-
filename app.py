@@ -99,8 +99,8 @@ def callback():
                 line_bot_api.reply_message(
                     event.reply_token,
                     Shop(
-                        userid,
                         int(data[1]),
+                        userid,
                         con,
                         False,
                         ""
@@ -405,8 +405,8 @@ def callback():
                 line_bot_api.reply_message(
                     event.reply_token,
                     Shop(
-                        userid,
                         count[0][0]+1,
+			userid,
                         con,
                         False,
                         ""
