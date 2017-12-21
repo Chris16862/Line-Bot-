@@ -37,7 +37,7 @@ def Buy(event, status, userid, con):
         data=db.fetchall()
         if not data :
             db.close()
-            re turn TextSendMessage(text="商品不存在，請重新輸入商品名稱\n若想取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
+            return TextSendMessage(text="商品不存在，請重新輸入商品名稱\n若想取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
         elif data[0][1]=="check" :
             db.close()
             return TextSendMessage("本產品已經收單囉～\n請輸入其他商品編號")
