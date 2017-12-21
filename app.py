@@ -291,7 +291,7 @@ def callback():
                 if not max :
                     reply = TextSendMessage(text="目前無類似商品")
                 else : 
-                    reply = Shop(max, userid, con, True, event.message.text)
+                    reply = Shop(max[0], userid, con, True, event.message.text)
                 line_bot_api.reply_message(
                     event.reply_token,
                     reply
