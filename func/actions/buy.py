@@ -22,7 +22,7 @@ def Buy(thing_id, status, userid, con):
     	con.commit()
     	db.close()
     	return TextSendMessage(text="購買商品為: {}\n請輸入購買數量:".format(data[0][0]))
-    elif status[0][0]=="count":
+    if status[0][0]=="count":
         if event.message.text.isdigit() :
             amount = int(event.message.text)
             s="modify"
