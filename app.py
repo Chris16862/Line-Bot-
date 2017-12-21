@@ -89,7 +89,7 @@ def callback():
                 line_bot_api.reply_message(
                     event.reply_token,
                     Buy(
-                        event,
+                        data[1],
                         [],
                         userid,
                         con
@@ -101,7 +101,9 @@ def callback():
                     Shop(
                         userid,
                         int(data[1]),
-                        con
+                        con,
+                        False,
+                        ""
                         )
                     )
             elif data[0]=="buyerlist_turnpg" :
@@ -278,10 +280,21 @@ def callback():
                 line_bot_api.reply_message(
                     event.reply_token,
                     Search(
-                    event.message.text,
-                    userid,
-                    con
+                        event.message.text,
+                        userid,
+                        con
                     )
+                )
+            elif user_status[0][0] == "searching_thing" :
+                db.execute("SELECT id FROM sell_list WHERE name LIKE '%{}%' and amount>0 and status='finish' ORDER BY id DESC LIMIT 1".format(event.message.text))
+                max = db.fetchone()
+                if not max :
+                    reply = TextSendMessage(text="目前無類似商品")
+                else : 
+                    reply = Shop(max, userid, con, True, event.message.text)
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    reply
                 )
             else :
                 line_bot_api.reply_message(
@@ -304,14 +317,11 @@ def callback():
                 )
             )
         elif event.message.text=="搜尋商品" :
+            db.execute("UPDATE user_list SET status='searching_thing' WHERE userid='{}'".format(userid))
+            con.commit()
             line_bot_api.reply_message(
                 event.reply_token,
-                Buy(
-                    event,
-                    buy_status,
-                    userid,
-                    con
-                )
+                TextSendMessage(text="請輸入想搜尋的商品: ")
             )
         elif event.message.text=='買家專區' :
             line_bot_api.reply_message(
@@ -397,7 +407,9 @@ def callback():
                     Shop(
                         userid,
                         count[0][0]+1,
-                        con
+                        con,
+                        False,
+                        ""
                         )
                     )
         elif event.message.text=="我的購買清單" :

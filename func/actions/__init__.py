@@ -7,6 +7,6 @@ from .thinglist import ThingList
 from .buyerlist import *
 from .product import Product
 from .check import *
-from .search import Search
+from .search import *
 from .excel import Excel
 from .pic import Trans_Pic

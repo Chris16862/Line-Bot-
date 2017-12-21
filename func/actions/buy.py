@@ -7,68 +7,21 @@ from linebot import (
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
 line_bot_api = LineBotApi(channel_access_token)
 
-def Buy(event, status, userid, con):
+def Buy(thing_id, status, userid, con):
     db = con.cursor()
-    if isinstance(event, PostbackEvent) :
-        d = event.postback.data
-        data = d.split(",")
-        buy = data[1]
-        db.execute("SELECT name,status,amount FROM sell_list WHERE id={}".format(int(buy)))
-        data = db.fetchall()
-        if data[0][1]=="check" :
-            db.close()
-            return TextSendMessage("本產品已經收單囉～")
-        elif data[0][2] <= 0 :
-            db.close()
-            return TextSendMessage("本商品已售完~")
-        db.execute("INSERT INTO buy_list (userid, status, thing_id) VALUES (%s, %s, %s)",(userid, "count", int(buy)))
-        con.commit()
+    db.execute("SELECT name,status,amount FROM sell_list WHERE id={}".format(int(thing_id)))
+    data = db.fetchall()
+    if data[0][1]=="check" :
         db.close()
-        return TextSendMessage(text="購買商品為: {}\n請輸入購買數量:".format(data[0][0]))
-    if not status:
-        s="enter_num"
-        db.execute("INSERT INTO buy_list (userid, status) VALUES (%s, %s)",(userid, s))
-        con.commit()
+        return TextSendMessage("本產品已經收單囉～")
+    elif data[0][2] <= 0 :
         db.close()
-        return TextSendMessage(text="請輸入商品名稱:")
-    elif status[0][0]=="enter_num":
-        buy=event.message.text
-        db.execute("SELECT id,status,amount,price FROM sell_list WHERE name LIKE '%{}%'".format(buy))
-        data=db.fetchall()
-        if not data :
-            db.close()
-            return TextSendMessage(text="商品不存在，請重新輸入商品名稱\n若想取消本次交易，請按\"功能列表\"內的\"取消輸入\"")
-        elif data[0][1]=="check" :
-            db.close()
-            return TextSendMessage("本產品已經收單囉～\n請輸入其他商品編號")
-        elif data[0][2]<=0 :
-            db.close()
-            return TextSendMessage("本商品已售完~ \n請輸入其他商品編號")
-        db.execute("DELETE FROM buy_list WHERE userid='{}' and status='enter_num'".format(userid))
-        con.commit()
-        db.close()
-        return TemplateSendMessage(
-                    alt_text='template',
-                    template=ButtonsTemplate(
-                        thumbnail_image_url='https://stu-web.tkucs.cc/404411240/chatbot-images/pic{}.jpg'.format(int(buy)),
-                        title='商品編號#{}'.format(int(buy)),
-                        text='商品名稱: {}\n單價: {}\n數量: {}'.format(data[0][0], data[0][3], data[0][2]),
-                        actions=[
-                            PostbackTemplateAction(
-                                label='商品詳情',
-                                data='info,{}'.format(int(buy)),
-                            ),
-                            PostbackTemplateAction(
-                                label='立即購買',
-                                data='buy,{}'.format(int(buy)),
-                            ),
-                            PostbackTemplateAction(
-                                label='觀看原圖',
-                                data='picture,{}'.format(int(buy)),
-                            )
-                        ]
-                    )
-                )
+        return TextSendMessage("本商品已售完~")
+    else :
+    	db.execute("INSERT INTO buy_list (userid, status, thing_id) VALUES (%s, %s, %s)",(userid, "count", int(thing_id)))
+    	con.commit()
+    	db.close()
+    	return TextSendMessage(text="購買商品為: {}\n請輸入購買數量:".format(data[0][0]))
     elif status[0][0]=="count":
         if event.message.text.isdigit() :
             amount = int(event.message.text)
