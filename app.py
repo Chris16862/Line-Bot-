@@ -291,7 +291,7 @@ def callback():
                 db.execute("SELECT id FROM sell_list WHERE name LIKE '%{}%' and amount>0 and status='finish' ORDER BY id DESC LIMIT 1".format(event.message.text))
                 max = db.fetchone()
                 if not max :
-                    reply = TextSendMessage(text="目前無類似商品")
+                    reply = TextSendMessage(text="目前無類似商品，請重新輸入\n若想取消搜尋，請按\"功能列表\"內的\"取消輸入\"")
                 else : 
                     reply = Shop(max[0]+1, userid, con, True, event.message.text)
                 line_bot_api.reply_message(
