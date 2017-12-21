@@ -286,6 +286,8 @@ def callback():
                     )
                 )
             elif user_status[0][0] == "searching_thing" :
+                db.execute("UPDATE user_list SET status='finish' WHERE userid='{}'".format(userid))
+                con.commit()
                 db.execute("SELECT id FROM sell_list WHERE name LIKE '%{}%' and amount>0 and status='finish' ORDER BY id DESC LIMIT 1".format(event.message.text))
                 max = db.fetchone()
                 if not max :
