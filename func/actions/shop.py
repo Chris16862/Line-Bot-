@@ -12,7 +12,7 @@ def Shop(count, userid, con, search, thing_name) :
     elif count == 0 :
         return TextSendMessage(text="沒有上一頁了！")
     db = con.cursor()
-    if search==True :
+    if search :
         db.execute("SELECT id FROM sell_list WHERE name LIKE '%{}%' and amount>0 and status='finish' ORDER BY id DESC LIMIT 1".format(thing_name))
         max = db.fetchall()
         db.execute("SELECT * FROM sell_list WHERE id<{} and status='finish' and amount>0 and name LIKE '%{}%' ORDER BY id DESC LIMIT 5 ".format(count, thing_name))
