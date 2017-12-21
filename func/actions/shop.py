@@ -6,7 +6,7 @@ from linebot import (
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
 line_bot_api = LineBotApi(channel_access_token)
 
-def Shop(userid,count,con,search,thing_name) :
+def Shop(count, userid, con, search, thing_name) :
     if count == -1 :
         return TextSendMessage(text="沒有下一頁了！")
     elif count == 0 :
